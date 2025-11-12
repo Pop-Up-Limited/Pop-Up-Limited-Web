@@ -1,0 +1,133 @@
+---
+import { COMPANY_NAME, NAV_LINKS } from '../config/site';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath = '/' } = Astro.props as Props;
+
+const resolveActive = (href: string) => {
+  if (href === '/#products') {
+    return currentPath === '/';
+  }
+
+  if (href.startsWith('/floral')) {
+    return currentPath.startsWith('/floral');
+  }
+
+  return currentPath === href;
+};
+---
+
+<header class="sticky top-0 z-50 border-b border-slate-200/60 bg-white/80 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-900/70">
+  <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
+    <a href="/" class="flex items-center gap-3 text-lg font-bold text-foreground hover:text-brand-500 dark:text-foreground-dark" aria-label={`${COMPANY_NAME} home`}>
+      <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 ring-1 ring-brand-500/30">
+        PU
+      </span>
+      <span class="text-balance">
+        {COMPANY_NAME}
+      </span>
+    </a>
+
+    <button
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-300 hover:text-brand-600 focus-visible:ring-brand-300 md:hidden dark:border-slate-700 dark:text-foreground-dark"
+      aria-label="Toggle navigation"
+      aria-controls="primary-navigation"
+      aria-expanded="false"
+      data-nav-toggle
+    >
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+    </button>
+
+    <nav id="primary-navigation" class="hidden w-full flex-col gap-6 md:flex md:w-auto md:flex-row md:items-center md:gap-8" data-nav-menu>
+      <ul class="flex flex-col gap-4 text-sm font-medium text-foreground md:flex-row md:items-center md:gap-6 dark:text-foreground-dark">
+        {NAV_LINKS.map((item) => (
+          item.children ? (
+            <li class="relative" data-has-dropdown>
+              <details class="group">
+                <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full px-3 py-2 transition hover:bg-slate-100/80 dark:hover:bg-slate-800/80">
+                  <span class={['transition', resolveActive(item.children[0].href) ? 'text-brand-500' : ''].join(' ')}>
+                    {item.label}
+                  </span>
+                  <svg class="h-3.5 w-3.5 text-slate-500 transition group-open:rotate-180" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </summary>
+                <div class="md:absolute md:left-0 md:mt-2 md:w-48 md:rounded-2xl md:border md:border-slate-200 md:bg-white md:p-2 md:shadow-xl md:shadow-slate-900/10 dark:md:border-slate-700 dark:md:bg-slate-900">
+                  <ul class="flex flex-col gap-1 text-sm">
+                    {item.children.map((child) => (
+                      <li>
+                        <a
+                          href={child.href}
+                          class={`block rounded-xl px-4 py-2 transition hover:bg-brand-500/10 hover:text-brand-600 ${
+                            resolveActive(child.href) ? 'text-brand-500' : ''
+                          }`}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </details>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.href}
+                class={`rounded-full px-3 py-2 transition hover:bg-slate-100/80 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 ${
+                  resolveActive(item.href) ? 'text-brand-500' : ''
+                }`}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        ))}
+      </ul>
+      <div class="flex flex-col gap-3 md:flex-row md:gap-3">
+        <a href="/support" class="btn-primary">
+          Contact Support
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script type="module">
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const menu = document.querySelector('[data-nav-menu]');
+  if (toggle instanceof HTMLButtonElement && menu instanceof HTMLElement) {
+    toggle.addEventListener('click', () => {
+      const isHidden = menu.classList.toggle('hidden');
+      const expanded = !isHidden;
+      toggle.setAttribute('aria-expanded', expanded.toString());
+      if (!expanded) {
+        // Close nested details when collapsing mobile menu
+        menu.querySelectorAll('details').forEach((detail) => {
+          if (detail instanceof HTMLDetailsElement) {
+            detail.open = false;
+          }
+        });
+      }
+    });
+  }
+
+  // Close open dropdowns when clicking outside (desktop)
+  document.addEventListener('click', (event) => {
+    const trigger = (event.target as HTMLElement | null)?.closest('[data-has-dropdown]');
+    if (!trigger) {
+      document.querySelectorAll('[data-has-dropdown] details').forEach((detail) => {
+        if (detail instanceof HTMLDetailsElement) {
+          detail.open = false;
+        }
+      });
+    }
+  });
+</script>
+

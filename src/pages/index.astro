@@ -1,11 +1,156 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { HERO, WHY_US, COMPANY_NAME, COMPANY_TAGLINE, DEFAULT_DESCRIPTION } from '../config/site';
+import { products } from '../data/products';
+import ProductCard from '../components/ProductCard.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title={`${COMPANY_NAME} · ${COMPANY_TAGLINE}`} description={DEFAULT_DESCRIPTION}>
+  <div class="relative overflow-hidden">
+    <section class="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-24 pt-16 md:px-6 md:pt-24">
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[420px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
+      <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:items-center">
+        <div class="space-y-6">
+          <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-brand-600">
+            {/* TODO: replace announcement copy */}
+            Newly refreshed Floral docs
+          </span>
+          <h1 class="text-4xl font-semibold leading-tight text-foreground md:text-5xl lg:text-6xl dark:text-foreground-dark">
+            {HERO.title}
+          </h1>
+          <p class="max-w-xl text-lg text-foreground-muted dark:text-slate-300">
+            {HERO.subtitle}
+          </p>
+          <div class="flex flex-col gap-3 sm:flex-row">
+            <a class="btn-primary" href={HERO.primaryCta.href}>
+              {HERO.primaryCta.label}
+            </a>
+            <a class="btn-secondary" href={HERO.secondaryCta.href}>
+              {HERO.secondaryCta.label}
+            </a>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="card-surface relative overflow-hidden">
+            <div class="space-y-4">
+              <h2 class="text-lg font-semibold text-foreground dark:text-foreground-dark">
+                Launch faster with adaptive workflows
+              </h2>
+              <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+                Pop Up Limited combines AI copilots and human oversight so marketing and product teams can make ideas tangible within hours, not weeks. {/* TODO: refine messaging */}
+              </p>
+              <ul class="grid gap-3 text-sm text-foreground-muted dark:text-slate-300">
+                <li class="flex items-center gap-2">
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
+                    ✓
+                  </span>
+                  Secure compliance guardrails for sensitive industries
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
+                    ✓
+                  </span>
+                  Zero-maintenance creative pipelines
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="flex h-7 w-7 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
+                    ✓
+                  </span>
+                  Insights that bridge product, design, and support
+                </li>
+              </ul>
+            </div>
+            <div class="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-white/0 via-white/10 to-brand-500/10 dark:from-white/0 dark:via-white/5 dark:to-brand-500/10"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+      <div class="mb-10 flex flex-col gap-3">
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">
+          Products
+        </span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+          Explore our toolkit
+        </h2>
+        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300">
+          From Floral’s campaign design system to Phoro’s AI imaging and upcoming orchestration features, each product is built to amplify your team. {/* TODO: replace with product overview */}
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        {products.map((product) => (
+          <ProductCard product={product} />
+        ))}
+      </div>
+    </section>
+
+    <section class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 pb-24 md:px-6 md:flex-row md:items-center">
+      <div class="md:w-1/2">
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+          About {COMPANY_NAME}
+        </h2>
+        <p class="mt-4 text-base leading-relaxed text-foreground-muted dark:text-slate-300">
+          We are a product studio based in Hong Kong serving global creators and marketing teams. Our mission is to deliver responsible automation that unlocks new customer experiences without sacrificing craft. {/* TODO: replace with official company story */}
+        </p>
+        <p class="mt-4 text-base leading-relaxed text-foreground-muted dark:text-slate-300">
+          Pop Up Limited currently operates Floral for brand storytelling and Phoro for AI-powered portrait editing, with new launches planned soon. {/* TODO: confirm portfolio details */}
+        </p>
+      </div>
+
+      <div class="md:w-1/2">
+        <div class="grid gap-4 rounded-2xl border border-brand-500/20 bg-brand-500/10 p-6 shadow-brand-sm dark:border-brand-500/30">
+          <h3 class="text-xl font-semibold text-brand-700 dark:text-brand-200">
+            “Pop Up Limited reduces production cycles from weeks to days while keeping our brand signature intact.”
+          </h3>
+          <p class="text-sm text-brand-800/80 dark:text-brand-100/80">
+            — Client testimonial placeholder {/* TODO: replace with client quote */}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+      <div class="mb-10 flex flex-col gap-3">
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">
+          Why us
+        </span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+          {WHY_US.headline}
+        </h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        {WHY_US.points.map((point) => (
+          <div class="card-surface flex flex-col gap-3">
+            <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark">
+              {point.title}
+            </h3>
+            <p class="text-sm text-foreground-muted dark:text-slate-300">
+              {point.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="mx-auto mb-24 w-full max-w-6xl rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
+      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100">
+        Ready to co-create with Pop Up Limited?
+      </h2>
+      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80">
+        Partner with our support team to customise Floral, set up Phoro for your org, or pilot upcoming releases. {/* TODO */}
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a class="btn-primary" href="/support">
+          Visit Support Center
+        </a>
+        <a class="btn-secondary" href="/floral/terms">
+          Review Floral Terms
+        </a>
+      </div>
+    </section>
+  </div>
 </Layout>

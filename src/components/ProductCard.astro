@@ -1,0 +1,45 @@
+---
+import type { Product } from '../data/products';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+---
+
+<article class="card-surface h-full">
+  <div class="flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark">
+        {product.name}
+      </h3>
+      {product.badge && (
+        <span class="rounded-full bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-600">
+          {product.badge}
+        </span>
+      )}
+    </div>
+
+    <p class="text-sm text-foreground-muted dark:text-slate-300">
+      {product.description}
+    </p>
+  </div>
+
+  <div class="mt-6 flex items-center justify-between">
+    <a
+      href={product.link}
+      class="btn-secondary"
+      target={product.link.startsWith('http') ? '_blank' : undefined}
+      rel={product.link.startsWith('http') ? 'noopener noreferrer' : undefined}
+    >
+      {product.linkLabel}
+    </a>
+    {product.status && (
+      <span class="text-xs uppercase tracking-wide text-slate-400">
+        {product.status === 'coming-soon' ? 'Coming Soon' : product.status}
+      </span>
+    )}
+  </div>
+</article>
+

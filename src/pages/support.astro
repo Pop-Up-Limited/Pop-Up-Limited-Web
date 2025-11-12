@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FAQItem from '../components/FAQItem.astro';
+import ContactCard from '../components/ContactCard.astro';
+import TicketForm from '../components/TicketForm.astro';
+import { faqs } from '../data/faqs';
+import { COMPANY_NAME, SUPPORT_EMAIL } from '../config/site';
+
+const PAGE_TITLE = `Support · ${COMPANY_NAME}`;
+const PAGE_DESCRIPTION =
+  'Find answers to frequent questions, contact Pop Up Limited support, and submit a ticket for Floral, Phoro, or other products.'; // TODO: refine support page description
+---
+
+<Layout title={PAGE_TITLE} description={PAGE_DESCRIPTION}>
+  <section class="mx-auto w-full max-w-6xl px-4 pb-16 pt-16 md:px-6 md:pt-20">
+    <div class="max-w-3xl space-y-6">
+      <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">
+        Support
+      </span>
+      <h1 class="text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark">
+        How can we help?
+      </h1>
+      <p class="text-base text-foreground-muted dark:text-slate-300">
+        Explore quick answers, review Floral’s legal docs, or open a ticket. If you need urgent help, email us directly at <a class="text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. {/* TODO: update escalation path */}
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+    <div class="grid gap-8 md:grid-cols-[minmax(0,0.65fr)_minmax(0,0.35fr)] md:gap-10">
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          Frequently asked questions
+        </h2>
+        <div class="grid gap-4">
+          {faqs.map((item, index) => (
+            <FAQItem item={item} index={index} />
+          ))}
+        </div>
+      </div>
+
+      <ContactCard />
+    </div>
+  </section>
+
+  <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+    <TicketForm />
+  </section>
+</Layout>
+
