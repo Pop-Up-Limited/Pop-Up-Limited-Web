@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { COMPANY_NAME, SUPPORT_EMAIL } from '../../config/site';
+
+const PAGE_TITLE = `Phoro Terms and Conditions · ${COMPANY_NAME}`;
+const UPDATED_ON = '2025-11-12'; // TODO: update last modified date
+const sections = [
+  { id: 'introduction', title: '1. Introduction' },
+  { id: 'scope', title: '2. Scope of Services' },
+  { id: 'obligations', title: '3. User Obligations' },
+  { id: 'data-handling', title: '4. Data Handling & Privacy' },
+  { id: 'governing-law', title: '5. Governing Law' },
+  { id: 'contact', title: '6. Contact' }
+];
+---
+
+<Layout title={PAGE_TITLE} description="Terms and Conditions for Phoro by Pop Up Limited." noIndex={false}>
+  <article class="mx-auto w-full max-w-4xl px-4 pb-24 pt-16 md:px-6 md:pt-20">
+    <header class="mb-12 space-y-4">
+      <p class="text-sm uppercase tracking-wide text-brand-500">
+        Phoro Legal
+      </p>
+      <h1 class="text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark">
+        Phoro Terms and Conditions
+      </h1>
+      <p class="text-sm text-foreground-muted dark:text-slate-300">
+        Last updated: <time dateTime={UPDATED_ON}>{UPDATED_ON}</time>
+      </p>
+      <p class="text-base text-foreground-muted dark:text-slate-300">
+        These terms outline how customers may access and use Phoro, Pop Up Limited's mobile-first AI image generation service, including your responsibilities and our commitments.
+      </p>
+    </header>
+
+    <nav aria-label="Table of contents" class="mb-12 rounded-2xl border border-slate-200/60 bg-white/80 p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/70">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-300">
+        On this page
+      </h2>
+      <ol class="mt-4 space-y-3 text-sm text-foreground-muted dark:text-slate-300">
+        {sections.map((section) => (
+          <li>
+            <a class="hover:text-brand-600" href={`#${section.id}`}>
+              {section.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="space-y-12 text-base leading-relaxed text-foreground-muted dark:text-slate-300">
+      <section id="introduction">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          1. Introduction
+        </h2>
+        <p>
+          Welcome to Phoro, a mobile-first AI image generation service operated by Pop Up Limited. By accessing or using Phoro, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our service.
+        </p>
+      </section>
+
+      <section id="scope">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          2. Scope of Services
+        </h2>
+        <p>
+          Phoro provides AI-powered image generation tools that allow creators to remix portraits using curated template packs. Our service includes:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li>Mobile-first AI image generation and editing capabilities</li>
+          <li>Curated template packs for portrait remixing</li>
+          <li>User account management and content storage</li>
+          <li>Support services as described in our support documentation</li>
+        </ul>
+      </section>
+
+      <section id="obligations">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          3. User Obligations
+        </h2>
+        <p>
+          When using Phoro, you agree to:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li>Use the service only for lawful purposes and in accordance with these terms</li>
+          <li>Not upload, generate, or share content that is illegal, harmful, or violates others' rights</li>
+          <li>Maintain the security of your account credentials</li>
+          <li>Respect intellectual property rights of others</li>
+          <li>Not attempt to reverse engineer, decompile, or extract source code from Phoro</li>
+        </ul>
+      </section>
+
+      <section id="data-handling">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          4. Data Handling & Privacy
+        </h2>
+        <p>
+          Your use of Phoro is also governed by our Privacy Policy. We collect and process personal data to provide and improve our services, ensure security, and comply with legal obligations.
+        </p>
+        <p class="mt-4">
+          In relation to personal data, Pop Up Limited commits to comply with applicable privacy laws and to process data solely to deliver the Phoro service. For detailed information about how we handle your data, please review our Privacy Policy.
+        </p>
+      </section>
+
+      <section id="governing-law">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          5. Governing Law
+        </h2>
+        <p>
+          These Terms and Conditions shall be governed by and construed in accordance with the laws of Hong Kong. Any disputes arising from or related to these terms shall be subject to the exclusive jurisdiction of the courts of Hong Kong.
+        </p>
+      </section>
+
+      <section id="contact">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          6. Contact
+        </h2>
+        <p>
+          For questions about these terms or to request a signed agreement, please email <a class="text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> or visit our <a class="text-brand-600" href="/phoro/support">support page</a>.
+        </p>
+      </section>
+    </div>
+  </article>
+</Layout>
+

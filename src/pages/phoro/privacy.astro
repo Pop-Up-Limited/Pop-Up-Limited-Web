@@ -1,0 +1,168 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { COMPANY_NAME, SUPPORT_EMAIL } from '../../config/site';
+
+const PAGE_TITLE = `Phoro Privacy Policy · ${COMPANY_NAME}`;
+const UPDATED_ON = '2025-11-12'; // TODO: update last modified date
+const sections = [
+  { id: 'overview', title: '1. Overview' },
+  { id: 'information-we-collect', title: '2. Information We Collect' },
+  { id: 'how-we-use', title: '3. How We Use Information' },
+  { id: 'sharing', title: '4. Sharing & Disclosure' },
+  { id: 'retention', title: '5. Data Retention' },
+  { id: 'rights', title: '6. Your Rights & Choices' },
+  { id: 'contact', title: '7. Contact Us' }
+];
+---
+
+<Layout title={PAGE_TITLE} description="Privacy Policy for Phoro by Pop Up Limited." noIndex={false}>
+  <article class="mx-auto w-full max-w-4xl px-4 pb-24 pt-16 md:px-6 md:pt-20">
+    <header class="mb-12 space-y-4">
+      <p class="text-sm uppercase tracking-wide text-brand-500">
+        Phoro Legal
+      </p>
+      <h1 class="text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark">
+        Phoro Privacy Policy
+      </h1>
+      <p class="text-sm text-foreground-muted dark:text-slate-300">
+        Last updated: <time dateTime={UPDATED_ON}>{UPDATED_ON}</time>
+      </p>
+      <p class="text-base text-foreground-muted dark:text-slate-300">
+        This privacy notice explains how Pop Up Limited collects, uses, and safeguards data when you interact with Phoro and related services.
+      </p>
+    </header>
+
+    <nav aria-label="Table of contents" class="mb-12 rounded-2xl border border-slate-200/60 bg-white/80 p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/70">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-300">
+        On this page
+      </h2>
+      <ol class="mt-4 space-y-3 text-sm text-foreground-muted dark:text-slate-300">
+        {sections.map((section) => (
+          <li>
+            <a class="hover:text-brand-600" href={`#${section.id}`}>
+              {section.title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="space-y-12 text-base leading-relaxed text-foreground-muted dark:text-slate-300">
+      <section id="overview">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          1. Overview
+        </h2>
+        <p>
+          Pop Up Limited ("we", "us", or "our") operates Phoro, a mobile-first AI image generation service. This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you use our service.
+        </p>
+        <p class="mt-4">
+          We are committed to protecting your privacy and ensuring transparency about our data practices. By using Phoro, you consent to the data practices described in this policy.
+        </p>
+      </section>
+
+      <section id="information-we-collect">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          2. Information We Collect
+        </h2>
+        <p>
+          We collect information that you provide directly to us and information that is automatically collected when you use Phoro:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li><strong>Account Information:</strong> Email address, username, and password when you create an account</li>
+          <li><strong>Content:</strong> Images you upload, generate, or edit using Phoro</li>
+          <li><strong>Usage Data:</strong> How you interact with the service, features used, and preferences</li>
+          <li><strong>Device Information:</strong> Device type, operating system, and mobile app version</li>
+          <li><strong>Support Interactions:</strong> Communications with our support team, tickets, and feedback</li>
+        </ul>
+      </section>
+
+      <section id="how-we-use">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          3. How We Use Information
+        </h2>
+        <p>
+          We use the information we collect to:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li>Provide, maintain, and improve Phoro services</li>
+          <li>Process your image generation requests and deliver results</li>
+          <li>Authenticate your account and ensure security</li>
+          <li>Respond to your support requests and inquiries</li>
+          <li>Send service-related notifications and updates</li>
+          <li>Analyze usage patterns to enhance user experience</li>
+          <li>Comply with legal obligations and enforce our terms</li>
+        </ul>
+      </section>
+
+      <section id="sharing">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          4. Sharing & Disclosure
+        </h2>
+        <p>
+          We do not sell your personal information. We may share your information in the following circumstances:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li><strong>Service Providers:</strong> With trusted third-party providers who assist in operating Phoro (hosting, analytics, payment processing)</li>
+          <li><strong>Legal Requirements:</strong> When required by law, court order, or government regulation</li>
+          <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
+          <li><strong>With Your Consent:</strong> When you explicitly authorize us to share your information</li>
+        </ul>
+        <p class="mt-4">
+          All service providers are contractually obligated to use your data solely to deliver the contracted services and maintain appropriate security measures.
+        </p>
+      </section>
+
+      <section id="retention">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          5. Data Retention
+        </h2>
+        <p>
+          We retain your personal information for as long as necessary to provide Phoro services, comply with legal obligations, resolve disputes, and enforce our agreements. When you delete your account, we will delete or anonymize your personal data within a reasonable timeframe, except where we are required to retain it for legal purposes.
+        </p>
+        <p class="mt-4">
+          Generated images and content may be retained for service functionality and backup purposes, but will be permanently deleted upon account deletion unless you have shared them publicly.
+        </p>
+      </section>
+
+      <section id="rights">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          6. Your Rights & Choices
+        </h2>
+        <p>
+          Depending on your location, you may have the following rights regarding your personal data:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li><strong>Access:</strong> Request a copy of the personal data we hold about you</li>
+          <li><strong>Correction:</strong> Request correction of inaccurate or incomplete data</li>
+          <li><strong>Deletion:</strong> Request deletion of your personal data</li>
+          <li><strong>Portability:</strong> Request transfer of your data to another service</li>
+          <li><strong>Objection:</strong> Object to certain processing activities</li>
+          <li><strong>Withdrawal:</strong> Withdraw consent where processing is based on consent</li>
+        </ul>
+        <p class="mt-4">
+          To exercise these rights, please contact us at <a class="text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> or visit our <a class="text-brand-600" href="/phoro/support">support page</a>. We will respond to your request within one month.
+        </p>
+      </section>
+
+      <section id="contact">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          7. Contact Us
+        </h2>
+        <p>
+          If you have questions about this Privacy Policy or our data practices, please contact us:
+        </p>
+        <ul class="mt-4 list-disc space-y-2 pl-6">
+          <li><strong>Email:</strong> <a class="text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a></li>
+          <li><strong>Support Page:</strong> <a class="text-brand-600" href="/phoro/support">popup.limited/phoro/support</a></li>
+        </ul>
+        <p class="mt-4">
+          Pop Up Limited<br />
+          RM 10, 23/F, New Trend Centre<br />
+          704 Prince Edward Road East<br />
+          San Po Kong, Kowloon, Hong Kong
+        </p>
+      </section>
+    </div>
+  </article>
+</Layout>
+

@@ -15,6 +15,14 @@ export const NAV_LINKS = [
       { href: '/floral/terms', label: 'Terms' },
       { href: '/floral/privacy', label: 'Privacy' }
     ]
+  },
+  {
+    label: 'Phoro',
+    children: [
+      { href: '/phoro/terms-and-conditions', label: 'Terms & Conditions' },
+      { href: '/phoro/privacy', label: 'Privacy' },
+      { href: '/phoro/support', label: 'Support' }
+    ]
   }
 ];
 

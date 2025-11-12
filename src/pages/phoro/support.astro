@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FAQItem from '../../components/FAQItem.astro';
+import ContactCard from '../../components/ContactCard.astro';
+import TicketForm from '../../components/TicketForm.astro';
+import { COMPANY_NAME, SUPPORT_EMAIL } from '../../config/site';
+
+const PAGE_TITLE = `Phoro Support · ${COMPANY_NAME}`;
+const PAGE_DESCRIPTION =
+  'Get help with Phoro - Find answers to frequent questions, contact support, and submit a ticket for AI image generation issues.';
+
+const phoroFaqs = [
+  {
+    question: 'How do I get started with Phoro?',
+    answer:
+      'Download the Phoro mobile app from the App Store or Google Play. Create an account using your email address, and you can start generating AI-powered images immediately using our curated template packs.'
+  },
+  {
+    question: 'What image formats does Phoro support?',
+    answer:
+      'Phoro supports common image formats including JPEG, PNG, and HEIC. Generated images can be exported in high resolution for use in your projects.'
+  },
+  {
+    question: 'How does the AI image generation work?',
+    answer:
+      'Phoro uses advanced AI models to remix and generate portraits based on your uploaded images and selected template packs. The AI processes your input to create unique, stylized images while maintaining the core characteristics of your original photos.'
+  },
+  {
+    question: 'Is my data secure and private?',
+    answer:
+      'Yes. We take data privacy seriously. Your uploaded images and generated content are stored securely and are not shared with third parties except as described in our Privacy Policy. You can delete your account and all associated data at any time.'
+  },
+  {
+    question: 'Can I use generated images commercially?',
+    answer:
+      'Yes, you own the rights to images you generate using Phoro. You can use them for personal or commercial purposes, subject to compliance with our Terms and Conditions and applicable laws.'
+  },
+  {
+    question: 'What should I do if I encounter technical issues?',
+    answer:
+      'If you experience any technical problems, please submit a support ticket using the form below or email us directly at ' + SUPPORT_EMAIL + '. Include details about the issue, your device type, and app version for faster resolution.'
+  }
+];
+---
+
+<Layout title={PAGE_TITLE} description={PAGE_DESCRIPTION}>
+  <section class="mx-auto w-full max-w-6xl px-4 pb-16 pt-16 md:px-6 md:pt-20">
+    <div class="max-w-3xl space-y-6">
+      <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">
+        Phoro Support
+      </span>
+      <h1 class="text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark">
+        How can we help with Phoro?
+      </h1>
+      <p class="text-base text-foreground-muted dark:text-slate-300">
+        Find answers to common questions, learn about Phoro features, or get direct support. For immediate assistance, contact us:
+      </p>
+      <div class="flex flex-col gap-2 text-base">
+        <div>
+          <span class="font-semibold text-foreground dark:text-foreground-dark">Email: </span>
+          <a class="text-brand-600 hover:text-brand-700 font-medium" href={`mailto:${SUPPORT_EMAIL}`}>
+            {SUPPORT_EMAIL}
+          </a>
+        </div>
+        <div>
+          <span class="font-semibold text-foreground dark:text-foreground-dark">Response Time: </span>
+          <span class="text-foreground-muted dark:text-slate-300">Within one business day</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+    <div class="grid gap-8 md:grid-cols-[minmax(0,0.65fr)_minmax(0,0.35fr)] md:gap-10">
+      <div class="space-y-4">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          Frequently asked questions
+        </h2>
+        <div class="grid gap-4">
+          {phoroFaqs.map((item, index) => (
+            <FAQItem item={item} index={index} />
+          ))}
+        </div>
+      </div>
+
+      <ContactCard />
+    </div>
+  </section>
+
+  <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+    <TicketForm />
+  </section>
+
+  <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+    <div class="rounded-2xl border border-slate-200/60 bg-white/80 p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/70">
+      <h2 class="mb-4 text-xl font-semibold text-foreground dark:text-foreground-dark">
+        Additional Resources
+      </h2>
+      <ul class="space-y-3 text-sm text-foreground-muted dark:text-slate-300">
+        <li>
+          <a class="text-brand-600 hover:text-brand-700" href="/phoro/terms-and-conditions">
+            Terms and Conditions
+          </a>
+        </li>
+        <li>
+          <a class="text-brand-600 hover:text-brand-700" href="/phoro/privacy">
+            Privacy Policy
+          </a>
+        </li>
+        <li>
+          <a class="text-brand-600 hover:text-brand-700" href="https://popup.limited">
+            Visit Phoro Homepage
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</Layout>
+

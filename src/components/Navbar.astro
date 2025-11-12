@@ -16,6 +16,10 @@ const resolveActive = (href: string) => {
     return currentPath.startsWith('/floral');
   }
 
+  if (href.startsWith('/phoro')) {
+    return currentPath.startsWith('/phoro');
+  }
+
   return currentPath === href;
 };
 ---

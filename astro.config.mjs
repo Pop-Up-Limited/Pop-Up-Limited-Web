@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 
-const SITE_URL = 'https://product-photo-generator.com';
+const SITE_URL = 'https://popup.limited';
 const SITE_BASE = '/'; // Custom domain uses root path
 const SITE_ORIGIN = new URL(SITE_URL).origin;
 const SITE_HOSTNAME = new URL(SITE_URL).hostname;
