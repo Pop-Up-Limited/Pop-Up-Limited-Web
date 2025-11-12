@@ -3,7 +3,7 @@ export const COMPANY_TAGLINE =
   'We build innovative mobile applications and digital products that transform ideas into reality.';
 export const DEFAULT_DESCRIPTION =
   'Pop Up Limited specializes in product management, UI/UX design, iOS development, and digital marketing. Explore IsleMark, Bubble Memo, and our professional services.';
-export const SUPPORT_EMAIL = 'jli58@inside.artcenter.edu';
+export const SUPPORT_EMAIL = 'contact@popup.limited';
 export const FORM_ENDPOINT = ''; // TODO: paste your Formspree endpoint (e.g. https://formspree.io/f/xxxxxxx)
 
 export const NAV_LINKS = [
