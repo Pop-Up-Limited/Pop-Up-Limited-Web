@@ -1,9 +1,9 @@
 export const COMPANY_NAME = 'Pop Up Limited';
 export const COMPANY_TAGLINE =
-  'We build adaptive AI workflows that help creative teams launch ideas faster.'; // TODO: replace with your official company tagline
+  'We build innovative mobile applications and digital products that transform ideas into reality.';
 export const DEFAULT_DESCRIPTION =
-  'Pop Up Limited crafts product experiences that blend human creativity with practical AI. Explore Floral, Phoro, and our support resources.'; // TODO: replace with marketing copy
-export const SUPPORT_EMAIL = 'support@mydomain.com'; // TODO: replace with real support inbox
+  'Pop Up Limited specializes in product management, UI/UX design, iOS development, and digital marketing. Explore IsleMark, Bubble Memo, and our professional services.';
+export const SUPPORT_EMAIL = 'jli58@inside.artcenter.edu';
 export const FORM_ENDPOINT = ''; // TODO: paste your Formspree endpoint (e.g. https://formspree.io/f/xxxxxxx)
 
 export const NAV_LINKS = [
@@ -19,17 +19,16 @@ export const NAV_LINKS = [
 ];
 
 export const SOCIAL_LINKS = [
-  { label: 'LinkedIn', href: '#', icon: 'linkedin' }, // TODO: replace placeholder social URLs
-  { label: 'X', href: '#', icon: 'x' }, // TODO: replace placeholder social URLs
-  { label: 'GitHub', href: 'https://github.com/Pop-Up-Limited', icon: 'github' } // TODO: verify GitHub org
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jinyi-bruce-li', icon: 'linkedin' },
+  { label: 'GitHub', href: 'https://github.com/Pop-Up-Limited', icon: 'github' }
 ];
 
 export const HERO = {
-  title: 'We craft delightful AI-powered tools for creators.',
+  title: 'We craft innovative mobile applications and digital products.',
   subtitle:
-    'From prototyping to polished launch, Pop Up Limited helps creative teams ship faster with responsible, human-centered automation.', // TODO: refine hero copy
+    'Specialized in product management, UI/UX design, iOS development, and digital marketing. Bringing your vision to life with precision and creativity.',
   primaryCta: { label: 'See Products', href: '/#products' },
-  secondaryCta: { label: 'Talk to Support', href: '/support' }
+  secondaryCta: { label: 'Contact Support', href: '/support' }
 };
 
 export const WHY_US = {

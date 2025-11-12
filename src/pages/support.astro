@@ -21,8 +21,20 @@ const PAGE_DESCRIPTION =
         How can we help?
       </h1>
       <p class="text-base text-foreground-muted dark:text-slate-300">
-        Explore quick answers, review Floral’s legal docs, or open a ticket. If you need urgent help, email us directly at <a class="text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>. {/* TODO: update escalation path */}
+        Explore quick answers, review legal docs, or open a ticket. For immediate assistance, contact us directly:
       </p>
+      <div class="flex flex-col gap-2 text-base">
+        <div>
+          <span class="font-semibold text-foreground dark:text-foreground-dark">Email: </span>
+          <a class="text-brand-600 hover:text-brand-700 font-medium" href={`mailto:${SUPPORT_EMAIL}`}>
+            {SUPPORT_EMAIL}
+          </a>
+        </div>
+        <div>
+          <span class="font-semibold text-foreground dark:text-foreground-dark">Response Time: </span>
+          <span class="text-foreground-muted dark:text-slate-300">Within one business day</span>
+        </div>
+      </div>
     </div>
   </section>
 

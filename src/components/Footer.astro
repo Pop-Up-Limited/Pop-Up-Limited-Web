@@ -1,5 +1,5 @@
 ---
-import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS } from '../config/site';
+import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS, SUPPORT_EMAIL } from '../config/site';
 ---
 
 <footer class="border-t border-slate-200/60 bg-white/80 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-900/70">
@@ -11,7 +11,7 @@ import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS } from '../config/site';
           {COMPANY_NAME}
         </h3>
         <p class="text-sm text-foreground-muted dark:text-slate-300">
-          We partner with creators and marketing teams to ship bold customer experiences across Floral, Phoro, and beyond. {/* TODO: replace with official mission */}
+          We specialize in product management, UI/UX design, iOS development, and digital marketing. Transforming concepts into reality with precision and creativity.
         </p>
       </div>
 
@@ -23,13 +23,8 @@ import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS } from '../config/site';
               <a class="hover:text-brand-600" href="/support">Help Center</a>
             </li>
             <li>
-              <a class="hover:text-brand-600" href="mailto:support@mydomain.com">
-                support@mydomain.com
-              </a> {/* TODO: replace with real support email */}
-            </li>
-            <li>
-              <a class="hover:text-brand-600" href="mailto:contact@popup.limited">
-                contact@popup.limited
+              <a class="hover:text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>
+                {SUPPORT_EMAIL}
               </a>
             </li>
           </ul>

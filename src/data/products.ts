@@ -10,34 +10,34 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: 'floral',
-    name: 'Floral',
+    id: 'islemark',
+    name: 'IsleMark',
     description:
-      'A visual storytelling system that blends brand palettes with adaptive AI scenes for seasonal campaigns.', // TODO: replace with real Floral positioning
-    link: '/floral/privacy',
-    linkLabel: 'View Floral docs',
-    badge: 'Compliance-ready',
+      'Custom your dynamic island - A mobile application that allows users to personalize their iPhone Dynamic Island with custom designs and interactive elements.',
+    link: 'https://www.ljystudio.com/work/islemark',
+    linkLabel: 'View Project Details',
+    badge: 'Product Management',
+    status: 'available'
+  },
+  {
+    id: 'bubble-memo',
+    name: 'Bubble Memo',
+    description:
+      'Animated Interactive Checklist App - A game-like interactive checklist application that combines Rive animation in UI design to redefine the original checklist experience.',
+    link: 'https://www.ljystudio.com/work/bubblememo',
+    linkLabel: 'View Project Details',
+    badge: 'Indie Development',
     status: 'available'
   },
   {
     id: 'phoro',
     name: 'Phoro',
     description:
-      'Mobile-first AI image generation that lets creators remix portraits using curated template packs.', // pulled from existing Privacy Notice
-    link: 'https://popup.limited', // TODO: replace with official Phoro destination
+      'Mobile-first AI image generation that lets creators remix portraits using curated template packs.',
+    link: 'https://popup.limited',
     linkLabel: 'Explore Phoro',
     badge: 'AI imaging',
     status: 'beta'
-  },
-  {
-    id: 'studio',
-    name: 'Pop Up Studio',
-    description:
-      'An orchestration dashboard that centralises assets, approvals, and launch timelines across your product suite.', // TODO: replace with real product summary
-    link: '/support',
-    linkLabel: 'Request early access',
-    badge: 'Coming next',
-    status: 'coming-soon'
   }
 ];
 
