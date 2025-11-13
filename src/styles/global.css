@@ -6,27 +6,28 @@
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-50: #ebf8f5;
-  --color-brand-100: #d3f1e8;
-  --color-brand-200: #a5e2d0;
-  --color-brand-300: #73cfb4;
-  --color-brand-400: #46b899;
-  --color-brand-500: #169d7a;
-  --color-brand-600: #0e7d61;
-  --color-brand-700: #0a604b;
-  --color-brand-800: #064436;
-  --color-brand-900: #032923;
+  /* Light mode colors (default) */
+  --color-brand-50: #fef2f2;
+  --color-brand-100: #fee2e2;
+  --color-brand-200: #fecaca;
+  --color-brand-300: #fca5a5;
+  --color-brand-400: #f87171;
+  --color-brand-500: #F89393;
+  --color-brand-600: #ef4444;
+  --color-brand-700: #dc2626;
+  --color-brand-800: #b91c1c;
+  --color-brand-900: #991b1b;
 
   --color-surface: #ffffff;
-  --color-surface-dark: #101418;
+  --color-surface-dark: #000000;
   --color-foreground: #0f172a;
   --color-foreground-muted: #4f6275;
   --color-foreground-dark: #f8fafc;
-  --color-accent: #f5b700;
+  --color-accent: #F89393;
   --color-accent-foreground: #231f20;
 
-  --shadow-brand-sm: 0 10px 30px -10px rgba(22, 157, 122, 0.35);
-  --shadow-brand-md: 0 20px 45px -15px rgba(22, 157, 122, 0.45);
+  --shadow-brand-sm: 0 10px 30px -10px rgba(248, 147, 147, 0.35);
+  --shadow-brand-md: 0 20px 45px -15px rgba(248, 147, 147, 0.45);
 }
 
 @layer base {
@@ -37,6 +38,23 @@
   @media (prefers-color-scheme: dark) {
     :root {
       color-scheme: dark;
+      /* Dark mode colors */
+      --color-brand-50: #fdf4ff;
+      --color-brand-100: #fae8ff;
+      --color-brand-200: #f5d0fe;
+      --color-brand-300: #f0abfc;
+      --color-brand-400: #e879f9;
+      --color-brand-500: #E591C5;
+      --color-brand-600: #d946ef;
+      --color-brand-700: #c026d3;
+      --color-brand-800: #a21caf;
+      --color-brand-900: #86198f;
+
+      --color-accent: #E591C5;
+      --color-accent-foreground: #f8fafc;
+
+      --shadow-brand-sm: 0 10px 30px -10px rgba(229, 145, 197, 0.35);
+      --shadow-brand-md: 0 20px 45px -15px rgba(229, 145, 197, 0.45);
     }
   }
 
@@ -60,11 +78,11 @@
   }
 
   a:hover {
-    @apply text-brand-600;
+    @apply text-brand-600 dark:text-brand-400;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-offset-2 ring-brand-400;
+    @apply outline-none ring-2 ring-offset-2 ring-brand-400 dark:ring-brand-500;
   }
 }
 
@@ -74,14 +92,14 @@
   }
 
   .card-surface {
-    @apply rounded-2xl border border-white/10 bg-white/70 p-6 shadow-lg shadow-slate-900/5 backdrop-blur-md transition-transform duration-300 dark:border-white/5 dark:bg-slate-900/70;
+    @apply rounded-2xl border border-white/10 bg-white/70 p-6 shadow-lg shadow-slate-900/5 backdrop-blur-md transition-transform duration-300 dark:border-white/5 dark:bg-black/70;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-brand-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-600 focus-visible:ring-brand-300;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-brand-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-600 focus-visible:ring-brand-300 dark:bg-brand-500 dark:hover:bg-brand-400;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 dark:border-slate-700 dark:text-foreground-dark;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 dark:border-slate-700 dark:text-foreground-dark dark:hover:border-brand-400 dark:hover:text-brand-400;
   }
 }
