@@ -2,7 +2,6 @@
 import Layout from '../../layouts/Layout.astro';
 import FAQItem from '../../components/FAQItem.astro';
 import ContactCard from '../../components/ContactCard.astro';
-import TicketForm from '../../components/TicketForm.astro';
 import { COMPANY_NAME, SUPPORT_EMAIL } from '../../config/site';
 
 const PAGE_TITLE = `Phoro Support · ${COMPANY_NAME}`;
@@ -38,7 +37,7 @@ const phoroFaqs = [
   {
     question: 'What should I do if I encounter technical issues?',
     answer:
-      'If you experience any technical problems, please submit a support ticket using the form below or email us directly at ' + SUPPORT_EMAIL + '. Include details about the issue, your device type, and app version for faster resolution.'
+      'If you experience any technical problems, please email us directly at ' + SUPPORT_EMAIL + '. Include details about the issue, your device type, and app version for faster resolution.'
   }
 ];
 ---
@@ -88,7 +87,20 @@ const phoroFaqs = [
   </section>
 
   <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-    <TicketForm />
+    <div class="card-surface text-center">
+      <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark">
+        Need more help with Phoro?
+      </h2>
+      <p class="mb-6 text-base text-foreground-muted dark:text-slate-300">
+        Contact us directly and we'll get back to you as soon as possible.
+      </p>
+      <a href={`mailto:${SUPPORT_EMAIL}`} class="btn-primary">
+        Contact Us
+      </a>
+      <p class="mt-4 text-sm text-foreground-muted dark:text-slate-400">
+        {SUPPORT_EMAIL}
+      </p>
+    </div>
   </section>
 
   <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">

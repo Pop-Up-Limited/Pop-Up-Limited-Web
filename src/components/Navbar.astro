@@ -12,10 +12,6 @@ const resolveActive = (href: string) => {
     return currentPath === '/';
   }
 
-  if (href.startsWith('/floral')) {
-    return currentPath.startsWith('/floral');
-  }
-
   if (href.startsWith('/phoro')) {
     return currentPath.startsWith('/phoro');
   }

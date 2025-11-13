@@ -10,13 +10,6 @@ export const NAV_LINKS = [
   { href: '/#products', label: 'Products' },
   { href: '/support', label: 'Support' },
   {
-    label: 'Legal',
-    children: [
-      { href: '/floral/terms', label: 'Terms' },
-      { href: '/floral/privacy', label: 'Privacy' }
-    ]
-  },
-  {
     label: 'Phoro',
     children: [
       { href: '/phoro/terms-and-conditions', label: 'Terms & Conditions' },

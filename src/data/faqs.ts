@@ -5,29 +5,19 @@ export type FAQ = {
 
 export const faqs: FAQ[] = [
   {
-    question: 'How do I request onboarding support?',
+    question: 'How do I get started with your products?',
     answer:
-      'Email our team at support@mydomain.com with your workspace name, deployment timeline, and the products you plan to launch.' // TODO: update contact details
+      'You can explore our products IsleMark and Bubble Memo on the homepage. For questions or support, please contact us at contact@popup.limited.'
   },
   {
-    question: 'Where can I review Floral’s data practices?',
+    question: 'Where can I review Phoro privacy policy and terms?',
     answer:
-      'You can consult the Floral Privacy Policy and Terms for the most up-to-date information on how data is collected and processed.' // references legal pages
+      'You can find Phoro Privacy Policy and Terms & Conditions in the Phoro section of the navigation menu, or visit our support page for direct links.'
   },
   {
-    question: 'Is there an SLA for incident response?',
+    question: 'How can I contact support?',
     answer:
-      'Enterprise plans include a shared incident Slack channel and phone escalation. Reach out to sales@mydomain.com to tailor your coverage.' // TODO: update contact details
-  },
-  {
-    question: 'Can I integrate Pop Up Limited tools with my CMS?',
-    answer:
-      'Yes. Our API and webhook toolkit syncs tasks, assets, and approvals with modern CMS platforms. Implementation guides are available upon request.' // TODO: link integration docs
-  },
-  {
-    question: 'Do you offer design services in addition to tooling?',
-    answer:
-      'We partner with select studios to offer creative co-pilots for launch campaigns. Share your needs through the support ticket form below.' // TODO: replace with confirmed offering
+      'For any questions or support requests, please email us at contact@popup.limited. We aim to respond within one business day.'
   }
 ];
 
