@@ -1,0 +1,347 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY_NAME } from '../config/site';
+
+const plans = [
+  {
+    id: 'standard',
+    name: '标准',
+    price: '¥15,888',
+    description: '适合初创企业和个人项目',
+    caseUrl: 'https://mapier.ai/',
+    caseName: 'mapier.ai',
+    features: [
+      { label: '交付', value: '源码+网址交付' },
+      { label: '设计', value: '本地化网页设计' },
+      { label: '部署', value: '免费自定义域名部署' },
+      { label: '页面数量', value: '最多 1 页' },
+      { label: '维护', value: '¥ 1,888 / 年' },
+      { label: 'SEO', value: '基础优化' },
+      { label: '交付周期', value: '最快 10 天*¹' },
+      { label: '修改', value: '2 次' },
+      { label: '分析支持', value: '—' },
+      { label: '客服与语言', value: '—' },
+      { label: '合规与政策', value: '—' },
+      { label: '数据追踪', value: '—' },
+      { label: '品牌设计', value: '—' },
+    ],
+    popular: false,
+  },
+  {
+    id: 'standard-pro',
+    name: '标准 Pro',
+    price: '¥18,888',
+    description: '适合成长型企业和专业需求',
+    caseUrl: 'https://popup.limited/',
+    caseName: 'popup.limited',
+    features: [
+      { label: '交付', value: '源码+网址交付' },
+      { label: '设计', value: '进阶本地化设计' },
+      { label: '部署', value: '免费自定义域名部署' },
+      { label: '页面数量', value: '不设上限' },
+      { label: '维护', value: '免费 1 年' },
+      { label: 'SEO', value: '进阶优化' },
+      { label: '交付周期', value: '10 天内*¹' },
+      { label: '修改', value: '5 次' },
+      { label: '分析支持', value: '竞品分析' },
+      { label: '客服与语言', value: '专属客服' },
+      { label: '合规与政策', value: '—' },
+      { label: '数据追踪', value: '—' },
+      { label: '品牌设计', value: '—' },
+    ],
+    popular: true,
+  },
+  {
+    id: 'custom',
+    name: '全定制',
+    price: '联系专属客服支持',
+    description: '适合大型企业和复杂项目',
+    caseUrl: 'https://www.ljystudio.com/',
+    caseName: 'ljystudio.com',
+    features: [
+      { label: '交付', value: '源码+网址交付' },
+      { label: '设计', value: '专业定制设计' },
+      { label: '部署', value: '免费自定义域名部署' },
+      { label: '页面数量', value: '不设上限' },
+      { label: '维护', value: '免费 5 年' },
+      { label: 'SEO', value: '增强优化' },
+      { label: '交付周期', value: '最快 15 天*¹' },
+      { label: '修改', value: '直到满意*²' },
+      { label: '分析支持', value: '金融与商业分析团队支持' },
+      { label: '客服与语言', value: '多语言服务 + 本地化设计' },
+      { label: '合规与政策', value: '隐私政策与服务条款模板' },
+      { label: '数据追踪', value: '可选数据追踪服务*³' },
+      { label: '品牌设计', value: 'Logo / 插画 / 字体 / 配色*⁴' },
+    ],
+    popular: false,
+  },
+];
+
+const featureLabels = [
+  '交付',
+  '设计',
+  '部署',
+  '页面数量',
+  '维护',
+  'SEO',
+  '交付周期',
+  '修改',
+  '分析支持',
+  '客服与语言',
+  '合规与政策',
+  '数据追踪',
+  '品牌设计',
+];
+---
+
+<Layout 
+  title={`网站开发服务方案 · ${COMPANY_NAME}`}
+  description="选择适合您需求的网站开发服务方案：标准、标准 Pro 或全定制服务。"
+>
+  <div class="relative min-h-screen bg-surface dark:bg-surface-dark">
+    <!-- Hero Section -->
+    <section class="relative mx-auto w-full max-w-7xl px-4 pt-24 pb-16 md:px-6 md:pt-32 md:pb-24">
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[420px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
+      <div class="text-center">
+        <h1 class="text-4xl font-semibold leading-tight text-foreground md:text-5xl lg:text-6xl dark:text-foreground-dark">
+          网站开发服务方案
+        </h1>
+        <p class="mx-auto mt-6 max-w-2xl text-lg text-foreground-muted dark:text-slate-300">
+          选择适合您需求的网站开发服务，从标准方案到全定制解决方案，我们为您提供专业的网站开发服务。
+        </p>
+      </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-16 md:px-6">
+      <div class="grid gap-6 md:grid-cols-3 lg:gap-8">
+        {plans.map((plan) => (
+          <div
+            class={`relative flex flex-col rounded-3xl border-2 transition-all duration-300 ${
+              plan.popular
+                ? 'border-brand-500 bg-gradient-to-br from-brand-500/10 to-transparent shadow-brand-md scale-105 md:scale-110'
+                : 'border-slate-200 bg-white/70 dark:border-slate-700 dark:bg-black/70'
+            }`}
+          >
+            {plan.popular && (
+              <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+                <span class="inline-flex items-center gap-2 rounded-full border-2 border-brand-500 bg-brand-500 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white shadow-brand-sm">
+                  推荐
+                </span>
+              </div>
+            )}
+            
+            <div class="flex flex-col p-8">
+              <div class="mb-6">
+                <h3 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+                  {plan.name}
+                </h3>
+                <p class="mt-2 text-sm text-foreground-muted dark:text-slate-300">
+                  {plan.description}
+                </p>
+              </div>
+
+              <div class="mb-6 border-b border-slate-200 pb-6 dark:border-slate-700">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-4xl font-bold text-foreground dark:text-foreground-dark">
+                    {plan.price}
+                  </span>
+                </div>
+                {plan.price !== '联系专属客服支持' && (
+                  <p class="mt-2 text-xs text-foreground-muted dark:text-slate-400">
+                    一次性付费
+                  </p>
+                )}
+              </div>
+
+              <div class="mb-6">
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
+                  代表案例
+                </p>
+                <a
+                  href={plan.caseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-sm text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+                >
+                  {plan.caseName} →
+                </a>
+              </div>
+
+              <div class="flex-1 space-y-4">
+                {plan.features.map((feature, idx) => (
+                  <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-3 last:border-0 dark:border-slate-800">
+                    <span class="text-xs font-medium text-foreground-muted dark:text-slate-400">
+                      {feature.label}
+                    </span>
+                    <span class={`text-right text-sm font-medium ${
+                      feature.value === '—' 
+                        ? 'text-slate-400 dark:text-slate-600' 
+                        : plan.popular
+                        ? 'text-brand-600 dark:text-brand-400'
+                        : 'text-foreground dark:text-foreground-dark'
+                    }`}>
+                      {feature.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div class="mt-8">
+                {plan.price === '联系专属客服支持' ? (
+                  <a
+                    href="/support"
+                    class="btn-primary block w-full text-center"
+                  >
+                    联系客服
+                  </a>
+                ) : (
+                  <a
+                    href="/support"
+                    class={`block w-full text-center ${
+                      plan.popular ? 'btn-primary' : 'btn-secondary'
+                    }`}
+                  >
+                    立即咨询
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-16 md:px-6">
+      <div class="card-surface">
+        <h2 class="mb-8 text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          详细对比
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-700">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-foreground dark:text-foreground-dark">
+                  服务项
+                </th>
+                {plans.map((plan) => (
+                  <th
+                    class={`px-4 py-3 text-center text-sm font-semibold ${
+                      plan.popular
+                        ? 'text-brand-600 dark:text-brand-400'
+                        : 'text-foreground dark:text-foreground-dark'
+                    }`}
+                  >
+                    {plan.name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {featureLabels.map((label, idx) => (
+                <tr class="border-b border-slate-100 dark:border-slate-800">
+                  <td class="px-4 py-3 text-sm font-medium text-foreground-muted dark:text-slate-400">
+                    {label}
+                  </td>
+                  {plans.map((plan) => {
+                    const feature = plan.features.find((f) => f.label === label);
+                    return (
+                      <td
+                        class={`px-4 py-3 text-center text-sm ${
+                          feature?.value === '—'
+                            ? 'text-slate-400 dark:text-slate-600'
+                            : plan.popular
+                            ? 'text-brand-600 dark:text-brand-400 font-medium'
+                            : 'text-foreground dark:text-foreground-dark'
+                        }`}
+                      >
+                        {feature?.value || '—'}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terms & Notes -->
+    <section class="mx-auto w-full max-w-4xl px-4 pb-24 md:px-6">
+      <div class="space-y-6">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          服务条款备注
+        </h2>
+
+        <div class="space-y-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *¹ (关于交付周期):
+            </p>
+            <p class="mt-2">
+              交付周期（如"最快10天"）指我方交付首个完整预览版本（V1）所需的最短工作时间。
+              <strong>此周期的起算点为客户方提供了所有必要的、符合要求的资料（包括但不限于最终文案、图片、Logo、及明确的需求文档）之后。</strong>
+              因客户方资料延迟或中途提出新需求导致的时间延长，不在此承诺时限内。
+            </p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *² (关于"直到满意"):
+            </p>
+            <p class="mt-2">
+              "直到满意"条款适用于项目首版交付后的 <strong>60天</strong> 集中修改期内。在此期间，客户可就<strong>原始需求范围</strong>内的设计和功能提出不限次数的修改意见。
+            </p>
+            <ul class="mt-2 ml-6 list-disc space-y-1">
+              <li>
+                集中修改期结束后，服务将视为"满意"并自动关闭。后续的额外修改需求，将视为新的维护或迭代工作，可能产生额外费用。
+              </li>
+              <li>
+                超出原始需求范围的修改（如增加新页面、新功能模块），即使在修改期内，也需另行评估和报价。
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *³ (关于数据追踪):
+            </p>
+            <p class="mt-2">
+              "可选数据追踪服务"为附加高级服务。如客户选择此项，其具体需求（如埋点方案、报表配置）将<strong>另行沟通，且相关开发与部署时间不计入上述基础交付周期（*¹）内。</strong>
+            </p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *⁴ (关于品牌设计):
+            </p>
+            <p class="mt-2">
+              "品牌设计"服务（如 Logo、VI、配色方案）为独立于网站部署的专业服务。如果客户选择此服务包，<strong>网站的"交付周期"(*¹) 将从品牌设计方案最终确认后开始计算。</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="mx-auto mb-24 w-full max-w-6xl rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
+      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100">
+        准备开始您的项目？
+      </h2>
+      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80">
+        联系我们的专业团队，获取定制化的网站开发解决方案。
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a class="btn-primary" href="/support">
+          联系客服
+        </a>
+        <a class="btn-secondary" href="/">
+          返回首页
+        </a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
