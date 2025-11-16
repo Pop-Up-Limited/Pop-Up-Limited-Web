@@ -175,15 +175,18 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
                   代表案例
                 </p>
                 <div class="relative mb-2 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
-                  <div class="aspect-video relative">
-                    <iframe
-                      src={plan.caseUrl}
-                      class="h-full w-full"
-                      loading="lazy"
-                      title={`${plan.caseName} 预览`}
-                      allow="fullscreen"
-                      data-preview-iframe
-                    ></iframe>
+                  <div class="aspect-video relative overflow-hidden">
+                    <div class="absolute inset-0 -translate-y-16 scale-110">
+                      <iframe
+                        src={plan.caseUrl}
+                        class="h-full w-full"
+                        loading="lazy"
+                        title={`${plan.caseName} 预览`}
+                        allow="fullscreen"
+                        data-preview-iframe
+                        data-case-url={plan.caseUrl}
+                      ></iframe>
+                    </div>
                     <div class="absolute inset-0 flex items-center justify-center bg-slate-100/80 backdrop-blur-sm opacity-0 transition-opacity hover:opacity-100 dark:bg-slate-800/80" data-preview-overlay>
                       <a
                         href={plan.caseUrl}
@@ -203,7 +206,7 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
                     rel="noopener noreferrer"
                     class="block text-xs font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
                   >
-                    {plan.caseName} →
+                    {plan.caseName} (点击跳转) →
                   </a>
                   <a
                     href={plan.caseUrl}
@@ -211,7 +214,7 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
                     rel="noopener noreferrer"
                     class="block break-all text-xs text-foreground-muted hover:text-brand-500 dark:text-slate-400 dark:hover:text-brand-400"
                   >
-                    {plan.caseUrl}
+                    {plan.caseUrl} (点击跳转)
                   </a>
                 </div>
               </div>
@@ -557,13 +560,36 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
     });
   }
 
-  // 处理 iframe 预览错误
+  // 处理 iframe 预览错误和滚动定位
   document.querySelectorAll('[data-preview-iframe]').forEach((iframe) => {
     if (iframe instanceof HTMLIFrameElement) {
       iframe.addEventListener('error', () => {
         const overlay = iframe.parentElement?.querySelector('[data-preview-overlay]');
         if (overlay instanceof HTMLElement) {
           overlay.classList.remove('opacity-0');
+        }
+      });
+
+      // 尝试在 iframe 加载后滚动到内容区域
+      iframe.addEventListener('load', () => {
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDoc) {
+            // 尝试滚动到主要内容区域
+            const mainContent = iframeDoc.querySelector('main, #main, .main, [role="main"], article, .content');
+            if (mainContent) {
+              mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              // 如果没有找到 main 元素，尝试滚动到第一个有内容的区域
+              const firstContent = iframeDoc.querySelector('h1, h2, p, section');
+              if (firstContent) {
+                firstContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          }
+        } catch (e) {
+          // 跨域限制，无法访问 iframe 内容，这是正常的
+          console.log('无法访问 iframe 内容（跨域限制）');
         }
       });
     }
