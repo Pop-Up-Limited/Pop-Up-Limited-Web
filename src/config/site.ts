@@ -8,15 +8,7 @@ export const FORM_ENDPOINT = ''; // TODO: paste your Formspree endpoint (e.g. ht
 
 export const NAV_LINKS = [
   { href: '/#products', label: 'Products' },
-  { href: '/support', label: 'Support' },
-  {
-    label: 'Phoro',
-    children: [
-      { href: '/phoro/terms-and-conditions', label: 'Terms & Conditions' },
-      { href: '/phoro/privacy', label: 'Privacy' },
-      { href: '/phoro/support', label: 'Support' }
-    ]
-  }
+  { href: '/support', label: 'Support' }
 ];
 
 export const SOCIAL_LINKS = [
