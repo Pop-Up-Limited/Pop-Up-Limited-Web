@@ -216,26 +216,46 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
                 </div>
               </div>
 
-              <div class="flex-1 space-y-2">
-                {plan.features.map((feature, idx) => (
-                  <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-2 last:border-0 dark:border-slate-800">
-                    <span class="text-xs font-medium text-foreground-muted dark:text-slate-400">
-                      {feature.label}
-                    </span>
-                    <span class={`text-right text-xs font-medium ${
-                      feature.value === '—' 
-                        ? 'text-slate-400 dark:text-slate-600' 
-                        : plan.popular
-                        ? 'text-brand-600 dark:text-brand-400'
-                        : 'text-foreground dark:text-foreground-dark'
-                    }`}>
-                      {feature.value}
-                    </span>
-                  </div>
-                ))}
+              <!-- 核心要点：只显示三个最重要的 -->
+              <div class="flex-1 space-y-3">
+                {(() => {
+                  const coreFeatures = [
+                    plan.features.find(f => f.label === '交付周期'),
+                    plan.features.find(f => f.label === '设计'),
+                    plan.features.find(f => f.label === '分析支持')
+                  ].filter(Boolean);
+                  
+                  return coreFeatures.map((feature) => (
+                    <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 last:border-0 dark:border-slate-800">
+                      <span class="text-xs font-medium text-foreground-muted dark:text-slate-400">
+                        {feature.label}
+                      </span>
+                      <span class={`text-right text-xs font-medium ${
+                        feature.value === '—' 
+                          ? 'text-slate-400 dark:text-slate-600' 
+                          : plan.popular
+                          ? 'text-brand-600 dark:text-brand-400'
+                          : 'text-foreground dark:text-foreground-dark'
+                      }`}>
+                        {feature.value}
+                      </span>
+                    </div>
+                  ));
+                })()}
               </div>
 
-              <div class="mt-6">
+              <!-- 查看详细对比按钮 -->
+              <div class="mt-4">
+                <button
+                  type="button"
+                  data-view-details
+                  class="w-full text-xs text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
+                >
+                  查看详细对比 ↓
+                </button>
+              </div>
+
+              <div class="mt-4">
                 {plan.price === '联系专属客服支持' ? (
                   <button
                     type="button"
@@ -263,7 +283,7 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
     </section>
 
     <!-- Comparison Table -->
-    <section class="mx-auto w-full max-w-7xl px-4 pb-16 md:px-6">
+    <section id="detailed-comparison" class="mx-auto w-full max-w-7xl px-4 pb-16 md:px-6 scroll-mt-24">
       <div class="card-surface">
         <h2 class="mb-8 text-2xl font-semibold text-foreground dark:text-foreground-dark">
           详细对比
@@ -547,6 +567,16 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
         }
       });
     }
+  });
+
+  // 查看详细对比按钮 - 滚动到详细对比表格
+  document.querySelectorAll('[data-view-details]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const comparisonSection = document.getElementById('detailed-comparison');
+      if (comparisonSection) {
+        comparisonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
   });
 </script>
 
