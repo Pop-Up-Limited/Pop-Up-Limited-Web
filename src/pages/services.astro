@@ -105,8 +105,8 @@ const featureLabels = [
   '品牌设计',
 ];
 
-// 客服微信（预留，待后续配置）
-const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
+// 客服微信
+const wechatId = 'popup-service';
 ---
 
 <Layout 
@@ -466,10 +466,24 @@ const wechatId = 'popup-limited-service'; // TODO: 替换为实际微信ID
             </button>
           </div>
         </div>
-        
-        <p class="text-xs text-foreground-muted dark:text-slate-400">
-          * 微信二维码待配置，请先通过微信号添加
-        </p>
+
+        <div class="mb-6">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
+            扫码添加
+          </p>
+          <div class="flex flex-col items-center gap-3">
+            <img
+              src="/wechat-qr-popup-service.png"
+              alt="Popup Service 客服微信二维码"
+              loading="lazy"
+              decoding="async"
+              class="h-56 w-56 rounded-2xl border-2 border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+            />
+            <p class="text-xs text-foreground-muted dark:text-slate-400">
+              扫一扫二维码，或直接搜索微信号 <span class="font-semibold text-brand-600 dark:text-brand-400">{wechatId}</span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
