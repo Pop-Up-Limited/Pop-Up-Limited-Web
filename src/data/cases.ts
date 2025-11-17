@@ -2,11 +2,12 @@ export type Case = {
   id: string;
   name: string;
   description: string;
-  url: string;
+  url?: string;
   image: string;
   category: string;
   year: string;
   tags: string[];
+  isLive: boolean; // true = 已上线，false = 设计稿
   details: {
     client?: string;
     services: string[];
@@ -25,6 +26,7 @@ export const cases: Case[] = [
     category: 'Web Development',
     year: '2024',
     tags: ['AI', 'SaaS', 'Mapping'],
+    isLive: true,
     details: {
       services: ['Web Design', 'Frontend Development', 'API Integration'],
       technologies: ['React', 'TypeScript', 'Tailwind CSS'],
@@ -45,6 +47,7 @@ export const cases: Case[] = [
     category: 'Web Design',
     year: '2024',
     tags: ['Portfolio', 'Creative', 'Agency'],
+    isLive: true,
     details: {
       services: ['Brand Design', 'Web Development', 'Content Strategy'],
       technologies: ['Astro', 'Tailwind CSS', 'TypeScript'],
@@ -65,6 +68,7 @@ export const cases: Case[] = [
     category: 'Portfolio',
     year: '2024',
     tags: ['Design', 'Portfolio', 'Creative'],
+    isLive: true,
     details: {
       services: ['UI/UX Design', 'Web Development', 'Brand Identity'],
       technologies: ['Framer', 'React', 'Custom CSS'],
@@ -80,11 +84,11 @@ export const cases: Case[] = [
     id: 'islemark',
     name: 'IsleMark',
     description: 'Dynamic Island customization app for iPhone',
-    url: 'https://www.ljystudio.com/work/islemark',
     image: '/images/projects/islemark.png',
     category: 'Mobile App',
     year: '2024',
     tags: ['iOS', 'Product Management', 'UI Design'],
+    isLive: false,
     details: {
       services: ['Product Design', 'iOS Development', 'User Experience'],
       technologies: ['Swift', 'SwiftUI', 'iOS SDK'],
@@ -100,11 +104,11 @@ export const cases: Case[] = [
     id: 'bubble-memo',
     name: 'Bubble Memo',
     description: 'Animated interactive checklist application',
-    url: 'https://www.ljystudio.com/work/bubblememo',
     image: '/images/projects/bubble-memo.png',
     category: 'Mobile App',
     year: '2024',
     tags: ['iOS', 'Animation', 'Productivity'],
+    isLive: false,
     details: {
       services: ['UI/UX Design', 'Animation Design', 'App Development'],
       technologies: ['Rive', 'Swift', 'SwiftUI'],
@@ -120,11 +124,11 @@ export const cases: Case[] = [
     id: 'gameme-data',
     name: 'Gameme Data',
     description: 'Data visualization and analytics platform for gaming',
-    url: 'https://www.ljystudio.com/work/gameme-data',
     image: '/images/projects/gameme-data.png',
     category: 'Web Application',
     year: '2024',
     tags: ['Data', 'Analytics', 'Gaming'],
+    isLive: false,
     details: {
       services: ['UI Design', 'Data Visualization', 'Web Development'],
       technologies: ['React', 'D3.js', 'TypeScript'],
@@ -140,11 +144,11 @@ export const cases: Case[] = [
     id: 'hoarding-disorder',
     name: 'Hoarding Disorder',
     description: 'Mobile app for managing hoarding behaviors',
-    url: 'https://www.ljystudio.com/work/hoarding-disorder',
     image: '/images/projects/hoarding-disorder.png',
     category: 'Mobile App',
     year: '2023',
     tags: ['iOS', 'Health', 'UI Design'],
+    isLive: false,
     details: {
       services: ['App Design', 'User Research', 'Mobile Development'],
       technologies: ['Swift', 'SwiftUI', 'HealthKit'],
@@ -160,11 +164,11 @@ export const cases: Case[] = [
     id: 'vision-fitness',
     name: 'Vision Fitness',
     description: 'Fitness tracking and workout planning platform',
-    url: 'https://www.ljystudio.com/work/vision-fitness',
     image: '/images/projects/vision-fitness.png',
     category: 'Web Application',
     year: '2024',
     tags: ['Fitness', 'E-Commerce', 'Portfolio'],
+    isLive: false,
     details: {
       services: ['Web Design', 'E-Commerce Integration', 'Frontend Development'],
       technologies: ['React', 'Next.js', 'Stripe'],
