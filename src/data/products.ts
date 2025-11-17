@@ -6,6 +6,7 @@ export type Product = {
   linkLabel: string;
   badge?: string;
   status?: 'available' | 'beta' | 'coming-soon';
+  image?: string;
 };
 
 export const products: Product[] = [
@@ -17,7 +18,8 @@ export const products: Product[] = [
     link: 'https://www.ljystudio.com/work/islemark',
     linkLabel: 'View Project Details',
     badge: 'Product Management',
-    status: 'available'
+    status: 'available',
+    image: '/images/projects/islemark.png'
   },
   {
     id: 'bubble-memo',
@@ -27,7 +29,8 @@ export const products: Product[] = [
     link: 'https://www.ljystudio.com/work/bubblememo',
     linkLabel: 'View Project Details',
     badge: 'Indie Development',
-    status: 'available'
+    status: 'available',
+    image: '/images/projects/bubble-memo.png'
   },
   {
     id: 'phoro',
@@ -37,7 +40,8 @@ export const products: Product[] = [
     link: 'https://popup.limited',
     linkLabel: 'Explore Phoro',
     badge: 'AI imaging',
-    status: 'beta'
+    status: 'beta',
+    image: '/images/projects/vision-fitness.png' // 使用一个占位图片
   }
 ];
 
