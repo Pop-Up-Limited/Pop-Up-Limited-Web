@@ -420,10 +420,10 @@ const wechatId = 'popup-service';
   <!-- 客服微信弹窗 -->
   <div
     id="contact-modal"
-    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
     data-modal
   >
-    <div class="relative mx-4 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+    <div class="relative mx-auto w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900">
       <button
         type="button"
         data-modal-close
@@ -436,50 +436,50 @@ const wechatId = 'popup-service';
       </button>
       
       <div class="text-center">
-        <div class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-brand-500/10">
-          <svg class="h-8 w-8 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand-500/10">
+          <svg class="h-6 w-6 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
         </div>
         
-        <h3 class="mb-2 text-xl font-semibold text-foreground dark:text-foreground-dark">
+        <h3 class="mb-1.5 text-lg font-semibold text-foreground dark:text-foreground-dark">
           联系客服
         </h3>
-        <p class="mb-6 text-sm text-foreground-muted dark:text-slate-300">
+        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300">
           请添加我们的客服微信，我们将尽快为您提供服务
         </p>
         
-        <div class="mb-6 rounded-xl border-2 border-brand-500/30 bg-brand-500/5 p-4">
+        <div class="mb-4 rounded-xl border-2 border-brand-500/30 bg-brand-500/5 p-3">
           <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
             客服微信
           </p>
-          <div class="flex items-center justify-center gap-3">
-            <code class="rounded-lg bg-white px-4 py-2 text-lg font-mono font-semibold text-brand-600 dark:bg-slate-800 dark:text-brand-400">
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <code class="rounded-lg bg-white px-3 py-1.5 text-base font-mono font-semibold text-brand-600 dark:bg-slate-800 dark:text-brand-400">
               {wechatId}
             </code>
             <button
               type="button"
               data-copy-wechat
-              class="rounded-lg border border-brand-500 bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
+              class="rounded-lg border border-brand-500 bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-brand-600"
             >
               复制
             </button>
           </div>
         </div>
 
-        <div class="mb-6">
+        <div class="mb-4">
           <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
             扫码添加
           </p>
-          <div class="flex flex-col items-center gap-3">
+          <div class="flex flex-col items-center gap-2">
             <img
               src="/wechat-qr-popup-service.png"
               alt="Popup Service 客服微信二维码"
               loading="lazy"
               decoding="async"
-              class="max-w-xs rounded-2xl border-2 border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+              class="w-48 h-48 object-contain rounded-xl border-2 border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-900"
             />
-            <p class="text-xs text-foreground-muted dark:text-slate-400">
+            <p class="text-xs text-center text-foreground-muted dark:text-slate-400 px-2">
               扫一扫二维码，或直接搜索微信号 <span class="font-semibold text-brand-600 dark:text-brand-400">{wechatId}</span>
             </p>
           </div>
