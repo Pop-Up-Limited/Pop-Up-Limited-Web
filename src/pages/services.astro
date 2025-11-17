@@ -398,6 +398,56 @@ const wechatId = 'popup-service';
       </div>
     </section>
 
+    <!-- Cases Preview Section -->
+    <section class="mx-auto mb-24 w-full max-w-7xl px-4 md:px-6">
+      <div class="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div>
+          <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+            成功案例
+          </h2>
+          <p class="mt-2 text-base text-foreground-muted dark:text-slate-300">
+            探索我们为不同行业客户打造的专业网站解决方案
+          </p>
+        </div>
+        <a href="/cases" class="btn-secondary whitespace-nowrap">
+          查看更多案例 →
+        </a>
+      </div>
+      
+      <div class="grid gap-6 md:grid-cols-3">
+        {plans.map((plan) => (
+          <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+            <div class="relative h-48 overflow-hidden">
+              <iframe
+                src={plan.caseUrl}
+                class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+                loading="lazy"
+                title={`${plan.caseName} 预览`}
+                allow="fullscreen"
+              ></iframe>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            </div>
+            <div class="p-4">
+              <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">
+                {plan.caseName}
+              </h3>
+              <p class="mb-3 text-sm text-foreground-muted dark:text-slate-300">
+                {plan.description}
+              </p>
+              <a
+                href={plan.caseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
+              >
+                访问网站 →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="mx-auto mb-24 w-full max-w-6xl rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
       <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100">
