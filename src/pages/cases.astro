@@ -294,17 +294,36 @@ const filteredCases = selectedCategory === 'all'
     }
   });
 
-  // 处理 iframe 预览错误
+  // 处理 iframe 预览错误和交互
   document.querySelectorAll('[data-preview-iframe]').forEach((iframe) => {
     if (iframe instanceof HTMLIFrameElement) {
       iframe.addEventListener('error', () => {
-        const overlay = iframe.parentElement;
+        const overlay = iframe.parentElement?.querySelector('[data-preview-overlay]');
         if (overlay instanceof HTMLElement) {
-          overlay.innerHTML = `
-            <div class="flex h-full w-full items-center justify-center bg-slate-100 dark:bg-slate-800">
-              <p class="text-sm text-slate-500 dark:text-slate-400">无法加载预览</p>
-            </div>
-          `;
+          overlay.classList.remove('opacity-0');
+        }
+      });
+
+      // 尝试在 iframe 加载后滚动到内容区域
+      iframe.addEventListener('load', () => {
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+          if (iframeDoc) {
+            // 尝试滚动到主要内容区域
+            const mainContent = iframeDoc.querySelector('main, #main, .main, [role="main"], article, .content');
+            if (mainContent) {
+              mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+              // 如果没有找到 main 元素，尝试滚动到第一个有内容的区域
+              const firstContent = iframeDoc.querySelector('h1, h2, p, section');
+              if (firstContent) {
+                firstContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }
+          }
+        } catch (e) {
+          // 跨域限制，无法访问 iframe 内容，这是正常的
+          console.log('无法访问 iframe 内容（跨域限制）');
         }
       });
     }

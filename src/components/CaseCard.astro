@@ -12,14 +12,27 @@ const { case: caseItem } = Astro.props;
   <div class="relative h-64 overflow-hidden bg-slate-100 dark:bg-slate-800">
     {caseItem.isLive && caseItem.url ? (
       <!-- 已上线：显示网页预览 -->
-      <iframe
-        src={caseItem.url}
-        class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
-        loading="lazy"
-        title={`${caseItem.name} 预览`}
-        allow="fullscreen"
-        data-preview-iframe
-      ></iframe>
+      <div class="relative h-full w-full">
+        <iframe
+          src={caseItem.url}
+          class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+          loading="lazy"
+          title={`${caseItem.name} 预览`}
+          allow="fullscreen"
+          data-preview-iframe
+          data-case-url={caseItem.url}
+        ></iframe>
+        <div class="absolute inset-0 flex items-center justify-center bg-slate-100/80 backdrop-blur-sm opacity-0 transition-opacity hover:opacity-100 dark:bg-slate-800/80" data-preview-overlay>
+          <a
+            href={caseItem.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
+          >
+            在新窗口打开 →
+          </a>
+        </div>
+      </div>
     ) : (
       <!-- 设计稿：显示图片预览 -->
       <div class="relative h-full w-full">
