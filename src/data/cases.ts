@@ -22,7 +22,7 @@ export const cases: Case[] = [
     name: 'Mapier.ai',
     description: 'AI-powered mapping and location intelligence platform',
     url: 'https://mapier.ai/',
-    image: '/images/projects/vision-fitness.png',
+    image: '',
     category: 'Web Development',
     year: '2024',
     tags: ['AI', 'SaaS', 'Mapping'],
@@ -43,7 +43,7 @@ export const cases: Case[] = [
     name: 'Popup.limited',
     description: 'Creative agency portfolio and service showcase',
     url: 'https://popup.limited/',
-    image: '/images/projects/islemark.png',
+    image: '',
     category: 'Web Design',
     year: '2024',
     tags: ['Portfolio', 'Creative', 'Agency'],
@@ -64,7 +64,7 @@ export const cases: Case[] = [
     name: 'LJY Studio',
     description: 'Professional design portfolio and case studies',
     url: 'https://www.ljystudio.com/',
-    image: '/images/projects/gameme-data.png',
+    image: '',
     category: 'Portfolio',
     year: '2024',
     tags: ['Design', 'Portfolio', 'Creative'],
@@ -81,102 +81,44 @@ export const cases: Case[] = [
     }
   },
   {
-    id: 'islemark',
-    name: 'IsleMark',
-    description: 'Dynamic Island customization app for iPhone',
-    image: '/images/projects/islemark.png',
-    category: 'Mobile App',
+    id: 'popup-limited-website',
+    name: 'Pop Up Limited Website',
+    description: 'Pop Up Limited official website and service showcase',
+    url: 'https://pop-up-limited.github.io/pop-up-limited-website/',
+    image: '',
+    category: 'Web Design',
     year: '2024',
-    tags: ['iOS', 'Product Management', 'UI Design'],
-    isLive: false,
+    tags: ['Portfolio', 'Agency', 'Website'],
+    isLive: true,
     details: {
-      services: ['Product Design', 'iOS Development', 'User Experience'],
-      technologies: ['Swift', 'SwiftUI', 'iOS SDK'],
+      services: ['Web Design', 'Web Development', 'Brand Identity'],
+      technologies: ['Astro', 'Tailwind CSS', 'TypeScript'],
       highlights: [
-        'Dynamic Island integration',
-        'Customizable widgets',
-        'Smooth animations',
-        'User-friendly interface'
+        'Clean and modern design',
+        'Responsive layout',
+        'Service showcase',
+        'Case studies presentation'
       ]
     }
   },
   {
-    id: 'bubble-memo',
-    name: 'Bubble Memo',
-    description: 'Animated interactive checklist application',
-    image: '/images/projects/bubble-memo.png',
-    category: 'Mobile App',
+    id: 'popup-limited-landing',
+    name: 'Pop Up Limited Landing',
+    description: 'Neobrutalist event landing page with immersive design',
+    url: 'https://pop-up-limited.github.io/popup-limited-landing/',
+    image: '',
+    category: 'Web Design',
     year: '2024',
-    tags: ['iOS', 'Animation', 'Productivity'],
-    isLive: false,
+    tags: ['Landing Page', 'Event', 'Neobrutalism'],
+    isLive: true,
     details: {
-      services: ['UI/UX Design', 'Animation Design', 'App Development'],
-      technologies: ['Rive', 'Swift', 'SwiftUI'],
+      services: ['Landing Page Design', 'Web Development', 'Interactive Design'],
+      technologies: ['HTML', 'CSS', 'JavaScript'],
       highlights: [
-        'Game-like interaction design',
-        'Rive animation integration',
-        'Engaging user experience',
-        'Intuitive checklist management'
-      ]
-    }
-  },
-  {
-    id: 'gameme-data',
-    name: 'Gameme Data',
-    description: 'Data visualization and analytics platform for gaming',
-    image: '/images/projects/gameme-data.png',
-    category: 'Web Application',
-    year: '2024',
-    tags: ['Data', 'Analytics', 'Gaming'],
-    isLive: false,
-    details: {
-      services: ['UI Design', 'Data Visualization', 'Web Development'],
-      technologies: ['React', 'D3.js', 'TypeScript'],
-      highlights: [
-        'Real-time data dashboards',
-        'Interactive charts and graphs',
-        'Comprehensive analytics',
-        'Modern data visualization'
-      ]
-    }
-  },
-  {
-    id: 'hoarding-disorder',
-    name: 'Hoarding Disorder',
-    description: 'Mobile app for managing hoarding behaviors',
-    image: '/images/projects/hoarding-disorder.png',
-    category: 'Mobile App',
-    year: '2023',
-    tags: ['iOS', 'Health', 'UI Design'],
-    isLive: false,
-    details: {
-      services: ['App Design', 'User Research', 'Mobile Development'],
-      technologies: ['Swift', 'SwiftUI', 'HealthKit'],
-      highlights: [
-        'User-centered design approach',
-        'Accessible interface',
-        'Health data integration',
-        'Supportive user experience'
-      ]
-    }
-  },
-  {
-    id: 'vision-fitness',
-    name: 'Vision Fitness',
-    description: 'Fitness tracking and workout planning platform',
-    image: '/images/projects/vision-fitness.png',
-    category: 'Web Application',
-    year: '2024',
-    tags: ['Fitness', 'E-Commerce', 'Portfolio'],
-    isLive: false,
-    details: {
-      services: ['Web Design', 'E-Commerce Integration', 'Frontend Development'],
-      technologies: ['React', 'Next.js', 'Stripe'],
-      highlights: [
-        'Product showcase',
-        'E-commerce functionality',
-        'Responsive design',
-        'Modern fitness branding'
+        'Neobrutalist design aesthetic',
+        'Immersive user experience',
+        'Interactive elements',
+        'Responsive design'
       ]
     }
   }
