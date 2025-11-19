@@ -10,16 +10,6 @@ export type Product = {
 };
 
 export const products: Product[] = [
-  {
-    id: 'phoro',
-    name: 'Phoro',
-    description:
-      'Mobile-first AI image generation that lets creators remix portraits using curated template packs.',
-    link: 'https://popup.limited',
-    linkLabel: 'Explore Phoro',
-    badge: 'AI imaging',
-    status: 'beta',
-    image: '/images/projects/vision-fitness.png' // 使用一个占位图片
-  }
+  // 产品列表为空，如有新产品可在此添加
 ];
 
