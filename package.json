@@ -14,5 +14,8 @@
     "astro": "^5.15.5",
     "astro-robots-txt": "^1.0.0",
     "tailwindcss": "^4.1.17"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.30.0"
   }
 }

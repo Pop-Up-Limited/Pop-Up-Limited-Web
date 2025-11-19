@@ -194,7 +194,20 @@ if (selectedTier === 'premium') {
     return `
       <div class="space-y-6">
         <div class="relative h-64 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
-          ${caseItem.isLive && caseItem.url ? `
+          ${caseItem.isLive && caseItem.url && caseItem.image ? `
+            <a href="${caseItem.url}" target="_blank" rel="noopener noreferrer" class="block h-full w-full">
+              <img
+                src="${caseItem.image}"
+                alt="${caseItem.name}"
+                class="h-full w-full object-cover"
+              />
+              <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 hover:opacity-100">
+                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
+                  访问网站 →
+                </span>
+              </div>
+            </a>
+          ` : caseItem.isLive && caseItem.url ? `
             <iframe
               src="${caseItem.url}"
               class="h-full w-full"

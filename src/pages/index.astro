@@ -133,53 +133,83 @@ import ProductCard from '../components/ProductCard.astro';
 
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <!-- Case Preview Cards -->
-        <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+        <a
+          href="https://mapier.ai/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
+        >
           <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <iframe
-              src="https://mapier.ai/"
-              class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+            <img
+              src="/images/projects/mapier.png"
+              alt="Mapier.ai"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
-              title="Mapier.ai 预览"
-              allow="fullscreen"
-            ></iframe>
+              decoding="async"
+            />
+            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
+                访问网站 →
+              </span>
+            </div>
           </div>
           <div class="p-4">
             <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Mapier.ai</h3>
             <p class="text-sm text-foreground-muted dark:text-slate-300">AI-powered mapping platform</p>
           </div>
-        </div>
+        </a>
 
-        <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+        <a
+          href="https://popup.limited/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
+        >
           <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <iframe
-              src="https://popup.limited/"
-              class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+            <img
+              src="/images/projects/popup-limited.png"
+              alt="Popup.limited"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
-              title="Popup.limited 预览"
-              allow="fullscreen"
-            ></iframe>
+              decoding="async"
+            />
+            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
+                访问网站 →
+              </span>
+            </div>
           </div>
           <div class="p-4">
             <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Popup.limited</h3>
             <p class="text-sm text-foreground-muted dark:text-slate-300">Creative agency portfolio</p>
           </div>
-        </div>
+        </a>
 
-        <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+        <a
+          href="https://www.ljystudio.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
+        >
           <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <iframe
-              src="https://www.ljystudio.com/"
-              class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+            <img
+              src="/images/projects/ljystudio.png"
+              alt="LJY Studio"
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:opacity-100"
               loading="lazy"
-              title="LJY Studio 预览"
-              allow="fullscreen"
-            ></iframe>
+              decoding="async"
+            />
+            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
+                访问网站 →
+              </span>
+            </div>
           </div>
           <div class="p-4">
             <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">LJY Studio</h3>
             <p class="text-sm text-foreground-muted dark:text-slate-300">Design portfolio showcase</p>
           </div>
-        </div>
+        </a>
       </div>
 
       <div class="mt-8 text-center">
