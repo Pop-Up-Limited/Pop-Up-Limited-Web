@@ -7,7 +7,7 @@ export const faqs: FAQ[] = [
   {
     question: 'How do I get started with your products?',
     answer:
-      'You can explore our products IsleMark and Bubble Memo on the homepage. For questions or support, please contact us at contact@popup.limited.'
+      'You can explore our product Phoro on the homepage. For questions or support, please contact us at contact@popup.limited.'
   },
   {
     question: 'Where can I review Phoro privacy policy and terms?',

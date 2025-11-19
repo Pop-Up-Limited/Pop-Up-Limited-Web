@@ -11,28 +11,6 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: 'islemark',
-    name: 'IsleMark',
-    description:
-      'Custom your dynamic island - A mobile application that allows users to personalize their iPhone Dynamic Island with custom designs and interactive elements.',
-    link: 'https://www.ljystudio.com/work/islemark',
-    linkLabel: 'View Project Details',
-    badge: 'Product Management',
-    status: 'available',
-    image: '/images/projects/islemark.png'
-  },
-  {
-    id: 'bubble-memo',
-    name: 'Bubble Memo',
-    description:
-      'Animated Interactive Checklist App - A game-like interactive checklist application that combines Rive animation in UI design to redefine the original checklist experience.',
-    link: 'https://www.ljystudio.com/work/bubblememo',
-    linkLabel: 'View Project Details',
-    badge: 'Indie Development',
-    status: 'available',
-    image: '/images/projects/bubble-memo.png'
-  },
-  {
     id: 'phoro',
     name: 'Phoro',
     description:
