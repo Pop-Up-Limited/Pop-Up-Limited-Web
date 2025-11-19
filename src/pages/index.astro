@@ -117,6 +117,78 @@ import ProductCard from '../components/ProductCard.astro';
       </div>
     </section>
 
+    <!-- Portfolio Showcase Section -->
+    <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
+      <div class="mb-10 flex flex-col gap-3">
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">
+          Portfolio
+        </span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+          Our Work in Action
+        </h2>
+        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300">
+          Explore our portfolio of successful projects, from university websites to innovative web applications and data visualizations.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Case Preview Cards -->
+        <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+            <iframe
+              src="https://mapier.ai/"
+              class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+              loading="lazy"
+              title="Mapier.ai 预览"
+              allow="fullscreen"
+            ></iframe>
+          </div>
+          <div class="p-4">
+            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Mapier.ai</h3>
+            <p class="text-sm text-foreground-muted dark:text-slate-300">AI-powered mapping platform</p>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+            <iframe
+              src="https://popup.limited/"
+              class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+              loading="lazy"
+              title="Popup.limited 预览"
+              allow="fullscreen"
+            ></iframe>
+          </div>
+          <div class="p-4">
+            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Popup.limited</h3>
+            <p class="text-sm text-foreground-muted dark:text-slate-300">Creative agency portfolio</p>
+          </div>
+        </div>
+
+        <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+            <iframe
+              src="https://www.ljystudio.com/"
+              class="h-full w-full scale-110 transition-transform duration-500 group-hover:scale-100"
+              loading="lazy"
+              title="LJY Studio 预览"
+              allow="fullscreen"
+            ></iframe>
+          </div>
+          <div class="p-4">
+            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">LJY Studio</h3>
+            <p class="text-sm text-foreground-muted dark:text-slate-300">Design portfolio showcase</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center">
+        <a href="/cases" class="btn-secondary">
+          查看更多案例 →
+        </a>
+      </div>
+    </section>
+
     <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
       <div class="mb-10 flex flex-col gap-3">
         <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">

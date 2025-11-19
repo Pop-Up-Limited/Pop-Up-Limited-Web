@@ -53,6 +53,16 @@ const { case: caseItem } = Astro.props;
     )}
     <div class="absolute bottom-4 left-4 right-4">
       <div class="flex items-center gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        {caseItem.designTier === 'premium-plus' && (
+          <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white">
+            顶级设计
+          </span>
+        )}
+        {caseItem.designTier === 'premium' && (
+          <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
+            优质设计
+          </span>
+        )}
         <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
           {caseItem.category}
         </span>
