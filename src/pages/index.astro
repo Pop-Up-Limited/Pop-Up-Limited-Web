@@ -2,6 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import { HERO, WHY_US, COMPANY_NAME, COMPANY_TAGLINE, DEFAULT_DESCRIPTION } from '../config/site';
 import { translations } from '../i18n/translations';
+import { cases } from '../data/cases';
+
+// 按设计分级分组
+const premiumCases = cases.filter(c => c.designTier === 'premium');
+const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 ---
 
 <Layout title={`${COMPANY_NAME} · ${COMPANY_TAGLINE}`} description={DEFAULT_DESCRIPTION}>
@@ -32,11 +37,11 @@ import { translations } from '../i18n/translations';
         <div class="relative">
           <div class="card-surface relative overflow-hidden">
             <div class="space-y-4">
-              <h2 class="text-lg font-semibold text-foreground dark:text-foreground-dark">
-                Launch faster with adaptive workflows
+              <h2 class="text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="hero.features.title">
+                快速启动，适应性强的工作流程
               </h2>
-              <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
-                Pop Up Limited combines AI copilots and human oversight so marketing and product teams can make ideas tangible within hours, not weeks. {/* TODO: refine messaging */}
+              <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="hero.features.description">
+                Pop Up Limited 结合 AI 辅助和人工监督，让营销和产品团队能够在几小时内将想法变为现实，而不是几周。
               </p>
               <ul class="grid gap-3 text-sm text-foreground-muted dark:text-slate-300">
                 <li class="flex items-center gap-3">
@@ -45,7 +50,7 @@ import { translations } from '../i18n/translations';
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </span>
-                  <span>Secure compliance guardrails for sensitive industries</span>
+                  <span data-i18n="hero.features.item1">安全合规保障，适用于敏感行业</span>
                 </li>
                 <li class="flex items-center gap-3">
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
@@ -53,7 +58,7 @@ import { translations } from '../i18n/translations';
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </span>
-                  <span>Zero-maintenance creative pipelines</span>
+                  <span data-i18n="hero.features.item2">零维护的创意流程</span>
                 </li>
                 <li class="flex items-center gap-3">
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
@@ -61,7 +66,7 @@ import { translations } from '../i18n/translations';
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </span>
-                  <span>Insights that bridge product, design, and support</span>
+                  <span data-i18n="hero.features.item3">连接产品、设计和支持的洞察力</span>
                 </li>
               </ul>
             </div>
@@ -111,10 +116,10 @@ import { translations } from '../i18n/translations';
 
       <div class="md:w-1/2">
         <div class="grid gap-4 rounded-2xl border border-brand-500/20 bg-brand-500/10 p-6 shadow-brand-sm dark:border-brand-500/30">
-          <h3 class="text-xl font-semibold text-brand-700 dark:text-brand-200">
+          <h3 class="text-xl font-semibold text-brand-700 dark:text-brand-200" data-i18n="about.quote">
             "I specialize in transforming concepts into realistic products. Whether it's software or games, my portfolio is designed to mature the product."
           </h3>
-          <p class="text-sm text-brand-800/80 dark:text-brand-100/80">
+          <p class="text-sm text-brand-800/80 dark:text-brand-100/80" data-i18n="about.quoteAuthor">
             — Jinyi (Bruce) Li, Founder
           </p>
         </div>
@@ -137,196 +142,76 @@ import { translations } from '../i18n/translations';
 
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <!-- 顶级设计案例 -->
-        <a
-          href="https://mapier.ai/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group relative block overflow-hidden rounded-xl border-2 border-purple-500/30 bg-white transition-all duration-300 hover:border-purple-500 hover:shadow-lg dark:border-purple-500/50 dark:bg-slate-900"
-        >
-          <div class="absolute top-3 right-3 z-10">
-            <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white">
-              顶级设计
-            </span>
-          </div>
-          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img
-              src="/images/projects/mapier.png"
-              alt="Mapier.ai"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
-                访问网站 →
+        {premiumPlusCases.map((caseItem) => (
+          <a
+            href={caseItem.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative block overflow-hidden rounded-xl border-2 border-purple-500/30 bg-white transition-all duration-300 hover:border-purple-500 hover:shadow-lg dark:border-purple-500/50 dark:bg-slate-900"
+          >
+            <div class="absolute top-3 right-3 z-10">
+              <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.premiumDesign">
+                顶级设计
               </span>
             </div>
-          </div>
-          <div class="p-4">
-            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Mapier.ai</h3>
-            <p class="text-sm text-foreground-muted dark:text-slate-300">AI-powered mapping platform</p>
-          </div>
-        </a>
-
-        <a
-          href="https://www.ljystudio.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group relative block overflow-hidden rounded-xl border-2 border-purple-500/30 bg-white transition-all duration-300 hover:border-purple-500 hover:shadow-lg dark:border-purple-500/50 dark:bg-slate-900"
-        >
-          <div class="absolute top-3 right-3 z-10">
-            <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white">
-              顶级设计
-            </span>
-          </div>
-          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img
-              src="/images/projects/ljystudio.png"
-              alt="LJY Studio"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
-                访问网站 →
-              </span>
+            <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <img
+                src={caseItem.image}
+                alt={caseItem.name}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
+                  访问网站 →
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="p-4">
-            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">LJY Studio</h3>
-            <p class="text-sm text-foreground-muted dark:text-slate-300">Design portfolio showcase</p>
-          </div>
-        </a>
+            <div class="p-4">
+              <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">{caseItem.name}</h3>
+              <p class="text-sm text-foreground-muted dark:text-slate-300">{caseItem.description}</p>
+            </div>
+          </a>
+        ))}
 
         <!-- 优质设计案例 -->
-        <a
-          href="https://popup.limited/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
-        >
-          <div class="absolute top-3 right-3 z-10">
-            <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
-              优质设计
-            </span>
-          </div>
-          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img
-              src="/images/projects/popup-limited.png"
-              alt="Popup.limited"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
-                访问网站 →
+        {premiumCases.map((caseItem) => (
+          <a
+            href={caseItem.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
+          >
+            <div class="absolute top-3 right-3 z-10">
+              <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.qualityDesign">
+                优质设计
               </span>
             </div>
-          </div>
-          <div class="p-4">
-            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Popup.limited</h3>
-            <p class="text-sm text-foreground-muted dark:text-slate-300">Creative agency portfolio</p>
-          </div>
-        </a>
-
-        <a
-          href="https://pop-up-limited.github.io/pop-up-limited-website/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
-        >
-          <div class="absolute top-3 right-3 z-10">
-            <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
-              优质设计
-            </span>
-          </div>
-          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img
-              src="/images/projects/popup-limited-website.png"
-              alt="Pop Up Limited Website"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
-                访问网站 →
-              </span>
+            <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <img
+                src={caseItem.image}
+                alt={caseItem.name}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
+                  访问网站 →
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="p-4">
-            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Pop Up Limited Website</h3>
-            <p class="text-sm text-foreground-muted dark:text-slate-300">Official website and service showcase</p>
-          </div>
-        </a>
-
-        <a
-          href="https://pop-up-limited.github.io/popup-limited-landing/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
-        >
-          <div class="absolute top-3 right-3 z-10">
-            <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
-              优质设计
-            </span>
-          </div>
-          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img
-              src="/images/projects/popup-limited-landing.png"
-              alt="Pop Up Limited Landing"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
-                访问网站 →
-              </span>
+            <div class="p-4">
+              <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">{caseItem.name}</h3>
+              <p class="text-sm text-foreground-muted dark:text-slate-300">{caseItem.description}</p>
             </div>
-          </div>
-          <div class="p-4">
-            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Pop Up Limited Landing</h3>
-            <p class="text-sm text-foreground-muted dark:text-slate-300">Neobrutalist event landing page</p>
-          </div>
-        </a>
-
-        <a
-          href="https://pop-up-limited.github.io/web-case-6/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
-        >
-          <div class="absolute top-3 right-3 z-10">
-            <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white">
-              优质设计
-            </span>
-          </div>
-          <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img
-              src="/images/projects/web-case-6.png"
-              alt="Web Case 6"
-              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-              loading="lazy"
-              decoding="async"
-            />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
-                访问网站 →
-              </span>
-            </div>
-          </div>
-          <div class="p-4">
-            <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">Web Case 6</h3>
-            <p class="text-sm text-foreground-muted dark:text-slate-300">Professional website with modern design</p>
-          </div>
-        </a>
+          </a>
+        ))}
       </div>
 
       <div class="mt-8 text-center">
-        <a href="/cases" class="btn-secondary">
+        <a href="/cases" class="btn-secondary" data-i18n="portfolio.viewMore">
           查看更多案例 →
         </a>
       </div>
@@ -370,7 +255,7 @@ import { translations } from '../i18n/translations';
       <div class="grid gap-6 md:grid-cols-2">
         <!-- 设计分级分布 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark">
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.designTier">
             设计分级分布
           </h3>
           <div class="h-64">
@@ -380,7 +265,7 @@ import { translations } from '../i18n/translations';
 
         <!-- 服务类型分布 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark">
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.serviceType">
             服务类型分布
           </h3>
           <div class="h-64">
@@ -390,27 +275,27 @@ import { translations } from '../i18n/translations';
 
         <!-- 交付周期统计 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark">
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.delivery">
             交付周期统计
           </h3>
           <div class="h-64">
             <canvas id="delivery-cycle-chart"></canvas>
           </div>
           <div class="mt-4 text-center">
-            <div class="text-xs font-medium text-foreground-muted dark:text-slate-400">平均交付周期</div>
-            <div class="text-2xl font-bold text-brand-600 dark:text-brand-400">12 天</div>
+            <div class="text-xs font-medium text-foreground-muted dark:text-slate-400" data-i18n="stats.charts.avgDelivery">平均交付周期</div>
+            <div class="text-2xl font-bold text-brand-600 dark:text-brand-400">12 <span data-i18n="stats.charts.days">天</span></div>
           </div>
         </div>
 
         <!-- 客户反馈评分 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark">
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.feedback">
             客户反馈评分
           </h3>
           <div class="space-y-4">
             <div>
               <div class="mb-2 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300">设计质量</span>
+                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.designQuality">设计质量</span>
                 <span class="font-semibold text-brand-600 dark:text-brand-400">5.0</span>
               </div>
               <div class="flex gap-1">
@@ -574,6 +459,19 @@ import { translations } from '../i18n/translations';
   document.addEventListener('DOMContentLoaded', async () => {
     const lang = getLanguage();
     updatePageTexts(lang);
+    
+    // Listen for language changes from other components
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'language') {
+        const newLang = e.newValue || 'zh';
+        updatePageTexts(newLang);
+      }
+    });
+    
+    // Custom event for language change
+    window.addEventListener('languagechange', ((e: CustomEvent) => {
+      updatePageTexts(e.detail.lang);
+    }) as EventListener);
 
     // Initialize charts
     try {
@@ -586,10 +484,12 @@ import { translations } from '../i18n/translations';
     if (designTierCanvas instanceof HTMLCanvasElement) {
       const ctx = designTierCanvas.getContext('2d');
       if (ctx) {
+        const lang = getLanguage();
+        const t = translations[lang];
         new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: ['顶级设计（高级）', '优质设计（初级）'],
+          labels: [t.portfolio.premiumDesign, t.portfolio.qualityDesign],
           datasets: [{
             data: [2, 4],
             backgroundColor: [
@@ -626,7 +526,15 @@ import { translations } from '../i18n/translations';
         new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['网站设计', '前端开发', '品牌设计'],
+          labels: function() {
+            const lang = getLanguage();
+            const t = translations[lang];
+            return [
+              t.stats.charts.serviceType + ' - 网站设计',
+              t.stats.charts.serviceType + ' - 前端开发',
+              t.stats.charts.serviceType + ' - 品牌设计'
+            ];
+          }(),
           datasets: [{
             label: '占比 (%)',
             data: [80, 100, 40],
@@ -667,10 +575,15 @@ import { translations } from '../i18n/translations';
     if (deliveryCycleCanvas instanceof HTMLCanvasElement) {
       const ctx = deliveryCycleCanvas.getContext('2d');
       if (ctx) {
+        const lang = getLanguage();
+        const t = translations[lang];
         new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: ['10 天内', '15 天内'],
+          labels: [
+            `10 ${t.stats.charts.days}`,
+            `15 ${t.stats.charts.days}`
+          ],
           datasets: [{
             data: [60, 40],
             backgroundColor: [

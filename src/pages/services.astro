@@ -939,6 +939,18 @@ const wechatId = 'popup-service';
     updatePageTexts(lang);
   });
   
+  // Listen for language changes
+  window.addEventListener('languagechange', ((e: CustomEvent) => {
+    updatePageTexts(e.detail.lang);
+  }) as EventListener);
+  
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'language') {
+      const newLang = e.newValue || 'zh';
+      updatePageTexts(newLang);
+    }
+  });
+  
   // 弹窗控制
   const modal = document.getElementById('contact-modal');
   const contactButtons = document.querySelectorAll('[data-contact-btn]');

@@ -170,10 +170,27 @@ const resolveActive = (href: string) => {
       btn.addEventListener('click', () => {
         if (lang && (lang === 'zh' || lang === 'en')) {
           setLanguageToStorage(lang);
+          // Update all texts immediately
+          updateTexts(lang);
+          // Dispatch custom event for other components
+          window.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
+          // Update active state
+          switchers.forEach((s) => {
+            const btns = s.querySelectorAll('[data-lang]');
+            btns.forEach((b) => {
+              const l = b.getAttribute('data-lang');
+              if (l === lang) {
+                b.setAttribute('data-active', 'true');
+              } else {
+                b.setAttribute('data-active', 'false');
+              }
+            });
+          });
           // Update URL with language parameter
           const url = new URL(window.location.href);
           url.searchParams.set('lang', lang);
-          window.location.href = url.toString();
+          // Use replaceState to avoid page reload
+          window.history.replaceState({}, '', url.toString());
         }
       });
     });

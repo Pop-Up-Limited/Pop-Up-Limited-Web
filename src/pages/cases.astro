@@ -1,0 +1,202 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY_NAME } from '../config/site';
+import { cases } from '../data/cases';
+import CaseCard from '../components/CaseCard.astro';
+import { translations } from '../i18n/translations';
+
+const categories = Array.from(new Set(cases.map(c => c.category)));
+const selectedCategory = Astro.url.searchParams.get('category') || 'all';
+const selectedTier = Astro.url.searchParams.get('tier') || 'all';
+
+// 按设计分级分组
+const premiumCases = cases.filter(c => c.designTier === 'premium');
+const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
+
+// 筛选逻辑
+let filteredCases = cases;
+if (selectedCategory !== 'all') {
+  filteredCases = filteredCases.filter(c => c.category === selectedCategory);
+}
+if (selectedTier === 'premium') {
+  filteredCases = filteredCases.filter(c => c.designTier === 'premium');
+} else if (selectedTier === 'premium-plus') {
+  filteredCases = filteredCases.filter(c => c.designTier === 'premium-plus');
+}
+---
+
+<Layout 
+  title={`案例库 · ${COMPANY_NAME}`}
+  description="浏览我们的成功案例，了解我们为不同行业客户打造的专业网站解决方案。"
+>
+  <div class="relative min-h-screen bg-surface dark:bg-surface-dark">
+    <!-- Hero Section -->
+    <section class="relative mx-auto w-full max-w-7xl px-4 pt-16 pb-8 md:px-6 md:pt-20 md:pb-12">
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[300px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
+      <div class="text-center">
+        <h1 class="text-3xl font-semibold leading-tight text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="cases.title">
+          案例库
+        </h1>
+        <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300" data-i18n="cases.subtitle">
+          探索我们为不同行业客户打造的专业网站解决方案，从初创企业到大型企业的成功案例
+        </p>
+      </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-8 md:px-6">
+      <div class="mb-6 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="/cases"
+          class={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            selectedCategory === 'all' && selectedTier === 'all'
+              ? 'bg-brand-500 text-white'
+              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          data-i18n="cases.all"
+        >
+          全部
+        </a>
+        {categories.map((category) => (
+          <a
+            href={`/cases?category=${encodeURIComponent(category)}${selectedTier !== 'all' ? `&tier=${selectedTier}` : ''}`}
+            class={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+              selectedCategory === category
+                ? 'bg-brand-500 text-white'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+            }`}
+          >
+            {category}
+          </a>
+        ))}
+      </div>
+      
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={`/cases${selectedCategory !== 'all' ? `?category=${selectedCategory}` : ''}`}
+          class={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            selectedTier === 'all'
+              ? 'bg-brand-500 text-white'
+              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          data-i18n="cases.allDesigns"
+        >
+          全部设计
+        </a>
+        <a
+          href={`/cases?tier=premium${selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''}`}
+          class={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            selectedTier === 'premium'
+              ? 'bg-brand-500 text-white'
+              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          data-i18n="cases.premiumDesign"
+        >
+          优质设计（初级）
+        </a>
+        <a
+          href={`/cases?tier=premium-plus${selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''}`}
+          class={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+            selectedTier === 'premium-plus'
+              ? 'bg-purple-500 text-white'
+              : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+          }`}
+          data-i18n="cases.premiumPlusDesign"
+        >
+          顶级设计（高级）
+        </a>
+      </div>
+    </section>
+
+    <!-- Cases Grid -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-24 md:px-6">
+      {selectedTier === 'all' && premiumCases.length > 0 && (
+        <div class="mb-12">
+          <div class="mb-6 flex items-center gap-3">
+            <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="cases.premiumDesign">
+              优质设计（初级）
+            </h2>
+            <span class="rounded-full bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-600">
+              {premiumCases.length} <span data-i18n="cases.count">个案例</span>
+            </span>
+          </div>
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {premiumCases.map((caseItem) => (
+              <CaseCard case={caseItem} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {selectedTier === 'all' && premiumPlusCases.length > 0 && (
+        <div class="mb-12">
+          <div class="mb-6 flex items-center gap-3">
+            <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="cases.premiumPlusDesign">
+              顶级设计（高级）
+            </h2>
+            <span class="rounded-full bg-purple-500/10 px-3 py-1 text-xs font-semibold text-purple-600">
+              {premiumPlusCases.length} <span data-i18n="cases.count">个案例</span>
+            </span>
+          </div>
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {premiumPlusCases.map((caseItem) => (
+              <CaseCard case={caseItem} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {selectedTier !== 'all' && (
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredCases.map((caseItem) => (
+            <CaseCard case={caseItem} />
+          ))}
+        </div>
+      )}
+      
+      {filteredCases.length === 0 && (
+        <div class="py-12 text-center">
+          <p class="text-lg text-foreground-muted dark:text-slate-400" data-i18n="cases.noCases">
+            暂无该分类的案例
+          </p>
+        </div>
+      )}
+    </section>
+  </div>
+</Layout>
+
+<script define:vars={{ translations }}>
+  // Get language from storage or URL
+  function getLanguage() {
+    const stored = localStorage.getItem('language');
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    return (urlLang === 'en' || urlLang === 'zh') ? urlLang : (stored === 'en' || stored === 'zh') ? stored : 'zh';
+  }
+  
+  // Update all texts on page load
+  function updatePageTexts(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (key) {
+        const keys = key.split('.');
+        let value = t;
+        for (const k of keys) {
+          value = value?.[k];
+        }
+        if (value && typeof value === 'string') {
+          el.textContent = value;
+        }
+      }
+    });
+  }
+  
+  // Initialize language
+  document.addEventListener('DOMContentLoaded', () => {
+    const lang = getLanguage();
+    updatePageTexts(lang);
+  });
+</script>
+

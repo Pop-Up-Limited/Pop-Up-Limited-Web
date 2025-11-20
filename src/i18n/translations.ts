@@ -14,7 +14,14 @@ export const translations = {
       title: '我们打造创新的移动应用和数字产品。',
       subtitle: '专注于产品管理、UI/UX设计、iOS开发和数字营销。用精准和创意将您的愿景变为现实。',
       primaryCta: '查看服务',
-      secondaryCta: '联系客服'
+      secondaryCta: '联系客服',
+      features: {
+        title: '快速启动，适应性强的工作流程',
+        description: 'Pop Up Limited 结合 AI 辅助和人工监督，让营销和产品团队能够在几小时内将想法变为现实，而不是几周。',
+        item1: '安全合规保障，适用于敏感行业',
+        item2: '零维护的创意流程',
+        item3: '连接产品、设计和支持的洞察力'
+      }
     },
     portfolio: {
       badge: '作品集',
@@ -31,7 +38,16 @@ export const translations = {
       cases: '成功案例',
       satisfaction: '客户满意度',
       delivery: '最快交付周期',
-      support: '技术支持'
+      support: '技术支持',
+      charts: {
+        designTier: '设计分级分布',
+        serviceType: '服务类型分布',
+        delivery: '交付周期统计',
+        feedback: '客户反馈评分',
+        designQuality: '设计质量',
+        avgDelivery: '平均交付周期',
+        days: '天'
+      }
     },
     whyUs: {
       badge: '为什么选择我们',
@@ -54,7 +70,9 @@ export const translations = {
     about: {
       title: '关于 Pop Up Limited',
       description1: '我们是一家专注于UI/UX设计、产品管理、iOS开发和数字营销的产品工作室。我们的使命是用精准和创意将概念转化为现实。',
-      description2: 'Pop Up Limited 提供专业的网站开发服务。我们用可扩展的设计和数据驱动的解决方案将您的愿景变为现实。'
+      description2: 'Pop Up Limited 提供专业的网站开发服务。我们用可扩展的设计和数据驱动的解决方案将您的愿景变为现实。',
+      quote: '"我专注于将概念转化为现实产品。无论是软件还是游戏，我的作品集旨在让产品成熟。',
+      quoteAuthor: '— Jinyi (Bruce) Li, 创始人'
     },
     cta: {
       title: '准备与 Pop Up Limited 共同创造？',
@@ -80,7 +98,9 @@ export const translations = {
       premiumPlusDesign: '顶级设计（高级）',
       viewDetails: '查看详情',
       visitSite: '访问网站',
-      comingSoon: '即将上线'
+      comingSoon: '即将上线',
+      count: '个案例',
+      noCases: '暂无该分类的案例'
     },
     services: {
       title: '网站开发服务方案',
@@ -200,7 +220,14 @@ export const translations = {
       title: 'We craft innovative mobile applications and digital products.',
       subtitle: 'Specialized in product management, UI/UX design, iOS development, and digital marketing. Bringing your vision to life with precision and creativity.',
       primaryCta: 'See Services',
-      secondaryCta: 'Contact Support'
+      secondaryCta: 'Contact Support',
+      features: {
+        title: 'Launch faster with adaptive workflows',
+        description: 'Pop Up Limited combines AI copilots and human oversight so marketing and product teams can make ideas tangible within hours, not weeks.',
+        item1: 'Secure compliance guardrails for sensitive industries',
+        item2: 'Zero-maintenance creative pipelines',
+        item3: 'Insights that bridge product, design, and support'
+      }
     },
     portfolio: {
       badge: 'Portfolio',
@@ -217,7 +244,16 @@ export const translations = {
       cases: 'Successful Cases',
       satisfaction: 'Client Satisfaction',
       delivery: 'Fastest Delivery',
-      support: 'Technical Support'
+      support: 'Technical Support',
+      charts: {
+        designTier: 'Design Tier Distribution',
+        serviceType: 'Service Type Distribution',
+        delivery: 'Delivery Cycle Statistics',
+        feedback: 'Client Feedback Ratings',
+        designQuality: 'Design Quality',
+        avgDelivery: 'Average Delivery Cycle',
+        days: 'days'
+      }
     },
     whyUs: {
       badge: 'Why us',
@@ -240,7 +276,9 @@ export const translations = {
     about: {
       title: 'About Pop Up Limited',
       description1: 'We are a product studio specializing in UI/UX design, product management, iOS development, and digital marketing. Our mission is to transform concepts into reality with precision and creativity.',
-      description2: 'Pop Up Limited provides professional web development services. We bring your vision to life with scalable design and data-driven solutions.'
+      description2: 'Pop Up Limited provides professional web development services. We bring your vision to life with scalable design and data-driven solutions.',
+      quote: '"I specialize in transforming concepts into realistic products. Whether it\'s software or games, my portfolio is designed to mature the product."',
+      quoteAuthor: '— Jinyi (Bruce) Li, Founder'
     },
     cta: {
       title: 'Ready to co-create with Pop Up Limited?',
@@ -266,7 +304,9 @@ export const translations = {
       premiumPlusDesign: 'Premium Design (Advanced)',
       viewDetails: 'View Details',
       visitSite: 'Visit Site',
-      comingSoon: 'Coming Soon'
+      comingSoon: 'Coming Soon',
+      count: 'cases',
+      noCases: 'No cases in this category'
     },
     services: {
       title: 'Web Development Service Plans',
