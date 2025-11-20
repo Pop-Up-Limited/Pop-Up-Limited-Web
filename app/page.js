@@ -1,11 +1,11 @@
 'use client'
 
-import { HERO, WHY_US, COMPANY_NAME } from '../config/site.js'
-import ProductDetail from '../components/ProductDetail'
-import DataVisualization from '../components/DataVisualization'
+import { HERO, WHY_US, COMPANY_NAME } from '../src/config/site.js'
+import ProductDetail from '../src/components/ProductDetail'
+import DataVisualization from '../src/components/DataVisualization'
 import Link from 'next/link'
-import { useLanguage } from '../contexts/LanguageContext'
-import { translations } from '../i18n/translations'
+import { useLanguage } from '../src/contexts/LanguageContext'
+import { translations } from '../src/i18n/translations'
 
 export default function HomePage() {
   const { language } = useLanguage()

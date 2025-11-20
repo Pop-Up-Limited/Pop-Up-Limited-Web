@@ -1,7 +1,7 @@
 import './globals.css'
-import { COMPANY_NAME, COMPANY_TAGLINE } from '../config/site.js'
-import Navigation from '../components/Navigation'
-import { LanguageProvider } from '../contexts/LanguageContext'
+import { COMPANY_NAME, COMPANY_TAGLINE } from '../src/config/site.js'
+import Navigation from '../src/components/Navigation'
+import { LanguageProvider } from '../src/contexts/LanguageContext'
 
 export const metadata = {
   title: `${COMPANY_NAME} · ${COMPANY_TAGLINE}`,
