@@ -10,17 +10,17 @@ export const translations = {
       contactSupport: '联系客服'
     },
     hero: {
-      badge: '打造创新的移动应用',
-      title: '我们打造创新的移动应用和数字产品。',
-      subtitle: '专注于产品管理、UI/UX设计、iOS开发和数字营销。用精准和创意将您的愿景变为现实。',
+      badge: '专业的网站开发服务',
+      title: '我们打造专业、美观、高效的网站解决方案。',
+      subtitle: '专注于网站设计、前端开发、UI/UX设计和品牌设计。用精准和创意将您的业务愿景转化为出色的在线体验。',
       primaryCta: '查看服务',
       secondaryCta: '联系客服',
       features: {
-        title: '快速启动，适应性强的工作流程',
-        description: 'Pop Up Limited 结合 AI 辅助和人工监督，让营销和产品团队能够在几小时内将想法变为现实，而不是几周。',
-        item1: '安全合规保障，适用于敏感行业',
-        item2: '零维护的创意流程',
-        item3: '连接产品、设计和支持的洞察力'
+        title: '快速交付，专业品质',
+        description: 'Pop Up Limited 提供从设计到部署的一站式网站开发服务，平均交付周期仅需12天，让您的网站快速上线。',
+        item1: '专业设计，确保品牌形象一致',
+        item2: '响应式设计，适配所有设备',
+        item3: '持续支持，提供长期维护服务'
       }
     },
     portfolio: {
@@ -245,17 +245,17 @@ export const translations = {
       contactSupport: 'Contact Support'
     },
     hero: {
-      badge: 'Building innovative mobile applications',
-      title: 'We craft innovative mobile applications and digital products.',
-      subtitle: 'Specialized in product management, UI/UX design, iOS development, and digital marketing. Bringing your vision to life with precision and creativity.',
+      badge: 'Professional Web Development Services',
+      title: 'We craft professional, beautiful, and efficient website solutions.',
+      subtitle: 'Specialized in web design, frontend development, UI/UX design, and brand design. Transforming your business vision into exceptional online experiences with precision and creativity.',
       primaryCta: 'See Services',
       secondaryCta: 'Contact Support',
       features: {
-        title: 'Launch faster with adaptive workflows',
-        description: 'Pop Up Limited combines AI copilots and human oversight so marketing and product teams can make ideas tangible within hours, not weeks.',
-        item1: 'Secure compliance guardrails for sensitive industries',
-        item2: 'Zero-maintenance creative pipelines',
-        item3: 'Insights that bridge product, design, and support'
+        title: 'Fast Delivery, Professional Quality',
+        description: 'Pop Up Limited provides end-to-end web development services from design to deployment, with an average delivery cycle of just 12 days, getting your website online quickly.',
+        item1: 'Professional design ensuring consistent brand identity',
+        item2: 'Responsive design adapting to all devices',
+        item3: 'Ongoing support providing long-term maintenance services'
       }
     },
     portfolio: {
