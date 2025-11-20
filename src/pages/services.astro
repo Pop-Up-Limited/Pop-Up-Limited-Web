@@ -279,47 +279,6 @@ const wechatId = 'popup-service';
       </div>
     </section>
 
-              <!-- 查看详细对比按钮 -->
-              <div class="mt-4">
-                <button
-                  type="button"
-                  data-view-details
-                  class="w-full text-xs text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
-                  data-i18n="services.plans.viewDetails"
-                >
-                  查看详细对比 ↓
-                </button>
-              </div>
-
-              <div class="mt-4">
-                {plan.price === '联系专属客服支持' ? (
-                  <button
-                    type="button"
-                    data-contact-btn
-                    class="btn-primary block w-full text-center"
-                    data-i18n="services.plans.contactService"
-                  >
-                    联系客服
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    data-contact-btn
-                    class={`block w-full text-center ${
-                      plan.popular ? 'btn-primary' : 'btn-secondary'
-                    }`}
-                    data-i18n="services.plans.contact"
-                  >
-                    立即咨询
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
     <!-- Optional Services -->
     <section class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6">
       <div class="mb-8 flex flex-col gap-3">
@@ -863,7 +822,7 @@ const wechatId = 'popup-service';
       </div>
       
       <div class="grid gap-6 md:grid-cols-3">
-        {plans.map((plan) => (
+        {plans.slice(0, 3).map((plan) => (
           <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
             <div class="relative h-48 overflow-hidden">
               <a
