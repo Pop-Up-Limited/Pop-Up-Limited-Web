@@ -7,6 +7,8 @@ import { cases } from '../data/cases';
 // 按设计分级分组
 const premiumCases = cases.filter(c => c.designTier === 'premium');
 const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
+const heroDefaults = translations.zh.hero;
+const heroFeatureDefaults = heroDefaults.features;
 ---
 
 <Layout title={`${COMPANY_NAME} · ${COMPANY_TAGLINE}`} description={DEFAULT_DESCRIPTION}>
@@ -16,20 +18,20 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:items-center">
         <div class="space-y-6">
           <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-brand-600" data-i18n="hero.badge">
-            Building innovative mobile applications
+            {heroDefaults.badge}
           </span>
           <h1 class="text-4xl font-semibold leading-tight text-foreground md:text-5xl lg:text-6xl dark:text-foreground-dark" data-i18n="hero.title">
-            {HERO.title}
+            {heroDefaults.title}
           </h1>
           <p class="max-w-xl text-lg text-foreground-muted dark:text-slate-300" data-i18n="hero.subtitle">
-            {HERO.subtitle}
+            {heroDefaults.subtitle}
           </p>
           <div class="flex flex-col gap-3 sm:flex-row">
             <a class="btn-primary" href={HERO.primaryCta.href} data-i18n="hero.primaryCta">
-              {HERO.primaryCta.label}
+              {heroDefaults.primaryCta}
             </a>
             <a class="btn-secondary" href={HERO.secondaryCta.href} data-i18n="hero.secondaryCta">
-              {HERO.secondaryCta.label}
+              {heroDefaults.secondaryCta}
             </a>
           </div>
         </div>
@@ -38,10 +40,10 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           <div class="card-surface relative overflow-hidden">
             <div class="space-y-4">
               <h2 class="text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="hero.features.title">
-                快速启动，适应性强的工作流程
+                {heroFeatureDefaults.title}
               </h2>
               <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="hero.features.description">
-                Pop Up Limited 结合 AI 辅助和人工监督，让营销和产品团队能够在几小时内将想法变为现实，而不是几周。
+                {heroFeatureDefaults.description}
               </p>
               <ul class="grid gap-3 text-sm text-foreground-muted dark:text-slate-300">
                 <li class="flex items-center gap-3">
@@ -50,7 +52,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </span>
-                  <span data-i18n="hero.features.item1">安全合规保障，适用于敏感行业</span>
+                  <span data-i18n="hero.features.item1">{heroFeatureDefaults.item1}</span>
                 </li>
                 <li class="flex items-center gap-3">
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
@@ -58,7 +60,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </span>
-                  <span data-i18n="hero.features.item2">零维护的创意流程</span>
+                  <span data-i18n="hero.features.item2">{heroFeatureDefaults.item2}</span>
                 </li>
                 <li class="flex items-center gap-3">
                   <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-brand-600">
@@ -66,7 +68,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                   </span>
-                  <span data-i18n="hero.features.item3">连接产品、设计和支持的洞察力</span>
+                  <span data-i18n="hero.features.item3">{heroFeatureDefaults.item3}</span>
                 </li>
               </ul>
             </div>
@@ -79,25 +81,15 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
     <section class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 pb-24 md:px-6 md:flex-row md:items-center">
       <div class="md:w-1/2">
-        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="about.title">
-          About {COMPANY_NAME}
-        </h2>
-        <p class="mt-4 text-base leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description1">
-          We are a product studio specializing in UI/UX design, product management, iOS development, and digital marketing. Our mission is to transform concepts into reality with precision and creativity.
-        </p>
-        <p class="mt-4 text-base leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description2">
-          Pop Up Limited provides professional web development services. We bring your vision to life with scalable design and data-driven solutions.
-        </p>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="about.title"></h2>
+        <p class="mt-4 text-base leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description1"></p>
+        <p class="mt-4 text-base leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description2"></p>
       </div>
 
       <div class="md:w-1/2">
         <div class="grid gap-4 rounded-2xl border border-brand-500/20 bg-brand-500/10 p-6 shadow-brand-sm dark:border-brand-500/30">
-          <h3 class="text-xl font-semibold text-brand-700 dark:text-brand-200" data-i18n="about.quote">
-            "I specialize in transforming concepts into realistic products. Whether it's software or games, my portfolio is designed to mature the product."
-          </h3>
-          <p class="text-sm text-brand-800/80 dark:text-brand-100/80" data-i18n="about.quoteAuthor">
-            — Jinyi (Bruce) Li, Founder
-          </p>
+          <h3 class="text-xl font-semibold text-brand-700 dark:text-brand-200" data-i18n="about.quote"></h3>
+          <p class="text-sm text-brand-800/80 dark:text-brand-100/80" data-i18n="about.quoteAuthor"></p>
         </div>
       </div>
     </section>
@@ -105,15 +97,9 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
     <!-- Portfolio Showcase Section -->
     <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
       <div class="mb-10 flex flex-col gap-3">
-        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge">
-          Portfolio
-        </span>
-        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="portfolio.title">
-          Our Work in Action
-        </h2>
-        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle">
-          Explore our portfolio of successful projects, from university websites to innovative web applications and data visualizations.
-        </p>
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge"></span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="portfolio.title"></h2>
+        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle"></p>
       </div>
 
       <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -126,9 +112,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
             class="group relative block overflow-hidden rounded-xl border-2 border-purple-500/30 bg-white transition-all duration-300 hover:border-purple-500 hover:shadow-lg dark:border-purple-500/50 dark:bg-slate-900"
           >
             <div class="absolute top-3 right-3 z-10">
-              <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.premiumDesign">
-                顶级设计
-              </span>
+              <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.premiumDesign"></span>
             </div>
             <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
               <img
@@ -139,9 +123,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                 decoding="async"
               />
               <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
-                  访问网站
-                </span>
+                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite"></span>
               </div>
             </div>
             <div class="p-4">
@@ -160,9 +142,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
             class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
           >
             <div class="absolute top-3 right-3 z-10">
-              <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.qualityDesign">
-                优质设计
-              </span>
+              <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.qualityDesign"></span>
             </div>
             <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
               <img
@@ -173,9 +153,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                 decoding="async"
               />
               <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
-                  访问网站
-                </span>
+                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite"></span>
               </div>
             </div>
             <div class="p-4">
@@ -187,49 +165,41 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       </div>
 
       <div class="mt-8 text-center">
-        <a href="/cases" class="btn-secondary" data-i18n="portfolio.viewMore">
-          查看更多案例
-        </a>
+        <a href="/cases" class="btn-secondary" data-i18n="portfolio.viewMore"></a>
       </div>
     </section>
 
     <!-- 数据可视化 Section -->
     <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
       <div class="mb-10 flex flex-col gap-3">
-        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="stats.badge">
-          数据统计
-        </span>
-        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="stats.title">
-          我们的成果
-        </h2>
-        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300" data-i18n="stats.subtitle">
-          用数据说话，展示我们的专业能力和服务成果
-        </p>
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="stats.badge"></span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="stats.title"></h2>
+        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300" data-i18n="stats.subtitle"></p>
       </div>
 
       <!-- 核心指标 -->
       <div class="mb-12 grid gap-6 md:grid-cols-4">
         <div class="card-surface flex flex-col items-center justify-center p-6 text-center">
           <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">2000+</div>
-          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.cases">服务经验</div>
+          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.cases"></div>
         </div>
         <div class="card-surface flex flex-col items-center justify-center p-6 text-center">
           <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">98%</div>
-          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.satisfaction">客户满意度</div>
+          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.satisfaction"></div>
         </div>
         <div class="card-surface flex flex-col items-center justify-center p-6 text-center">
           <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">
             <span>12</span>
-            <span class="text-2xl" data-i18n="stats.charts.days">天</span>
+            <span class="text-2xl" data-i18n="stats.charts.days"></span>
           </div>
-          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.delivery">平均交付周期</div>
+          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.delivery"></div>
         </div>
         <div class="card-surface flex flex-col items-center justify-center p-6 text-center">
           <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">
             <span>48</span>
-            <span class="text-2xl" data-i18n="stats.charts.hours">小时</span>
+            <span class="text-2xl" data-i18n="stats.charts.hours"></span>
           </div>
-          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.support">平均响应时间</div>
+          <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.support"></div>
         </div>
       </div>
 
@@ -237,9 +207,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       <div class="grid gap-6 md:grid-cols-2">
         <!-- 设计分级分布 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.designTier">
-            设计分级分布
-          </h3>
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.designTier"></h3>
           <div class="h-64">
             <canvas id="design-tier-chart"></canvas>
           </div>
@@ -247,9 +215,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
         <!-- 服务类型分布 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.serviceType">
-            服务类型分布
-          </h3>
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.serviceType"></h3>
           <div class="h-64">
             <canvas id="service-type-chart"></canvas>
           </div>
@@ -257,30 +223,26 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
         <!-- 交付周期统计 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.delivery">
-            交付周期统计
-          </h3>
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.delivery"></h3>
           <div class="h-64">
             <canvas id="delivery-cycle-chart"></canvas>
           </div>
           <div class="mt-4 text-center">
-            <div class="text-xs font-medium text-foreground-muted dark:text-slate-400" data-i18n="stats.charts.avgDelivery">平均交付周期</div>
+            <div class="text-xs font-medium text-foreground-muted dark:text-slate-400" data-i18n="stats.charts.avgDelivery"></div>
             <div class="text-2xl font-bold text-brand-600 dark:text-brand-400">
               <span>12.5</span>
-              <span data-i18n="stats.charts.days">天</span>
+              <span data-i18n="stats.charts.days"></span>
             </div>
           </div>
         </div>
 
         <!-- 客户反馈评分 -->
         <div class="card-surface p-6">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.feedback">
-            客户反馈评分
-          </h3>
+          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.feedback"></h3>
           <div class="space-y-4">
             <div>
               <div class="mb-2 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.designQuality">设计质量</span>
+                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.designQuality"></span>
                 <span class="font-semibold text-brand-600 dark:text-brand-400">4.8</span>
               </div>
               <div class="flex gap-1">
@@ -303,7 +265,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
             </div>
             <div>
               <div class="mb-2 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.developmentEfficiency">开发效率</span>
+                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.developmentEfficiency"></span>
                 <span class="font-semibold text-brand-600 dark:text-brand-400">4.9</span>
               </div>
               <div class="flex gap-1">
@@ -326,7 +288,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
             </div>
             <div>
               <div class="mb-2 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.communication">沟通服务</span>
+                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.communication"></span>
                 <span class="font-semibold text-brand-600 dark:text-brand-400">4.7</span>
               </div>
               <div class="flex gap-1">
@@ -354,12 +316,8 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
     <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
       <div class="mb-10 flex flex-col gap-3">
-        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="whyUs.badge">
-          为什么选择我们
-        </span>
-        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="whyUs.title">
-          为什么选择我们
-        </h2>
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="whyUs.badge"></span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="whyUs.title"></h2>
       </div>
 
       <div class="grid gap-6 md:grid-cols-3">
@@ -382,31 +340,19 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                 </svg>
               )}
             </div>
-            <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n={`whyUs.points.${index}.title`}>
-              {point.title}
-            </h3>
-            <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n={`whyUs.points.${index}.description`}>
-              {point.description}
-            </p>
+            <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n={`whyUs.points.${index}.title`}></h3>
+            <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n={`whyUs.points.${index}.description`}></p>
           </div>
         ))}
       </div>
     </section>
 
     <section class="mx-auto mb-24 w-full max-w-6xl rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
-      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100" data-i18n="cta.title">
-        Ready to co-create with Pop Up Limited?
-      </h2>
-      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80" data-i18n="cta.subtitle">
-        Partner with us to develop your mobile applications, design user experiences, or launch your digital products. Let's create something extraordinary together!
-      </p>
+      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100" data-i18n="cta.title"></h2>
+      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80" data-i18n="cta.subtitle"></p>
       <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <a class="btn-primary" href="/support" data-i18n="cta.support">
-          Visit Support Center
-        </a>
-        <a class="btn-secondary" href="/services" data-i18n="cta.services">
-          查看服务方案
-        </a>
+        <a class="btn-primary" href="/support" data-i18n="cta.support"></a>
+        <a class="btn-secondary" href="/services" data-i18n="cta.services"></a>
       </div>
     </section>
   </div>
@@ -415,6 +361,11 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 <script define:vars={{ translations, premiumCasesCount: premiumCases.length, premiumPlusCasesCount: premiumPlusCases.length }}>
   // Chart instances storage (global scope)
   const chartInstances = {};
+  
+  // Make chartInstances globally accessible
+  if (typeof window !== 'undefined') {
+    window.chartInstances = chartInstances;
+  }
 
   // Get language from storage or URL
   function getLanguage() {
@@ -425,9 +376,6 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
   // Function to update charts
   function updateCharts(lang) {
-    const t = translations[lang];
-    if (!t) return;
-
     // Update design tier chart
     if (chartInstances['design-tier']) {
       chartInstances['design-tier'].data.labels = lang === 'zh'
@@ -452,6 +400,11 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         : ['7-10 days', '11-15 days', '16-20 days', '21+ days'];
       chartInstances['delivery-cycle'].update();
     }
+  }
+  
+  // Make updateCharts globally accessible
+  if (typeof window !== 'undefined') {
+    window.updateCharts = updateCharts;
   }
   
   // Update all texts on page load
@@ -488,10 +441,228 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
     window.updatePageTexts = updatePageTexts;
   }
   
+  // Initialize charts function
+  function initializeCharts() {
+    // Check if Chart.js is available (from CDN or import)
+    let Chart;
+    if (typeof window !== 'undefined' && window.Chart) {
+      // Use CDN version
+      Chart = window.Chart;
+    } else {
+      console.error('Chart.js is not available');
+      return;
+    }
+
+    const currentLang = getLanguage();
+    
+    // 设计分级分布图表
+    const designTierCanvas = document.getElementById('design-tier-chart');
+    if (designTierCanvas && designTierCanvas instanceof HTMLCanvasElement) {
+      // Destroy existing chart if it exists
+      if (chartInstances['design-tier']) {
+        chartInstances['design-tier'].destroy();
+      }
+      
+      const ctx = designTierCanvas.getContext('2d');
+      if (ctx) {
+        const premiumCount = premiumCasesCount;
+        const premiumPlusCount = premiumPlusCasesCount;
+        
+        chartInstances['design-tier'] = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: currentLang === 'zh'
+              ? ['顶级设计', '优质设计']
+              : ['Top-tier Design', 'Premium Design'],
+            datasets: [{
+              data: [premiumPlusCount, premiumCount],
+              backgroundColor: [
+                'rgb(168, 85, 247)',
+                'rgb(59, 130, 246)'
+              ],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: {
+                    size: 12
+                  }
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : '0';
+                    return `${label}: ${value} (${percentage}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+        console.log('Design tier chart initialized');
+      }
+    } else {
+      console.warn('Design tier canvas not found');
+    }
+
+    // 服务类型分布图表
+    const serviceTypeCanvas = document.getElementById('service-type-chart');
+    if (serviceTypeCanvas && serviceTypeCanvas instanceof HTMLCanvasElement) {
+      // Destroy existing chart if it exists
+      if (chartInstances['service-type']) {
+        chartInstances['service-type'].destroy();
+      }
+      
+      const ctx = serviceTypeCanvas.getContext('2d');
+      if (ctx) {
+        chartInstances['service-type'] = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: currentLang === 'zh' 
+              ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
+              : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'],
+            datasets: [{
+              label: currentLang === 'zh' ? '占比 (%)' : 'Percentage (%)',
+              data: [85, 100, 60, 90, 75],
+              backgroundColor: [
+                'rgb(59, 130, 246)',
+                'rgb(34, 197, 94)',
+                'rgb(168, 85, 247)',
+                'rgb(251, 146, 60)',
+                'rgb(239, 68, 68)'
+              ],
+              borderRadius: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `${context.dataset.label}: ${context.parsed.y}%`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: {
+                  callback: function(value) {
+                    return value + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+        console.log('Service type chart initialized');
+      }
+    } else {
+      console.warn('Service type canvas not found');
+    }
+
+    // 交付周期统计图表
+    const deliveryCycleCanvas = document.getElementById('delivery-cycle-chart');
+    if (deliveryCycleCanvas && deliveryCycleCanvas instanceof HTMLCanvasElement) {
+      // Destroy existing chart if it exists
+      if (chartInstances['delivery-cycle']) {
+        chartInstances['delivery-cycle'].destroy();
+      }
+      
+      const ctx = deliveryCycleCanvas.getContext('2d');
+      if (ctx) {
+        chartInstances['delivery-cycle'] = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: currentLang === 'zh'
+              ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
+              : ['7-10 days', '11-15 days', '16-20 days', '21+ days'],
+            datasets: [{
+              data: [35, 45, 15, 5],
+              backgroundColor: [
+                'rgb(34, 197, 94)',
+                'rgb(59, 130, 246)',
+                'rgb(168, 85, 247)',
+                'rgb(239, 68, 68)'
+              ],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 15,
+                  font: {
+                    size: 12
+                  }
+                }
+              }
+            }
+          }
+        });
+        console.log('Delivery cycle chart initialized');
+      }
+    } else {
+      console.warn('Delivery cycle canvas not found');
+    }
+  }
+
   // Initialize on page load
-  document.addEventListener('DOMContentLoaded', async () => {
+  function initPage() {
     const lang = getLanguage();
     updatePageTexts(lang);
+    
+    // Function to try initializing charts
+    function tryInitCharts() {
+      if (typeof window !== 'undefined' && window.Chart) {
+        console.log('Chart.js found, initializing charts...');
+        initializeCharts();
+        return true;
+      }
+      return false;
+    }
+    
+    // Try immediately
+    if (!tryInitCharts()) {
+      // If Chart.js not ready, wait for it
+      let retries = 0;
+      const maxRetries = 20; // 2 seconds max wait
+      const checkInterval = setInterval(() => {
+        retries++;
+        if (tryInitCharts() || retries >= maxRetries) {
+          clearInterval(checkInterval);
+          if (retries >= maxRetries && !window.Chart) {
+            console.error('Chart.js failed to load after', maxRetries * 100, 'ms');
+          }
+        }
+      }, 100);
+    }
+  }
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    initPage();
     
     // Listen for language changes from other components
     window.addEventListener('storage', (e) => {
@@ -511,169 +682,20 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         updateCharts(newLang);
       }
     });
-
-    // Initialize charts
-    try {
-      const { Chart, registerables } = await import('chart.js');
-      Chart.register(...registerables);
-
-      // 设计分级分布图表
-      const designTierCanvas = document.getElementById('design-tier-chart');
-      if (designTierCanvas instanceof HTMLCanvasElement) {
-        const ctx = designTierCanvas.getContext('2d');
-        if (ctx) {
-          const currentLang = getLanguage();
-          // 计算设计分级分布
-          const premiumCount = premiumCasesCount;
-          const premiumPlusCount = premiumPlusCasesCount;
-          
-          chartInstances['design-tier'] = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: currentLang === 'zh'
-            ? ['顶级设计', '优质设计']
-            : ['Top-tier Design', 'Premium Design'],
-          datasets: [{
-            data: [premiumPlusCount, premiumCount],
-            backgroundColor: [
-              'rgb(168, 85, 247)',
-              'rgb(59, 130, 246)'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                padding: 15,
-                font: {
-                  size: 12
-                }
-              }
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  const label = context.label || '';
-                  const value = context.parsed || 0;
-                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                  const percentage = ((value / total) * 100).toFixed(1);
-                  return `${label}: ${value} (${percentage}%)`;
-                }
-              }
-            }
-          }
-        }
-        });
-        }
-      }
-    }
-
-      // 服务类型分布图表
-      const serviceTypeCanvas = document.getElementById('service-type-chart');
-      if (serviceTypeCanvas instanceof HTMLCanvasElement) {
-        const ctx = serviceTypeCanvas.getContext('2d');
-        if (ctx) {
-          const currentLang = getLanguage();
-          chartInstances['service-type'] = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: currentLang === 'zh' 
-              ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
-              : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'],
-            datasets: [{
-              label: currentLang === 'zh' ? '占比 (%)' : 'Percentage (%)',
-            data: [85, 100, 60, 90, 75],
-            backgroundColor: [
-              'rgb(59, 130, 246)',
-              'rgb(34, 197, 94)',
-              'rgb(168, 85, 247)',
-              'rgb(251, 146, 60)',
-              'rgb(239, 68, 68)'
-            ],
-            borderRadius: 8
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return `${context.dataset.label}: ${context.parsed.y}%`;
-                }
-              }
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100,
-              ticks: {
-                callback: function(value) {
-                  return value + '%';
-                }
-              }
-            }
-          }
-        }
-        });
-        }
-      }
-    }
-
-      // 交付周期统计图表
-      const deliveryCycleCanvas = document.getElementById('delivery-cycle-chart');
-      if (deliveryCycleCanvas instanceof HTMLCanvasElement) {
-        const ctx = deliveryCycleCanvas.getContext('2d');
-        if (ctx) {
-          const currentLang = getLanguage();
-          chartInstances['delivery-cycle'] = new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: currentLang === 'zh'
-              ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
-              : ['7-10 days', '11-15 days', '16-20 days', '21+ days'],
-          datasets: [{
-            data: [35, 45, 15, 5],
-            backgroundColor: [
-              'rgb(34, 197, 94)',
-              'rgb(59, 130, 246)',
-              'rgb(168, 85, 247)',
-              'rgb(239, 68, 68)'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                padding: 15,
-                font: {
-                  size: 12
-                }
-              }
-            }
-          }
-        }
-        });
-        }
-      }
-    }
-    } catch (error) {
-      console.error('Failed to load Chart.js:', error);
-    }
   });
+
+  // Also try to initialize when window loads (fallback)
+  if (typeof window !== 'undefined') {
+    window.addEventListener('load', () => {
+      if (!chartInstances['design-tier'] || 
+          !chartInstances['service-type'] || 
+          !chartInstances['delivery-cycle']) {
+        console.log('Retrying chart initialization on window load');
+        if (window.Chart) {
+          initializeCharts();
+        }
+      }
+    });
+  }
+
 </script>

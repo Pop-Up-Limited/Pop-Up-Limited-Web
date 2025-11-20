@@ -149,6 +149,7 @@ export const translations = {
         representativeCase: '代表案例',
         clickToVisit: '点击跳转',
         viewDetails: '查看详细对比',
+        viewCases: '查看案例区块',
         contact: '立即咨询',
         contactService: '联系客服'
       },
@@ -383,6 +384,7 @@ export const translations = {
         representativeCase: 'Representative Case',
         clickToVisit: 'Click to visit',
         viewDetails: 'View Detailed Comparison',
+        viewCases: 'View Case Section',
         contact: 'Consult Now',
         contactService: 'Contact Support',
         standardLimitations: {

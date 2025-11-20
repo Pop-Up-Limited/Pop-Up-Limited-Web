@@ -120,6 +120,53 @@ const featureLabels = [
   '品牌设计',
 ];
 
+// 定义每个套餐最重要的5个特征（必须包含"设计"）
+const highlightFeatureLabels = {
+  standard: ['设计', '交付', '部署', '页面数量', '维护'],
+  'standard-pro': ['设计', '交付', '部署', '页面数量', '客服与语言'],
+  custom: ['设计', '交付', '分析支持', '数据追踪', '品牌设计']
+};
+
+function getHighlightedFeatures(plan) {
+  const labels = highlightFeatureLabels[plan.id] ?? [];
+  const selected = [];
+
+  // 首先确保"设计"在第一位
+  const designFeature = plan.features.find((item) => item.label === '设计');
+  if (designFeature) {
+    selected.push(designFeature);
+  }
+
+  // 然后添加其他指定的特征（跳过已添加的"设计"）
+  labels.forEach((label) => {
+    if (label === '设计') return; // 已经添加过了
+    const feature = plan.features.find((item) => item.label === label);
+    if (feature && feature.value && feature.value !== '—' && !selected.includes(feature)) {
+      selected.push(feature);
+    }
+  });
+
+  // 如果还不够5个，从剩余特征中补充（优先选择有值的、不同的特征）
+  if (selected.length < 5) {
+    const remainingFeatures = plan.features.filter(
+      (feature) => 
+        feature.value && 
+        feature.value !== '—' && 
+        !selected.includes(feature) &&
+        feature.label !== '设计' // 已经添加过了
+    );
+    
+    // 按重要性排序：优先选择有实际内容的特征
+    remainingFeatures.forEach((feature) => {
+      if (selected.length < 5) {
+        selected.push(feature);
+      }
+    });
+  }
+
+  return selected.slice(0, 5);
+}
+
 // 客服微信
 const wechatId = 'popup-service';
 ---
@@ -209,7 +256,7 @@ const wechatId = 'popup-service';
 
               {/* 功能列表 */}
               <div class="mb-6 flex-1 space-y-3">
-                {plan.features.map((feature) => (
+                {getHighlightedFeatures(plan).map((feature) => (
                   <div class="flex items-start gap-3">
                     {feature.value !== '—' ? (
                       <svg class="mt-0.5 h-5 w-5 shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,6 +294,34 @@ const wechatId = 'popup-service';
                 ))}
               </div>
 
+              {/* 快捷跳转 */}
+              <div class="mb-6 flex flex-wrap gap-2 text-xs font-semibold">
+                <button
+                  type="button"
+                  data-view-details
+                  class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                  data-i18n="services.plans.viewDetails"
+                >
+                  查看完整服务
+                </button>
+                <button
+                  type="button"
+                  data-view-cases
+                  class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                  data-i18n="services.plans.viewCases"
+                >
+                  查看案例
+                </button>
+                <button
+                  type="button"
+                  data-view-design
+                  class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-3 py-1.5 text-slate-600 transition hover:bg-slate-200 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                  data-i18n="services.plans.viewDesign"
+                >
+                  设计
+                </button>
+              </div>
+
               {/* CTA按钮 */}
               <div class="mt-auto">
                 {plan.price === '联系专属客服支持' ? (
@@ -280,7 +355,7 @@ const wechatId = 'popup-service';
     </section>
 
     <!-- Optional Services -->
-    <section class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6">
+    <section id="cases-showcase" class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6 scroll-mt-24">
       <div class="mb-8 flex flex-col gap-3">
         <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="services.optional.title">
           可选服务
@@ -1051,117 +1126,142 @@ const wechatId = 'popup-service';
     });
   }
   
-  // Initialize language
-  document.addEventListener('DOMContentLoaded', () => {
-    const lang = getLanguage();
-    updatePageTexts(lang);
-  });
-  
-  // Listen for language changes
-  window.addEventListener('languagechange', ((e: CustomEvent) => {
-    updatePageTexts(e.detail.lang);
-  }) as EventListener);
-  
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'language') {
-      const newLang = e.newValue || 'zh';
-      updatePageTexts(newLang);
-    }
-  });
-  
-  // 弹窗控制
-  const modal = document.getElementById('contact-modal');
-  const contactButtons = document.querySelectorAll('[data-contact-btn]');
-  const closeButton = document.querySelector('[data-modal-close]');
-  const copyButton = document.querySelector('[data-copy-wechat]');
+  if (typeof window !== 'undefined') {
+    const initializePage = () => {
+      const lang = getLanguage();
+      updatePageTexts(lang);
 
-  // 打开弹窗
-  contactButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
-      }
-    });
-  });
+      const modal = document.getElementById('contact-modal');
+      const contactButtons = document.querySelectorAll('[data-contact-btn]');
+      const closeButton = document.querySelector('[data-modal-close]');
+      const copyButton = document.querySelector('[data-copy-wechat]');
 
-  // 关闭弹窗
-  function closeModal() {
-    if (modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-  }
+      console.log('Modal:', modal);
+      console.log('Contact buttons found:', contactButtons.length);
 
-  if (closeButton) {
-    closeButton.addEventListener('click', closeModal);
-  }
-
-  // 点击背景关闭
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-  }
-
-  // ESC 键关闭
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-      closeModal();
-    }
-  });
-
-  // 复制微信号
-  if (copyButton) {
-    copyButton.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(wechatId);
-        const originalText = copyButton.textContent;
-        copyButton.textContent = '已复制';
-        copyButton.classList.add('bg-green-500', 'hover:bg-green-600');
-        copyButton.classList.remove('bg-brand-500', 'hover:bg-brand-600');
-        
-        setTimeout(() => {
-          copyButton.textContent = originalText;
-          copyButton.classList.remove('bg-green-500', 'hover:bg-green-600');
-          copyButton.classList.add('bg-brand-500', 'hover:bg-brand-600');
-        }, 2000);
-      } catch (err) {
-        console.error('复制失败:', err);
-        // 降级方案：使用文本选择
-        const textArea = document.createElement('textarea');
-        textArea.value = wechatId;
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand('copy');
-          copyButton.textContent = '已复制';
-          setTimeout(() => {
-            copyButton.textContent = '复制';
-          }, 2000);
-        } catch (err) {
-          alert('复制失败，请手动复制：' + wechatId);
+      const openModal = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Opening modal...');
+        if (modal) {
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
+          document.body.style.overflow = 'hidden';
+          console.log('Modal opened');
+        } else {
+          console.error('Modal element not found');
         }
-        document.body.removeChild(textArea);
+      };
+
+      const closeModal = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        if (modal) {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+          document.body.style.overflow = '';
+        }
+      };
+
+      // 绑定所有联系按钮
+      contactButtons.forEach((btn) => {
+        btn.addEventListener('click', openModal);
+        // 也添加 mousedown 事件作为备用
+        btn.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+        });
+      });
+
+      if (closeButton) {
+        closeButton.addEventListener('click', closeModal);
+      }
+
+      if (modal) {
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            closeModal();
+          }
+        });
+      }
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+          closeModal();
+        }
+      });
+
+      if (copyButton) {
+        copyButton.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(wechatId);
+            const originalText = copyButton.textContent || '';
+            copyButton.textContent = '已复制';
+            copyButton.classList.add('bg-green-500', 'hover:bg-green-600');
+            copyButton.classList.remove('bg-brand-500', 'hover:bg-brand-600');
+
+            setTimeout(() => {
+              copyButton.textContent = originalText;
+              copyButton.classList.remove('bg-green-500', 'hover:bg-green-600');
+              copyButton.classList.add('bg-brand-500', 'hover:bg-brand-600');
+            }, 2000);
+          } catch (err) {
+            console.error('复制失败:', err);
+            const textArea = document.createElement('textarea');
+            textArea.value = wechatId;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+          }
+        });
+      }
+
+      document.querySelectorAll('[data-view-details]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const comparisonSection = document.getElementById('detailed-comparison');
+          if (comparisonSection) {
+            comparisonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-view-cases]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const casesSection = document.getElementById('cases-showcase');
+          if (casesSection) {
+            casesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-view-design]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const designSection = document.getElementById('design-tier-explanation');
+          if (designSection) {
+            designSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', initializePage);
+
+    window.addEventListener('languagechange', (event) => {
+      if (event.detail?.lang) {
+        updatePageTexts(event.detail.lang);
+      }
+    });
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'language') {
+        const newLang = event.newValue || 'zh';
+        updatePageTexts(newLang);
       }
     });
   }
-
-
-  // 查看详细对比按钮 - 滚动到详细对比表格
-  document.querySelectorAll('[data-view-details]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const comparisonSection = document.getElementById('detailed-comparison');
-      if (comparisonSection) {
-        comparisonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
 </script>
 

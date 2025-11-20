@@ -133,9 +133,7 @@ const resolveActive = (href) => {
             EN
           </button>
         </div>
-        <a href="/support" class="btn-primary" data-i18n="nav.contactSupport">
-          Contact Support
-        </a>
+        <a href="/support" class="btn-primary" data-i18n="nav.contactSupport"></a>
       </div>
     </nav>
   </div>
@@ -171,43 +169,47 @@ const resolveActive = (href) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (lang && (lang === 'zh' || lang === 'en')) {
-          console.log('Language switch clicked:', lang);
-          setLanguageToStorage(lang);
-          // Update Navbar texts immediately
-          updateTexts(lang);
-          
-          // Force update all page texts immediately (primary method)
-          if (typeof window.updatePageTexts === 'function') {
-            console.log('Calling window.updatePageTexts with lang:', lang);
-            window.updatePageTexts(lang);
-          } else {
-            console.warn('window.updatePageTexts is not available');
+        const clickedLang = btn.getAttribute('data-lang');
+        if (clickedLang && (clickedLang === 'zh' || clickedLang === 'en')) {
+          // Don't do anything if clicking the already active language
+          if (clickedLang === currentLang) {
+            return;
           }
           
-          // Dispatch custom event for other components (Layout, pages, footer)
-          const event = new CustomEvent('languagechange', { 
-            detail: { lang },
-            bubbles: true,
-            cancelable: true
-          });
-          window.dispatchEvent(event);
+          setLanguageToStorage(clickedLang);
           
-          // Update active state
+          // Update active state first
           switchers.forEach((s) => {
             const btns = s.querySelectorAll('[data-lang]');
             btns.forEach((b) => {
               const l = b.getAttribute('data-lang');
-              if (l === lang) {
+              if (l === clickedLang) {
                 b.setAttribute('data-active', 'true');
               } else {
                 b.setAttribute('data-active', 'false');
               }
             });
           });
+          
+          // Update Navbar texts immediately
+          updateTexts(clickedLang);
+          
+          // Force update all page texts immediately (primary method)
+          if (typeof window.updatePageTexts === 'function') {
+            window.updatePageTexts(clickedLang);
+          }
+          
+          // Dispatch custom event for other components (Layout, pages, footer)
+          const event = new CustomEvent('languagechange', { 
+            detail: { lang: clickedLang },
+            bubbles: true,
+            cancelable: true
+          });
+          window.dispatchEvent(event);
+          
           // Update URL with language parameter
           const url = new URL(window.location.href);
-          url.searchParams.set('lang', lang);
+          url.searchParams.set('lang', clickedLang);
           // Use replaceState to avoid page reload
           window.history.replaceState({}, '', url.toString());
         }
@@ -236,7 +238,8 @@ const resolveActive = (href) => {
 
   // Close open dropdowns when clicking outside (desktop)
   document.addEventListener('click', (event) => {
-    const trigger = (event.target as HTMLElement | null)?.closest('[data-has-dropdown]');
+    const target = event.target;
+    const trigger = target && target instanceof HTMLElement ? target.closest('[data-has-dropdown]') : null;
     if (!trigger) {
       document.querySelectorAll('[data-has-dropdown] details').forEach((detail) => {
         if (detail instanceof HTMLDetailsElement) {
