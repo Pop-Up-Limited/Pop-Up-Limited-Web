@@ -337,7 +337,8 @@ export const translations = {
       designTier: {
         title: 'Design Tier Explanation',
         premium: {
-          title: 'Quality Design (Basic)',
+          badge: 'Premium Design',
+          title: 'Premium Design (Basic)',
           description: 'Applicable to Standard and Standard Pro plans. Provides professional, practical web design focusing on functionality and user experience, ensuring beautiful and easy-to-use websites.',
           features: [
             'Modern, clean design style',
@@ -347,7 +348,8 @@ export const translations = {
           viewCases: 'View Cases'
         },
         premiumPlus: {
-          title: 'Premium Design (Advanced)',
+          badge: 'Top-tier Design',
+          title: 'Top-tier Design (Advanced)',
           description: 'Applicable to Custom plan. Provides exceptional visual design and innovative experience, combining brand characteristics and industry trends to create unique and impressive websites.',
           features: [
             'Customized, unique visual design',
