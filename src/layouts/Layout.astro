@@ -111,5 +111,11 @@ const ogImageUrl =
       const lang = getLanguage();
       updatePageTexts(lang);
     });
+    
+    // Listen for language change events from Navbar
+    window.addEventListener('languagechange', ((e: CustomEvent) => {
+      const newLang = e.detail.lang;
+      updatePageTexts(newLang);
+    }) as EventListener);
   }
 </script>
