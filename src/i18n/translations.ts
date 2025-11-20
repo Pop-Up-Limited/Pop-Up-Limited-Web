@@ -110,6 +110,7 @@ export const translations = {
       designTier: {
         title: '设计分级说明',
         premium: {
+          badge: '优质设计',
           title: '优质设计（初级）',
           description: '适用于标准套餐和标准 Pro 套餐。提供专业、实用的网页设计，注重功能性和用户体验，确保网站美观且易于使用。',
           features: [
@@ -120,6 +121,7 @@ export const translations = {
           viewCases: '查看案例'
         },
         premiumPlus: {
+          badge: '顶级设计',
           title: '顶级设计（高级）',
           description: '适用于全定制套餐。提供卓越的视觉设计和创新体验，结合品牌特色和行业趋势，打造独特且令人印象深刻的网站。',
           features: [
@@ -366,7 +368,27 @@ export const translations = {
         clickToVisit: 'Click to visit',
         viewDetails: 'View Detailed Comparison',
         contact: 'Consult Now',
-        contactService: 'Contact Support'
+        contactService: 'Contact Support',
+        standardLimitations: {
+          title: '⚠️ Package Limitations:',
+          '0': 'Limited to 1 page',
+          '1': 'No custom domain',
+          '2': 'Basic maintenance service'
+        },
+        standardProAdvantages: {
+          title: '✨ Compared to Standard:',
+          '0': 'Custom domain support',
+          '1': 'Unlimited pages',
+          '2': 'Free maintenance for 1 year',
+          '3': 'Dedicated customer support'
+        },
+        customAdvantages: {
+          title: '✨ Core Advantages:',
+          '0': 'Top-tier visual design',
+          '1': 'Customized interactive experience',
+          '2': 'Deep brand integration',
+          '3': 'Multi-language localization'
+        }
       },
       comparison: {
         title: 'Detailed Comparison',
