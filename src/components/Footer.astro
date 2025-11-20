@@ -95,10 +95,13 @@ import { translations } from '../i18n/translations';
     });
     
     // Listen for language change events
-    window.addEventListener('languagechange', ((e: CustomEvent) => {
-      const newLang = e.detail.lang;
-      updateFooterTexts(newLang);
-    }) as EventListener);
+    window.addEventListener('languagechange', function(e) {
+      const event = e;
+      const newLang = event.detail && event.detail.lang;
+      if (newLang) {
+        updateFooterTexts(newLang);
+      }
+    });
   }
 </script>
 

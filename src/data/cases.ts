@@ -133,7 +133,7 @@ export const cases: Case[] = [
     name: 'Web Case 6',
     description: 'Professional website with modern design and excellent user experience',
     url: 'https://pop-up-limited.github.io/web-case-6/',
-    image: '/images/projects/web-case-6.png',
+    image: '/images/projects/popup-limited-website.png',
     category: 'Web Design',
     year: '2024',
     tags: ['Website', 'Modern', 'Professional'],

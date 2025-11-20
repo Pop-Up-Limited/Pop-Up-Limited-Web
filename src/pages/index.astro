@@ -414,7 +414,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
 <script define:vars={{ translations, premiumCasesCount: premiumCases.length, premiumPlusCasesCount: premiumPlusCases.length }}>
   // Chart instances storage (global scope)
-  const chartInstances: { [key: string]: any } = {};
+  const chartInstances = {};
 
   // Get language from storage or URL
   function getLanguage() {
@@ -485,7 +485,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
   
   // Make function globally accessible
   if (typeof window !== 'undefined') {
-    (window as any).updatePageTexts = updatePageTexts;
+    window.updatePageTexts = updatePageTexts;
   }
   
   // Initialize on page load

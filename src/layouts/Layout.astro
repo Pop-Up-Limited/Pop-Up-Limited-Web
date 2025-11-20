@@ -126,7 +126,7 @@ const ogImageUrl =
   
   // Make updatePageTexts globally accessible
   if (typeof window !== 'undefined') {
-    (window as any).updatePageTexts = updatePageTexts;
+    window.updatePageTexts = updatePageTexts;
     
     document.addEventListener('DOMContentLoaded', () => {
       const lang = getLanguage();
@@ -134,12 +134,13 @@ const ogImageUrl =
     });
     
     // Listen for language change events from Navbar
-    window.addEventListener('languagechange', ((e: CustomEvent) => {
-      const newLang = e.detail?.lang;
+    window.addEventListener('languagechange', function(e) {
+      const event = e;
+      const newLang = event.detail && event.detail.lang;
       if (newLang) {
         updatePageTexts(newLang);
       }
-    }) as EventListener);
+    });
     
     // Also listen for storage events
     window.addEventListener('storage', (e) => {

@@ -8,7 +8,7 @@ interface Props {
 
 const { currentPath = '/' } = Astro.props as Props;
 
-const resolveActive = (href: string) => {
+const resolveActive = (href) => {
   if (href === '/#products') {
     return currentPath === '/';
   }
