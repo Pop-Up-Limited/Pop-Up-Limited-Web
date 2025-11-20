@@ -252,7 +252,7 @@ export const translations = {
     },
     portfolio: {
       badge: 'Portfolio',
-      title: 'Our Work in Action',
+      title: 'Service Experience',
       subtitle: 'Explore our portfolio of successful projects, from university websites to innovative web applications and data visualizations.',
       viewMore: 'View More Cases',
       premiumDesign: 'Premium Design',
