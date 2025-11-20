@@ -1,0 +1,998 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { COMPANY_NAME } from '../config/site';
+
+const plans = [
+  {
+    id: 'standard',
+    name: '标准',
+    price: '¥15,888',
+    description: '适合初创企业和个人项目',
+    caseUrl: 'https://pop-up-limited.github.io/pop-up-limited-website/',
+    caseName: 'Pop Up Limited Website',
+    caseImage: '/images/projects/popup-limited-website.png',
+    features: [
+      { label: '交付', value: '源码+网址交付' },
+      { label: '设计', value: '优质设计（初级）' },
+      { label: '响应式设计', value: 'Responsive Design' },
+      { label: '移动优先设计', value: 'Mobile-First Design' },
+      { label: '跨浏览器兼容', value: 'Cross-Browser Compatibility' },
+      { label: '部署', value: '免费部署（不支持自定义域名）' },
+      { label: '页面数量', value: '最多 1 页' },
+      { label: '维护', value: '¥ 1,888 / 年' },
+      { label: 'SEO', value: '基础优化' },
+      { label: '交付周期', value: '最快 10 天*¹' },
+      { label: '修改', value: '2 次' },
+      { label: '分析支持', value: '—' },
+      { label: '客服与语言', value: '—' },
+      { label: '合规与政策', value: '—' },
+      { label: '数据追踪', value: '—' },
+      { label: '品牌设计', value: '—' },
+    ],
+    popular: false,
+  },
+  {
+    id: 'standard-pro',
+    name: '标准 Pro',
+    price: '¥18,888',
+    description: '适合成长型企业和专业需求',
+    caseUrl: 'https://pop-up-limited.github.io/popup-limited-landing/',
+    caseName: 'Pop Up Limited Landing',
+    caseImage: '/images/projects/popup-limited-landing.png',
+    features: [
+      { label: '交付', value: '源码+网址交付' },
+      { label: '设计', value: '优质设计（初级）' },
+      { label: '响应式设计', value: 'Responsive Design' },
+      { label: '移动优先设计', value: 'Mobile-First Design' },
+      { label: '跨浏览器兼容', value: 'Cross-Browser Compatibility' },
+      { label: '部署', value: '免费自定义域名部署' },
+      { label: '页面数量', value: '不设上限' },
+      { label: '维护', value: '免费 1 年' },
+      { label: 'SEO', value: '进阶优化' },
+      { label: '交付周期', value: '10 天内*¹' },
+      { label: '修改', value: '5 次' },
+      { label: '分析支持', value: '竞品分析' },
+      { label: '客服与语言', value: '专属客服' },
+      { label: '合规与政策', value: '—' },
+      { label: '数据追踪', value: '—' },
+      { label: '品牌设计', value: '—' },
+    ],
+    popular: true,
+  },
+  {
+    id: 'custom',
+    name: '全定制',
+    price: '联系专属客服支持',
+    description: '适合大型企业和复杂项目',
+    caseUrl: 'https://mapier.ai/',
+    caseName: 'Mapier.ai',
+    caseImage: '/images/projects/mapier.png',
+    features: [
+      { label: '交付', value: '源码+网址交付' },
+      { label: '设计', value: '顶级设计（高级）' },
+      { label: '响应式设计', value: 'Responsive Design' },
+      { label: '移动优先设计', value: 'Mobile-First Design' },
+      { label: '跨浏览器兼容', value: 'Cross-Browser Compatibility' },
+      { label: '部署', value: '免费自定义域名部署' },
+      { label: '页面数量', value: '不设上限' },
+      { label: '维护', value: '免费 5 年' },
+      { label: 'SEO', value: '增强优化' },
+      { label: '交付周期', value: '最快 15 天*¹' },
+      { label: '修改', value: '直到满意*²' },
+      { label: '分析支持', value: '金融与商业分析团队支持' },
+      { label: '客服与语言', value: '多语言服务 + 本地化设计' },
+      { label: '合规与政策', value: '隐私政策与服务条款模板' },
+      { label: '数据追踪', value: '可选数据追踪服务*³' },
+      { label: '品牌设计', value: 'Logo / 插画 / 字体 / 配色*⁴' },
+    ],
+    popular: false,
+  },
+];
+
+const featureLabels = [
+  '交付',
+  '设计',
+  '响应式设计',
+  '移动优先设计',
+  '跨浏览器兼容',
+  '部署',
+  '页面数量',
+  '维护',
+  'SEO',
+  '交付周期',
+  '修改',
+  '分析支持',
+  '客服与语言',
+  '合规与政策',
+  '数据追踪',
+  '品牌设计',
+];
+
+// 客服微信
+const wechatId = 'popup-service';
+---
+
+<Layout 
+  title={`网站开发服务方案 · ${COMPANY_NAME}`}
+  description="选择适合您需求的网站开发服务方案：标准、标准 Pro 或全定制服务。"
+>
+  <div class="relative min-h-screen bg-surface dark:bg-surface-dark">
+    <!-- Hero Section -->
+    <section class="relative mx-auto w-full max-w-7xl px-4 pt-16 pb-8 md:px-6 md:pt-20 md:pb-12">
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[300px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
+      <div class="text-center">
+        <h1 class="text-3xl font-semibold leading-tight text-foreground md:text-4xl dark:text-foreground-dark">
+          网站开发服务方案
+        </h1>
+        <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300">
+          选择适合您需求的网站开发服务，从标准方案到全定制解决方案，我们为您提供专业的网站开发服务。
+        </p>
+      </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6">
+      <div class="grid gap-4 md:grid-cols-3 lg:gap-6">
+        {plans.map((plan) => (
+          <div
+            class={`relative flex flex-col rounded-2xl border-2 transition-all duration-300 ${
+              plan.popular
+                ? 'border-brand-500 bg-gradient-to-br from-brand-500/10 to-transparent shadow-brand-md'
+                : 'border-slate-200 bg-white/70 dark:border-slate-700 dark:bg-black/70'
+            }`}
+          >
+            {plan.popular && (
+              <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span class="inline-flex items-center gap-2 rounded-full border-2 border-brand-500 bg-brand-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-brand-sm">
+                  推荐
+                </span>
+              </div>
+            )}
+            
+            <div class="flex flex-col p-5">
+              <div class="mb-4">
+                <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark">
+                  {plan.name}
+                </h3>
+                <p class="mt-1 text-xs text-foreground-muted dark:text-slate-300">
+                  {plan.description}
+                </p>
+              </div>
+
+              <div class="mb-4 border-b border-slate-200 pb-4 dark:border-slate-700">
+                <div class="flex items-baseline gap-2">
+                  <span class="text-3xl font-bold text-foreground dark:text-foreground-dark">
+                    {plan.price}
+                  </span>
+                </div>
+                {plan.price !== '联系专属客服支持' && (
+                  <p class="mt-1 text-xs text-foreground-muted dark:text-slate-400">
+                    一次性付费
+                  </p>
+                )}
+              </div>
+
+              <!-- 网站预览区域 -->
+              <div class="mb-4">
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
+                  代表案例
+                </p>
+                <div class="relative mb-2 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+                  <div class="aspect-video relative overflow-hidden group">
+                    <a
+                      href={plan.caseUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="block h-full w-full"
+                    >
+                      <img
+                        src={plan.caseImage}
+                        alt={`${plan.caseName} 预览`}
+                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
+                          在新窗口打开 →
+                        </span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <a
+                    href={plan.caseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block text-xs font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+                  >
+                    {plan.caseName} (点击跳转) →
+                  </a>
+                  <a
+                    href={plan.caseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="block break-all text-xs text-foreground-muted hover:text-brand-500 dark:text-slate-400 dark:hover:text-brand-400"
+                  >
+                    {plan.caseUrl} (点击跳转)
+                  </a>
+                </div>
+              </div>
+
+              <!-- 核心要点：只显示三个最重要的 -->
+              <div class="flex-1 space-y-3">
+                {(() => {
+                  const coreFeatures = [
+                    plan.features.find(f => f.label === '交付周期'),
+                    plan.features.find(f => f.label === '设计'),
+                    plan.features.find(f => f.label === '分析支持')
+                  ].filter(Boolean);
+                  
+                  return coreFeatures.map((feature) => (
+                    <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 last:border-0 dark:border-slate-800">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-xs font-medium text-foreground-muted dark:text-slate-400">
+                          {feature.label}
+                        </span>
+                        {feature.label === '设计' && (
+                          <a
+                            href="#design-tier-explanation"
+                            class="group relative flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 text-slate-500 transition-colors hover:bg-brand-500 hover:text-white dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-brand-500 dark:hover:text-white"
+                            title="了解设计分级说明"
+                          >
+                            <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </a>
+                        )}
+                      </div>
+                      <span class={`text-right text-xs font-medium ${
+                        feature.value === '—' 
+                          ? 'text-slate-400 dark:text-slate-600' 
+                          : plan.popular
+                          ? 'text-brand-600 dark:text-brand-400'
+                          : 'text-foreground dark:text-foreground-dark'
+                      }`}>
+                        {feature.value}
+                      </span>
+                    </div>
+                  ));
+                })()}
+              </div>
+
+              <!-- 查看详细对比按钮 -->
+              <div class="mt-4">
+                <button
+                  type="button"
+                  data-view-details
+                  class="w-full text-xs text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
+                >
+                  查看详细对比 ↓
+                </button>
+              </div>
+
+              <div class="mt-4">
+                {plan.price === '联系专属客服支持' ? (
+                  <button
+                    type="button"
+                    data-contact-btn
+                    class="btn-primary block w-full text-center"
+                  >
+                    联系客服
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    data-contact-btn
+                    class={`block w-full text-center ${
+                      plan.popular ? 'btn-primary' : 'btn-secondary'
+                    }`}
+                  >
+                    立即咨询
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Optional Services -->
+    <section class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6">
+      <div class="mb-8 flex flex-col gap-3">
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500">
+          可选服务
+        </span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+          增强您的网站功能
+        </h2>
+        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300">
+          根据您的业务需求，我们可以为您提供以下可选服务，让您的网站更加完善和强大。
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- 表单功能 -->
+        <div class="card-surface group p-6 transition-all duration-300 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
+            表单功能
+          </h3>
+          <p class="mb-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            添加联系表单、询价表单、预约表单等，让客户可以直接在网站上提交信息和咨询。
+          </p>
+          <ul class="space-y-2 text-xs text-foreground-muted dark:text-slate-400">
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>联系表单</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>询价表单</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>预约表单</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 客户咨询服务 -->
+        <div class="card-surface group p-6 transition-all duration-300 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
+            客户咨询服务
+          </h3>
+          <p class="mb-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            集成在线客服系统，支持实时聊天、留言板等功能，让客户可以随时与您取得联系。
+          </p>
+          <ul class="space-y-2 text-xs text-foreground-muted dark:text-slate-400">
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>在线客服系统</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>实时聊天功能</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>留言板功能</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 商品管理 -->
+        <div class="card-surface group p-6 transition-all duration-300 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
+            商品管理
+          </h3>
+          <p class="mb-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            添加商品展示和管理功能，支持商品分类、详情页、库存管理等，适合需要展示产品或服务的网站。
+          </p>
+          <ul class="space-y-2 text-xs text-foreground-muted dark:text-slate-400">
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>商品分类管理</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>商品详情页</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>库存管理</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- CMS 内容管理系统 -->
+        <div class="card-surface group p-6 transition-all duration-300 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
+            CMS 内容管理系统
+          </h3>
+          <p class="mb-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            集成内容管理系统，让您可以轻松管理网站内容，无需技术背景即可更新文章、页面等信息。
+          </p>
+          <ul class="space-y-2 text-xs text-foreground-muted dark:text-slate-400">
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>文章管理</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>页面管理</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>媒体库管理</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 信息管理 -->
+        <div class="card-surface group p-6 transition-all duration-300 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
+            信息管理
+          </h3>
+          <p class="mb-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            提供完整的信息管理功能，包括数据收集、存储、查询和导出，帮助您更好地管理和分析业务数据。
+          </p>
+          <ul class="space-y-2 text-xs text-foreground-muted dark:text-slate-400">
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>数据收集与存储</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>数据查询与筛选</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>数据导出功能</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 其他定制服务 -->
+        <div class="card-surface group p-6 transition-all duration-300 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </div>
+          <h3 class="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
+            其他定制服务
+          </h3>
+          <p class="mb-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            根据您的具体需求，我们可以提供更多定制化服务，包括第三方集成、API 开发等。
+          </p>
+          <ul class="space-y-2 text-xs text-foreground-muted dark:text-slate-400">
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>第三方系统集成</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>API 接口开发</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="mt-0.5 h-4 w-4 shrink-0 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>功能定制开发</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center">
+        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300">
+          需要了解更多可选服务详情？请联系我们的客服团队获取详细报价。
+        </p>
+        <button type="button" data-contact-btn class="btn-primary">
+          联系客服咨询
+        </button>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section id="detailed-comparison" class="mx-auto w-full max-w-7xl px-4 pb-16 md:px-6 scroll-mt-24">
+      <div class="card-surface">
+        <h2 class="mb-8 text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          详细对比
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-700">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-foreground dark:text-foreground-dark">
+                  服务项
+                </th>
+                {plans.map((plan) => (
+                  <th
+                    class={`px-4 py-3 text-center text-sm font-semibold ${
+                      plan.popular
+                        ? 'text-brand-600 dark:text-brand-400'
+                        : 'text-foreground dark:text-foreground-dark'
+                    }`}
+                  >
+                    {plan.name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {featureLabels.map((label, idx) => (
+                <tr class="border-b border-slate-100 dark:border-slate-800">
+                  <td class="px-4 py-3 text-sm font-medium text-foreground-muted dark:text-slate-400">
+                    <div class="flex items-center gap-2">
+                      <span>{label}</span>
+                      {label === '设计' && (
+                        <a
+                          href="#design-tier-explanation"
+                          class="group relative flex h-5 w-5 items-center justify-center rounded-full bg-slate-200 text-slate-500 transition-colors hover:bg-brand-500 hover:text-white dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-brand-500 dark:hover:text-white"
+                          title="了解设计分级说明"
+                        >
+                          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  </td>
+                  {plans.map((plan) => {
+                    const feature = plan.features.find((f) => f.label === label);
+                    return (
+                      <td
+                        class={`px-4 py-3 text-center text-sm ${
+                          feature?.value === '—'
+                            ? 'text-slate-400 dark:text-slate-600'
+                            : plan.popular
+                            ? 'text-brand-600 dark:text-brand-400 font-medium'
+                            : 'text-foreground dark:text-foreground-dark'
+                        }`}
+                      >
+                        {feature?.value || '—'}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design Tier Explanation -->
+    <section id="design-tier-explanation" class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6 scroll-mt-24">
+      <div class="card-surface rounded-2xl p-6 md:p-8">
+        <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          设计分级说明
+        </h2>
+        <div class="grid gap-6 md:grid-cols-2">
+          <div class="rounded-xl border-2 border-brand-500/30 bg-brand-500/5 p-5">
+            <div class="mb-3 flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-500/10 text-brand-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark">
+                优质设计（初级）
+              </h3>
+            </div>
+            <p class="mb-3 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+              适用于标准套餐和标准 Pro 套餐。提供专业、实用的网页设计，注重功能性和用户体验，确保网站美观且易于使用。
+            </p>
+            <ul class="mb-4 space-y-2 text-sm text-foreground-muted dark:text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="mt-1 text-brand-500">•</span>
+                <span>现代化、简洁的设计风格</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1 text-brand-500">•</span>
+                <span>响应式布局，适配所有设备</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1 text-brand-500">•</span>
+                <span>优化的用户体验和交互设计</span>
+              </li>
+            </ul>
+            <a
+              href="/cases?tier=premium"
+              class="inline-flex items-center gap-2 rounded-lg border-2 border-brand-500 bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-600 hover:border-brand-600"
+            >
+              查看案例
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+          </div>
+
+          <div class="rounded-xl border-2 border-purple-500/30 bg-purple-500/5 p-5">
+            <div class="mb-3 flex items-center gap-3">
+              <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10 text-purple-600">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark">
+                顶级设计（高级）
+              </h3>
+            </div>
+            <p class="mb-3 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+              适用于全定制套餐。提供卓越的视觉设计和创新体验，结合品牌特色和行业趋势，打造独特且令人印象深刻的网站。
+            </p>
+            <ul class="mb-4 space-y-2 text-sm text-foreground-muted dark:text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="mt-1 text-purple-500">•</span>
+                <span>定制化、独特的视觉设计</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1 text-purple-500">•</span>
+                <span>高级动画和交互效果</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="mt-1 text-purple-500">•</span>
+                <span>品牌形象深度整合</span>
+              </li>
+            </ul>
+            <a
+              href="/cases?tier=premium-plus"
+              class="inline-flex items-center gap-2 rounded-lg border-2 border-purple-500 bg-purple-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-purple-600 hover:border-purple-600"
+            >
+              查看案例
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Terms & Notes -->
+    <section class="mx-auto w-full max-w-4xl px-4 pb-24 md:px-6">
+      <div class="space-y-6">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+          服务条款备注
+        </h2>
+
+        <div class="space-y-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *¹ (关于交付周期):
+            </p>
+            <p class="mt-2">
+              交付周期（如"最快10天"）指我方交付首个完整预览版本（V1）所需的最短工作时间。
+              <strong>此周期的起算点为客户方提供了所有必要的、符合要求的资料（包括但不限于最终文案、图片、Logo、及明确的需求文档）之后。</strong>
+              因客户方资料延迟或中途提出新需求导致的时间延长，不在此承诺时限内。
+            </p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *² (关于"直到满意"):
+            </p>
+            <p class="mt-2">
+              "直到满意"条款适用于项目首版交付后的 <strong>60天</strong> 集中修改期内。在此期间，客户可就<strong>原始需求范围</strong>内的设计和功能提出不限次数的修改意见。
+            </p>
+            <ul class="mt-2 ml-6 list-disc space-y-1">
+              <li>
+                集中修改期结束后，服务将视为"满意"并自动关闭。后续的额外修改需求，将视为新的维护或迭代工作，可能产生额外费用。
+              </li>
+              <li>
+                超出原始需求范围的修改（如增加新页面、新功能模块），即使在修改期内，也需另行评估和报价。
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *³ (关于数据追踪):
+            </p>
+            <p class="mt-2">
+              "可选数据追踪服务"为附加高级服务。如客户选择此项，其具体需求（如埋点方案、报表配置）将<strong>另行沟通，且相关开发与部署时间不计入上述基础交付周期（*¹）内。</strong>
+            </p>
+          </div>
+
+          <div>
+            <p class="font-semibold text-foreground dark:text-foreground-dark">
+              *⁴ (关于品牌设计):
+            </p>
+            <p class="mt-2">
+              "品牌设计"服务（如 Logo、VI、配色方案）为独立于网站部署的专业服务。如果客户选择此服务包，<strong>网站的"交付周期"(*¹) 将从品牌设计方案最终确认后开始计算。</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cases Preview Section -->
+    <section class="mx-auto mb-24 w-full max-w-7xl px-4 md:px-6">
+      <div class="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div>
+          <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
+            成功案例
+          </h2>
+          <p class="mt-2 text-base text-foreground-muted dark:text-slate-300">
+            探索我们为不同行业客户打造的专业网站解决方案
+          </p>
+        </div>
+        <a href="/cases" class="btn-secondary whitespace-nowrap">
+          查看更多案例 →
+        </a>
+      </div>
+      
+      <div class="grid gap-6 md:grid-cols-3">
+        {plans.map((plan) => (
+          <div class="group relative overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900">
+            <div class="relative h-48 overflow-hidden">
+              <a
+                href={plan.caseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block h-full w-full"
+              >
+                <img
+                  src={plan.caseImage}
+                  alt={`${plan.caseName} 预览`}
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              </a>
+            </div>
+            <div class="p-4">
+              <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">
+                {plan.caseName}
+              </h3>
+              <p class="mb-3 text-sm text-foreground-muted dark:text-slate-300">
+                {plan.description}
+              </p>
+              <a
+                href={plan.caseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
+              >
+                访问网站 →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="mx-auto mb-24 w-full max-w-6xl rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
+      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100">
+        准备开始您的项目？
+      </h2>
+      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80">
+        联系我们的专业团队，获取定制化的网站开发解决方案。
+      </p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <button type="button" data-contact-btn class="btn-primary">
+          联系客服
+        </button>
+        <a class="btn-secondary" href="/">
+          返回首页
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- 客服微信弹窗 -->
+  <div
+    id="contact-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    data-modal
+  >
+    <div class="relative mx-auto w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+      <button
+        type="button"
+        data-modal-close
+        class="absolute right-4 top-4 rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
+        aria-label="关闭"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      
+      <div class="text-center">
+        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand-500/10">
+          <svg class="h-6 w-6 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
+        </div>
+        
+        <h3 class="mb-1.5 text-lg font-semibold text-foreground dark:text-foreground-dark">
+          联系客服
+        </h3>
+        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300">
+          请添加我们的客服微信，我们将尽快为您提供服务
+        </p>
+        
+        <div class="mb-4 rounded-xl border-2 border-brand-500/30 bg-brand-500/5 p-3">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
+            客服微信
+          </p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <code class="rounded-lg bg-white px-3 py-1.5 text-base font-mono font-semibold text-brand-600 dark:bg-slate-800 dark:text-brand-400">
+              {wechatId}
+            </code>
+            <button
+              type="button"
+              data-copy-wechat
+              class="rounded-lg border border-brand-500 bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-brand-600"
+            >
+              复制
+            </button>
+          </div>
+        </div>
+
+        <div class="mb-2">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
+            扫码添加
+          </p>
+          <div class="flex flex-col items-center gap-2">
+            <div class="flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <img
+                src="/wechat-qr-popup-service.png"
+                alt="Popup Service 客服微信二维码"
+                loading="lazy"
+                decoding="async"
+                class="max-w-[280px] h-auto object-contain"
+              />
+            </div>
+            <p class="text-xs text-center text-foreground-muted dark:text-slate-400 px-2 pb-2">
+              扫一扫二维码，或直接搜索微信号 <span class="font-semibold text-brand-600 dark:text-brand-400">{wechatId}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script define:vars={{ wechatId }}>
+  // 弹窗控制
+  const modal = document.getElementById('contact-modal');
+  const contactButtons = document.querySelectorAll('[data-contact-btn]');
+  const closeButton = document.querySelector('[data-modal-close]');
+  const copyButton = document.querySelector('[data-copy-wechat]');
+
+  // 打开弹窗
+  contactButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  // 关闭弹窗
+  function closeModal() {
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (closeButton) {
+    closeButton.addEventListener('click', closeModal);
+  }
+
+  // 点击背景关闭
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  }
+
+  // ESC 键关闭
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+
+  // 复制微信号
+  if (copyButton) {
+    copyButton.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(wechatId);
+        const originalText = copyButton.textContent;
+        copyButton.textContent = '已复制';
+        copyButton.classList.add('bg-green-500', 'hover:bg-green-600');
+        copyButton.classList.remove('bg-brand-500', 'hover:bg-brand-600');
+        
+        setTimeout(() => {
+          copyButton.textContent = originalText;
+          copyButton.classList.remove('bg-green-500', 'hover:bg-green-600');
+          copyButton.classList.add('bg-brand-500', 'hover:bg-brand-600');
+        }, 2000);
+      } catch (err) {
+        console.error('复制失败:', err);
+        // 降级方案：使用文本选择
+        const textArea = document.createElement('textarea');
+        textArea.value = wechatId;
+        textArea.style.position = 'fixed';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          copyButton.textContent = '已复制';
+          setTimeout(() => {
+            copyButton.textContent = '复制';
+          }, 2000);
+        } catch (err) {
+          alert('复制失败，请手动复制：' + wechatId);
+        }
+        document.body.removeChild(textArea);
+      }
+    });
+  }
+
+
+  // 查看详细对比按钮 - 滚动到详细对比表格
+  document.querySelectorAll('[data-view-details]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const comparisonSection = document.getElementById('detailed-comparison');
+      if (comparisonSection) {
+        comparisonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+

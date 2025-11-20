@@ -1,12 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useLanguage } from '../contexts/LanguageContext'
-import { translations } from '../i18n/translations'
 
 export default function ConsultModal({ isOpen, onClose }) {
-  const { language } = useLanguage()
-  const t = translations[language]
   const [contactInfo, setContactInfo] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -29,15 +25,15 @@ export default function ConsultModal({ isOpen, onClose }) {
       })
 
       if (response.ok) {
-        alert(t.consult.submitSuccess)
+        alert('提交成功！我们会尽快联系您。')
         setContactInfo('')
         onClose()
       } else {
-        alert(t.consult.submitError)
+        alert('提交失败，请稍后重试。')
       }
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert(t.consult.submitError)
+      alert('提交失败，请稍后重试。')
     } finally {
       setIsSubmitting(false)
     }
@@ -49,7 +45,7 @@ export default function ConsultModal({ isOpen, onClose }) {
         <button
           onClick={onClose}
           className="absolute right-4 top-4 rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300"
-          aria-label={t.consult.close}
+          aria-label="关闭"
         >
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -57,7 +53,7 @@ export default function ConsultModal({ isOpen, onClose }) {
         </button>
 
         <h2 className="mb-6 text-2xl font-semibold text-foreground dark:text-foreground-dark">
-          {t.consult.title}
+          立即咨询
         </h2>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -69,10 +65,10 @@ export default function ConsultModal({ isOpen, onClose }) {
               </svg>
             </div>
             <h3 className="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
-              {t.consult.wechatConsult}
+              微信咨询
             </h3>
             <p className="mb-4 text-center text-sm text-foreground-muted dark:text-slate-300">
-              {t.consult.addWechat}
+              添加客服微信
             </p>
             <div className="mb-4 rounded-lg bg-white px-4 py-2 text-center dark:bg-slate-800">
               <code className="text-base font-mono font-semibold text-brand-600 dark:text-brand-400">
@@ -80,7 +76,7 @@ export default function ConsultModal({ isOpen, onClose }) {
               </code>
             </div>
             <div className="flex h-32 w-32 items-center justify-center rounded-xl border-2 border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-              <span className="text-xs text-slate-400">{t.consult.qrPlaceholder}</span>
+              <span className="text-xs text-slate-400">二维码占位符</span>
             </div>
           </div>
 
@@ -92,13 +88,13 @@ export default function ConsultModal({ isOpen, onClose }) {
               </svg>
             </div>
             <h3 className="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
-              {t.consult.scanConsult}
+              扫码咨询
             </h3>
             <p className="mb-4 text-center text-sm text-foreground-muted dark:text-slate-300">
-              {t.consult.scanWithWechat}
+              使用微信扫描二维码
             </p>
             <div className="flex h-32 w-32 items-center justify-center rounded-xl border-2 border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
-              <span className="text-xs text-slate-400">{t.consult.qrPlaceholder}</span>
+              <span className="text-xs text-slate-400">二维码占位符</span>
             </div>
           </div>
 
@@ -110,17 +106,17 @@ export default function ConsultModal({ isOpen, onClose }) {
               </svg>
             </div>
             <h3 className="mb-2 text-lg font-semibold text-foreground dark:text-foreground-dark">
-              {t.consult.quickSubmit}
+              快速提交
             </h3>
             <p className="mb-4 text-center text-sm text-foreground-muted dark:text-slate-300">
-              {t.consult.leaveContact}
+              留下联系方式
             </p>
             <form onSubmit={handleSubmit} className="w-full space-y-4">
               <input
                 type="text"
                 value={contactInfo}
                 onChange={(e) => setContactInfo(e.target.value)}
-                placeholder={t.consult.placeholder}
+                placeholder="微信号/手机号/邮箱"
                 required
                 className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-foreground-dark"
               />
@@ -129,7 +125,7 @@ export default function ConsultModal({ isOpen, onClose }) {
                 disabled={isSubmitting}
                 className="btn-primary w-full"
               >
-                {isSubmitting ? t.consult.submitting : t.consult.submit}
+                {isSubmitting ? '提交中...' : '提交'}
               </button>
             </form>
           </div>
@@ -138,3 +134,4 @@ export default function ConsultModal({ isOpen, onClose }) {
     </div>
   )
 }
+

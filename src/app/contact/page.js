@@ -1,12 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useLanguage } from '../../contexts/LanguageContext'
-import { translations } from '../../i18n/translations'
 
 export default function ContactPage() {
-  const { language } = useLanguage()
-  const t = translations[language]
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,14 +27,14 @@ export default function ContactPage() {
       })
 
       if (response.ok) {
-        alert(t.contact.submitSuccess)
+        alert('提交成功！我们会尽快联系您。')
         setFormData({ name: '', email: '', message: '' })
       } else {
-        alert(t.contact.submitError)
+        alert('提交失败，请稍后重试。')
       }
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert(t.contact.submitError)
+      alert('提交失败，请稍后重试。')
     } finally {
       setIsSubmitting(false)
     }
@@ -48,16 +44,16 @@ export default function ContactPage() {
     <div className="mx-auto w-full max-w-2xl px-4 py-12">
       <div className="card-surface">
         <h1 className="mb-2 text-3xl font-semibold text-foreground dark:text-foreground-dark">
-          {t.contact.title}
+          联系我们
         </h1>
         <p className="mb-8 text-foreground-muted dark:text-slate-300">
-          {t.contact.subtitle}
+          请填写以下表单，我们会尽快回复您。
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label htmlFor="name" className="mb-2 block text-sm font-medium text-foreground dark:text-foreground-dark">
-              {t.contact.name}
+              姓名
             </label>
             <input
               type="text"
@@ -71,7 +67,7 @@ export default function ContactPage() {
 
           <div>
             <label htmlFor="email" className="mb-2 block text-sm font-medium text-foreground dark:text-foreground-dark">
-              {t.contact.email}
+              邮箱
             </label>
             <input
               type="email"
@@ -85,7 +81,7 @@ export default function ContactPage() {
 
           <div>
             <label htmlFor="message" className="mb-2 block text-sm font-medium text-foreground dark:text-foreground-dark">
-              {t.contact.message}
+              留言
             </label>
             <textarea
               id="message"
@@ -102,10 +98,11 @@ export default function ContactPage() {
             disabled={isSubmitting}
             className="btn-primary w-full"
           >
-            {isSubmitting ? t.contact.submitting : t.contact.submit}
+            {isSubmitting ? '提交中...' : '提交'}
           </button>
         </form>
       </div>
     </div>
   )
 }
+

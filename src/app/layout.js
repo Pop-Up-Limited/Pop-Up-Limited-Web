@@ -1,7 +1,5 @@
 import './globals.css'
-import { COMPANY_NAME, COMPANY_TAGLINE } from '../config/site.js'
-import Navigation from '../components/Navigation'
-import { LanguageProvider } from '../contexts/LanguageContext'
+import { COMPANY_NAME, COMPANY_TAGLINE } from '../src/config/site.js'
 
 export const metadata = {
   title: `${COMPANY_NAME} · ${COMPANY_TAGLINE}`,
@@ -11,12 +9,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="zh-CN">
-      <body>
-        <LanguageProvider>
-          <Navigation />
-          <main>{children}</main>
-        </LanguageProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

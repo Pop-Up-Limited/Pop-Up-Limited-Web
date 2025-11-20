@@ -2,28 +2,24 @@
 
 import { useState } from 'react'
 import ConsultModal from './ConsultModal'
-import { useLanguage } from '../contexts/LanguageContext'
-import { translations } from '../i18n/translations'
 
 export default function ProductDetail() {
-  const { language } = useLanguage()
-  const t = translations[language]
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-12">
       <div className="card-surface">
         <h1 className="mb-4 text-3xl font-semibold text-foreground dark:text-foreground-dark">
-          {t.product.title}
+          产品详情页示例
         </h1>
         <p className="mb-6 text-foreground-muted dark:text-slate-300">
-          {t.product.subtitle}
+          这是一个示例产品详情页面，展示如何集成咨询弹窗功能。
         </p>
         <button
           onClick={() => setIsModalOpen(true)}
           className="btn-primary"
         >
-          {t.product.consultNow}
+          立即咨询
         </button>
       </div>
 
@@ -31,3 +27,4 @@ export default function ProductDetail() {
     </div>
   )
 }
+

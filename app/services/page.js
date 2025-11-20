@@ -1,12 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { COMPANY_NAME } from '../../src/config/site.js'
-import ConsultModal from '../../src/components/ConsultModal'
+import { COMPANY_NAME } from '../../config/site.js'
+import ConsultModal from '../../components/ConsultModal'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useLanguage } from '../../src/contexts/LanguageContext'
-import { translations } from '../../src/i18n/translations'
+import { useLanguage } from '../../contexts/LanguageContext'
+import { translations } from '../../i18n/translations'
 
 export default function ServicesPage() {
   const { language } = useLanguage()
