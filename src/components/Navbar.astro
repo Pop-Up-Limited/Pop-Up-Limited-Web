@@ -168,13 +168,31 @@ const resolveActive = (href: string) => {
         btn.setAttribute('data-active', 'false');
       }
       
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (lang && (lang === 'zh' || lang === 'en')) {
+          console.log('Language switch clicked:', lang);
           setLanguageToStorage(lang);
-          // Update all texts immediately
+          // Update Navbar texts immediately
           updateTexts(lang);
-          // Dispatch custom event for other components
-          window.dispatchEvent(new CustomEvent('languagechange', { detail: { lang } }));
+          
+          // Force update all page texts immediately (primary method)
+          if (typeof window.updatePageTexts === 'function') {
+            console.log('Calling window.updatePageTexts with lang:', lang);
+            window.updatePageTexts(lang);
+          } else {
+            console.warn('window.updatePageTexts is not available');
+          }
+          
+          // Dispatch custom event for other components (Layout, pages, footer)
+          const event = new CustomEvent('languagechange', { 
+            detail: { lang },
+            bubbles: true,
+            cancelable: true
+          });
+          window.dispatchEvent(event);
+          
           // Update active state
           switchers.forEach((s) => {
             const btns = s.querySelectorAll('[data-lang]');
