@@ -424,7 +424,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
   }
 
   // Function to update charts
-  function updateCharts(lang: string) {
+  function updateCharts(lang) {
     const t = translations[lang];
     if (!t) return;
 
@@ -503,11 +503,14 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
     });
     
     // Listen for language change events from Navbar
-    window.addEventListener('languagechange', ((e: CustomEvent) => {
-      const newLang = e.detail.lang;
-      updatePageTexts(newLang);
-      updateCharts(newLang);
-    }) as EventListener);
+    window.addEventListener('languagechange', function(e) {
+      const event = e;
+      const newLang = event.detail && event.detail.lang;
+      if (newLang) {
+        updatePageTexts(newLang);
+        updateCharts(newLang);
+      }
+    });
 
     // Initialize charts
     try {
