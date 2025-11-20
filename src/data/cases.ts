@@ -127,6 +127,28 @@ export const cases: Case[] = [
         'Responsive design'
       ]
     }
+  },
+  {
+    id: 'web-case-6',
+    name: 'Web Case 6',
+    description: 'Professional web design and development project',
+    url: 'https://pop-up-limited.github.io/web-case-6/',
+    image: '/images/projects/web-case-6.png',
+    category: 'Web Design',
+    year: '2024',
+    tags: ['Website', 'Design', 'Development'],
+    isLive: true,
+    designTier: 'premium',
+    details: {
+      services: ['Web Design', 'Web Development', 'UI/UX Design'],
+      technologies: ['HTML', 'CSS', 'JavaScript'],
+      highlights: [
+        'Modern and clean design',
+        'Responsive layout',
+        'User-friendly interface',
+        'Professional presentation'
+      ]
+    }
   }
 ];
 
