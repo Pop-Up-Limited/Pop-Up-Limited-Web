@@ -25,7 +25,7 @@ export const translations = {
     },
     portfolio: {
       badge: '作品集',
-      title: '我们的作品',
+      title: '服务经验',
       subtitle: '探索我们为不同行业客户打造的专业网站解决方案，从大学网站到创新的Web应用和数据可视化。',
       viewMore: '查看更多案例',
       premiumDesign: '顶级设计',
