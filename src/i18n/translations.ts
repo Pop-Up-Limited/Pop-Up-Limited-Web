@@ -141,6 +141,23 @@ export const translations = {
         contact: '立即咨询',
         contactService: '联系客服'
       },
+      features: {
+        delivery: '交付',
+        design: '设计',
+        responsive: '响应式设计',
+        mobileFirst: '移动优先设计',
+        crossBrowser: '跨浏览器兼容',
+        deployment: '部署',
+        pageCount: '页面数量',
+        maintenance: '维护',
+        deliveryCycle: '交付周期',
+        revisions: '修改',
+        analysis: '分析支持',
+        support: '客服与语言',
+        compliance: '合规与政策',
+        tracking: '数据追踪',
+        branding: '品牌设计'
+      },
       comparison: {
         title: '详细对比',
         serviceItem: '服务项'

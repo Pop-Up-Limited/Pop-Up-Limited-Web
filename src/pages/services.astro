@@ -3,6 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import { COMPANY_NAME } from '../config/site';
 import { translations } from '../i18n/translations';
 
+// Get initial language
+const urlLang = Astro.url.searchParams.get('lang');
+const initialLang = (urlLang === 'en' || urlLang === 'zh') ? urlLang : 'zh';
+
 const plans = [
   {
     id: 'standard',
@@ -530,10 +534,10 @@ const wechatId = 'popup-service';
       </div>
 
       <div class="mt-8 text-center">
-        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300">
+        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300" data-i18n="services.optional.contact">
           需要了解更多可选服务详情？请联系我们的客服团队获取详细报价。
         </p>
-        <button type="button" data-contact-btn class="btn-primary">
+        <button type="button" data-contact-btn class="btn-primary" data-i18n="services.optional.contactBtn">
           联系客服咨询
         </button>
       </div>
@@ -570,7 +574,7 @@ const wechatId = 'popup-service';
                 <tr class="border-b border-slate-100 dark:border-slate-800">
                   <td class="px-4 py-3 text-sm font-medium text-foreground-muted dark:text-slate-400">
                     <div class="flex items-center gap-2">
-                      <span>{label}</span>
+                      <span data-feature-label={label}>{label}</span>
                       {label === '设计' && (
                         <a
                           href="#design-tier-explanation"
@@ -707,10 +711,10 @@ const wechatId = 'popup-service';
 
         <div class="space-y-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
           <div>
-            <p class="font-semibold text-foreground dark:text-foreground-dark">
+            <p class="font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.terms.delivery.title">
               *¹ (关于交付周期):
             </p>
-            <p class="mt-2">
+            <p class="mt-2" data-i18n="services.terms.delivery.content">
               交付周期（如"最快10天"）指我方交付首个完整预览版本（V1）所需的最短工作时间。
               <strong>此周期的起算点为客户方提供了所有必要的、符合要求的资料（包括但不限于最终文案、图片、Logo、及明确的需求文档）之后。</strong>
               因客户方资料延迟或中途提出新需求导致的时间延长，不在此承诺时限内。
@@ -718,33 +722,33 @@ const wechatId = 'popup-service';
           </div>
 
           <div>
-            <p class="font-semibold text-foreground dark:text-foreground-dark">
+            <p class="font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.terms.satisfaction.title">
               *² (关于"直到满意"):
             </p>
-            <p class="mt-2">
+            <p class="mt-2" data-i18n="services.terms.satisfaction.content">
               "直到满意"条款适用于项目首版交付后的 <strong>60天</strong> 集中修改期内。在此期间，客户可就<strong>原始需求范围</strong>内的设计和功能提出不限次数的修改意见。
             </p>
             <ul class="mt-2 ml-6 list-disc space-y-1">
-              <li>
+              <li data-i18n="services.terms.satisfaction.points.0">
                 集中修改期结束后，服务将视为"满意"并自动关闭。后续的额外修改需求，将视为新的维护或迭代工作，可能产生额外费用。
               </li>
-              <li>
+              <li data-i18n="services.terms.satisfaction.points.1">
                 超出原始需求范围的修改（如增加新页面、新功能模块），即使在修改期内，也需另行评估和报价。
               </li>
             </ul>
           </div>
 
           <div>
-            <p class="font-semibold text-foreground dark:text-foreground-dark">
+            <p class="font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.terms.tracking.title">
               *³ (关于数据追踪):
             </p>
-            <p class="mt-2">
+            <p class="mt-2" data-i18n="services.terms.tracking.content">
               "可选数据追踪服务"为附加高级服务。如客户选择此项，其具体需求（如埋点方案、报表配置）将<strong>另行沟通，且相关开发与部署时间不计入上述基础交付周期（*¹）内。</strong>
             </p>
           </div>
 
           <div>
-            <p class="font-semibold text-foreground dark:text-foreground-dark">
+            <p class="font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.terms.branding.title">
               *⁴ (关于品牌设计):
             </p>
             <p class="mt-2">
@@ -963,28 +967,40 @@ const wechatId = 'popup-service';
     
     // Update feature labels in comparison table
     const featureLabelMap = {
-      '交付': lang === 'zh' ? '交付' : 'Delivery',
-      '设计': lang === 'zh' ? '设计' : 'Design',
-      '响应式设计': lang === 'zh' ? '响应式设计' : 'Responsive Design',
-      '移动优先设计': lang === 'zh' ? '移动优先设计' : 'Mobile-First Design',
-      '跨浏览器兼容': lang === 'zh' ? '跨浏览器兼容' : 'Cross-Browser Compatibility',
-      '部署': lang === 'zh' ? '部署' : 'Deployment',
-      '页面数量': lang === 'zh' ? '页面数量' : 'Page Count',
-      '维护': lang === 'zh' ? '维护' : 'Maintenance',
+      '交付': t.services?.features?.delivery || (lang === 'zh' ? '交付' : 'Delivery'),
+      '设计': t.services?.features?.design || (lang === 'zh' ? '设计' : 'Design'),
+      '响应式设计': t.services?.features?.responsive || (lang === 'zh' ? '响应式设计' : 'Responsive Design'),
+      '移动优先设计': t.services?.features?.mobileFirst || (lang === 'zh' ? '移动优先设计' : 'Mobile-First Design'),
+      '跨浏览器兼容': t.services?.features?.crossBrowser || (lang === 'zh' ? '跨浏览器兼容' : 'Cross-Browser Compatibility'),
+      '部署': t.services?.features?.deployment || (lang === 'zh' ? '部署' : 'Deployment'),
+      '页面数量': t.services?.features?.pageCount || (lang === 'zh' ? '页面数量' : 'Page Count'),
+      '维护': t.services?.features?.maintenance || (lang === 'zh' ? '维护' : 'Maintenance'),
       'SEO': 'SEO',
-      '交付周期': lang === 'zh' ? '交付周期' : 'Delivery Cycle',
-      '修改': lang === 'zh' ? '修改' : 'Revisions',
-      '分析支持': lang === 'zh' ? '分析支持' : 'Analysis Support',
-      '客服与语言': lang === 'zh' ? '客服与语言' : 'Support & Language',
-      '合规与政策': lang === 'zh' ? '合规与政策' : 'Compliance & Policy',
-      '数据追踪': lang === 'zh' ? '数据追踪' : 'Data Tracking',
-      '品牌设计': lang === 'zh' ? '品牌设计' : 'Brand Design'
+      '交付周期': t.services?.features?.deliveryCycle || (lang === 'zh' ? '交付周期' : 'Delivery Cycle'),
+      '修改': t.services?.features?.revisions || (lang === 'zh' ? '修改' : 'Revisions'),
+      '分析支持': t.services?.features?.analysis || (lang === 'zh' ? '分析支持' : 'Analysis Support'),
+      '客服与语言': t.services?.features?.support || (lang === 'zh' ? '客服与语言' : 'Support & Language'),
+      '合规与政策': t.services?.features?.compliance || (lang === 'zh' ? '合规与政策' : 'Compliance & Policy'),
+      '数据追踪': t.services?.features?.tracking || (lang === 'zh' ? '数据追踪' : 'Data Tracking'),
+      '品牌设计': t.services?.features?.branding || (lang === 'zh' ? '品牌设计' : 'Brand Design')
     };
     
     document.querySelectorAll('[data-feature-label]').forEach((el) => {
       const originalLabel = el.getAttribute('data-feature-label');
       if (originalLabel && featureLabelMap[originalLabel]) {
         el.textContent = featureLabelMap[originalLabel];
+      }
+    });
+    
+    // Update plan names in comparison table headers
+    document.querySelectorAll('th').forEach((th) => {
+      const planName = th.textContent?.trim();
+      if (planName === '标准') {
+        th.textContent = t.services.plans.standard;
+      } else if (planName === '标准 Pro') {
+        th.textContent = t.services.plans.standardPro;
+      } else if (planName === '全定制') {
+        th.textContent = t.services.plans.custom;
       }
     });
   }
