@@ -37,14 +37,16 @@ export const translations = {
       subtitle: '用数据说话，展示我们的专业能力和服务成果',
       cases: '成功案例',
       satisfaction: '客户满意度',
-      delivery: '最快交付周期',
-      support: '技术支持',
+      delivery: '平均交付周期',
+      support: '平均响应时间',
       charts: {
         designTier: '设计分级分布',
         serviceType: '服务类型分布',
         delivery: '交付周期统计',
         feedback: '客户反馈评分',
         designQuality: '设计质量',
+        developmentEfficiency: '开发效率',
+        communication: '沟通服务',
         avgDelivery: '平均交付周期',
         days: '天'
       }
@@ -260,14 +262,16 @@ export const translations = {
       subtitle: 'Data-driven insights showcasing our professional capabilities and service achievements',
       cases: 'Successful Cases',
       satisfaction: 'Client Satisfaction',
-      delivery: 'Fastest Delivery',
-      support: 'Technical Support',
+      delivery: 'Average Delivery Cycle',
+      support: 'Average Response Time',
       charts: {
         designTier: 'Design Tier Distribution',
         serviceType: 'Service Type Distribution',
         delivery: 'Delivery Cycle Statistics',
         feedback: 'Client Feedback Ratings',
         designQuality: 'Design Quality',
+        developmentEfficiency: 'Development Efficiency',
+        communication: 'Communication Service',
         avgDelivery: 'Average Delivery Cycle',
         days: 'days'
       }
