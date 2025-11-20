@@ -403,7 +403,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
   </div>
 </Layout>
 
-<script define:vars={{ translations }}>
+<script define:vars={{ translations, premiumCasesCount: premiumCases.length, premiumPlusCasesCount: premiumPlusCases.length }}>
   // Get language from storage or URL
   function getLanguage() {
     const stored = localStorage.getItem('language');
@@ -461,12 +461,18 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       if (ctx) {
         const lang = getLanguage();
         const t = translations[lang];
+        // 计算设计分级分布
+        const premiumCount = premiumCasesCount;
+        const premiumPlusCount = premiumPlusCasesCount;
+        
         new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: [t.portfolio.premiumDesign, t.portfolio.qualityDesign],
+          labels: lang === 'zh'
+            ? ['顶级设计', '优质设计']
+            : ['Top-tier Design', 'Premium Design'],
           datasets: [{
-            data: [2, 4],
+            data: [premiumPlusCount, premiumCount],
             backgroundColor: [
               'rgb(168, 85, 247)',
               'rgb(59, 130, 246)'
@@ -484,6 +490,17 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                 padding: 15,
                 font: {
                   size: 12
+                }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.parsed || 0;
+                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                  const percentage = ((value / total) * 100).toFixed(1);
+                  return `${label}: ${value} (${percentage}%)`;
                 }
               }
             }
@@ -511,10 +528,10 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
             data: [85, 100, 60, 90, 75],
             backgroundColor: [
               'rgb(59, 130, 246)',
-              'rgb(59, 130, 246)',
-              'rgb(59, 130, 246)',
-              'rgb(59, 130, 246)',
-              'rgb(59, 130, 246)'
+              'rgb(34, 197, 94)',
+              'rgb(168, 85, 247)',
+              'rgb(251, 146, 60)',
+              'rgb(239, 68, 68)'
             ],
             borderRadius: 8
           }]
@@ -525,6 +542,13 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           plugins: {
             legend: {
               display: false
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return `${context.dataset.label}: ${context.parsed.y}%`;
+                }
+              }
             }
           },
           scales: {
@@ -553,15 +577,16 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         new Chart(ctx, {
         type: 'pie',
         data: {
-          labels: [
-            `10 ${t.stats.charts.days}`,
-            `15 ${t.stats.charts.days}`
-          ],
+          labels: lang === 'zh'
+            ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
+            : ['7-10 days', '11-15 days', '16-20 days', '21+ days'],
           datasets: [{
-            data: [60, 40],
+            data: [35, 45, 15, 5],
             backgroundColor: [
+              'rgb(34, 197, 94)',
               'rgb(59, 130, 246)',
-              'rgb(168, 85, 247)'
+              'rgb(168, 85, 247)',
+              'rgb(239, 68, 68)'
             ],
             borderWidth: 0
           }]
