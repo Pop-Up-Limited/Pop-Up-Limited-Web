@@ -140,7 +140,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
               />
               <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
-                  访问网站 →
+                  访问网站
                 </span>
               </div>
             </div>
@@ -174,7 +174,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
               />
               <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
-                  访问网站 →
+                  访问网站
                 </span>
               </div>
             </div>
@@ -188,7 +188,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 
       <div class="mt-8 text-center">
         <a href="/cases" class="btn-secondary" data-i18n="portfolio.viewMore">
-          查看更多案例 →
+          查看更多案例
         </a>
       </div>
     </section>
@@ -218,11 +218,17 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.satisfaction">客户满意度</div>
         </div>
         <div class="card-surface flex flex-col items-center justify-center p-6 text-center">
-          <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">12<span class="text-2xl">天</span></div>
+          <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">
+            <span>12</span>
+            <span class="text-2xl" data-i18n="stats.charts.days">天</span>
+          </div>
           <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.delivery">平均交付周期</div>
         </div>
         <div class="card-surface flex flex-col items-center justify-center p-6 text-center">
-          <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">48<span class="text-2xl">小时</span></div>
+          <div class="mb-3 text-4xl font-bold text-brand-600 dark:text-brand-400">
+            <span>48</span>
+            <span class="text-2xl" data-i18n="stats.charts.hours">小时</span>
+          </div>
           <div class="text-sm font-semibold text-foreground-muted dark:text-slate-400" data-i18n="stats.support">平均响应时间</div>
         </div>
       </div>
@@ -259,7 +265,10 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           </div>
           <div class="mt-4 text-center">
             <div class="text-xs font-medium text-foreground-muted dark:text-slate-400" data-i18n="stats.charts.avgDelivery">平均交付周期</div>
-            <div class="text-2xl font-bold text-brand-600 dark:text-brand-400">12.5 <span data-i18n="stats.charts.days">天</span></div>
+            <div class="text-2xl font-bold text-brand-600 dark:text-brand-400">
+              <span>12.5</span>
+              <span data-i18n="stats.charts.days">天</span>
+            </div>
           </div>
         </div>
 
@@ -426,9 +435,17 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         }
         if (value && typeof value === 'string') {
           el.textContent = value;
+        } else if (Array.isArray(value)) {
+          // Handle array values (like whyUs.points)
+          // This is handled separately in the template
         }
       }
     });
+    
+    // Update chart labels if charts are already initialized
+    if (typeof chartInstances !== 'undefined') {
+      updateCharts(lang);
+    }
   }
   
   // Initialize on page load
@@ -441,13 +458,45 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       if (e.key === 'language') {
         const newLang = e.newValue || 'zh';
         updatePageTexts(newLang);
+        updateCharts(newLang);
       }
     });
     
-    // Custom event for language change
-    window.addEventListener('languagechange', ((e: CustomEvent) => {
-      updatePageTexts(e.detail.lang);
-    }) as EventListener);
+    // Chart instances storage
+    const chartInstances: { [key: string]: any } = {};
+
+    // Function to update charts
+    function updateCharts(lang: string) {
+      const t = translations[lang];
+      if (!t) return;
+
+      // Update design tier chart
+      if (chartInstances['design-tier']) {
+        chartInstances['design-tier'].data.labels = lang === 'zh'
+          ? ['顶级设计', '优质设计']
+          : ['Top-tier Design', 'Premium Design'];
+        chartInstances['design-tier'].update();
+      }
+
+      // Update service type chart
+      if (chartInstances['service-type']) {
+        chartInstances['service-type'].data.labels = lang === 'zh'
+          ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
+          : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'];
+        chartInstances['service-type'].options.scales.y.ticks.callback = function(value: number) {
+          return value + '%';
+        };
+        chartInstances['service-type'].update();
+      }
+
+      // Update delivery cycle chart
+      if (chartInstances['delivery-cycle']) {
+        chartInstances['delivery-cycle'].data.labels = lang === 'zh'
+          ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
+          : ['7-10 days', '11-15 days', '16-20 days', '21+ days'];
+        chartInstances['delivery-cycle'].update();
+      }
+    }
 
     // Initialize charts
     try {
@@ -465,7 +514,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         const premiumCount = premiumCasesCount;
         const premiumPlusCount = premiumPlusCasesCount;
         
-        new Chart(ctx, {
+        chartInstances['design-tier'] = new Chart(ctx, {
         type: 'doughnut',
         data: {
           labels: lang === 'zh'
@@ -517,7 +566,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       if (ctx) {
         const lang = getLanguage();
         const t = translations[lang];
-        new Chart(ctx, {
+        chartInstances['service-type'] = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: lang === 'zh' 
@@ -574,7 +623,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
       if (ctx) {
         const lang = getLanguage();
         const t = translations[lang];
-        new Chart(ctx, {
+        chartInstances['delivery-cycle'] = new Chart(ctx, {
         type: 'pie',
         data: {
           labels: lang === 'zh'

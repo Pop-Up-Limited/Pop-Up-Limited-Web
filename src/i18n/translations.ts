@@ -27,7 +27,7 @@ export const translations = {
       badge: '作品集',
       title: '服务经验',
       subtitle: '探索我们为不同行业客户打造的专业网站解决方案，从大学网站到创新的Web应用和数据可视化。',
-      viewMore: '查看更多案例',
+      viewMore: '查看更多案例 →',
       premiumDesign: '顶级设计',
       qualityDesign: '优质设计'
     },
@@ -48,7 +48,8 @@ export const translations = {
         developmentEfficiency: '开发效率',
         communication: '沟通服务',
         avgDelivery: '平均交付周期',
-        days: '天'
+        days: '天',
+        hours: '小时'
       }
     },
     whyUs: {
@@ -99,7 +100,7 @@ export const translations = {
       premiumDesign: '优质设计（初级）',
       premiumPlusDesign: '顶级设计（高级）',
       viewDetails: '查看详情',
-      visitSite: '访问网站',
+      visitSite: '访问网站 →',
       comingSoon: '即将上线',
       count: '个案例',
       noCases: '暂无该分类的案例'
@@ -275,7 +276,8 @@ export const translations = {
         developmentEfficiency: 'Development Efficiency',
         communication: 'Communication Service',
         avgDelivery: 'Average Delivery Cycle',
-        days: 'days'
+        days: 'days',
+        hours: 'hours'
       }
     },
     whyUs: {
@@ -326,7 +328,7 @@ export const translations = {
       premiumDesign: 'Quality Design (Basic)',
       premiumPlusDesign: 'Premium Design (Advanced)',
       viewDetails: 'View Details',
-      visitSite: 'Visit Site',
+      visitSite: 'Visit Site →',
       comingSoon: 'Coming Soon',
       count: 'cases',
       noCases: 'No cases in this category'
