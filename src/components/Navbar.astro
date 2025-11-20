@@ -102,6 +102,7 @@ const resolveActive = (href: string) => {
                 href={item.href}
                 data-nav-link
                 data-href={item.href}
+                data-i18n={`nav.${item.href === '/' ? 'home' : item.href.slice(1)}`}
                 class={`rounded-full px-3 py-2 transition hover:bg-slate-100/80 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 ${
                   resolveActive(item.href) ? 'text-brand-500' : ''
                 }`}
@@ -267,6 +268,11 @@ const resolveActive = (href: string) => {
         }
       }
     });
+    
+    // Also update footer texts when language changes
+    if (typeof window.updateFooterTexts === 'function') {
+      window.updateFooterTexts(lang);
+    }
   }
 
   updateTexts(currentLang);

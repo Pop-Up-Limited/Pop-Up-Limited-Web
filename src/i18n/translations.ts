@@ -91,6 +91,12 @@ export const translations = {
       contactText: '直接联系我们，我们会尽快回复您。',
       contactUs: '联系我们'
     },
+    footer: {
+      description: '我们专注于产品管理、UI/UX设计、iOS开发和数字营销。用精准和创意将概念转化为现实。',
+      support: '支持',
+      helpCenter: '帮助中心',
+      copyright: `© ${new Date().getFullYear()} Pop Up Limited. 保留所有权利。`
+    },
     cases: {
       title: '案例库',
       subtitle: '探索我们为不同行业客户打造的专业网站解决方案，从初创企业到大型企业的服务经验',
@@ -318,6 +324,12 @@ export const translations = {
       needHelp: 'Need more help?',
       contactText: 'Contact us directly and we\'ll get back to you as soon as possible.',
       contactUs: 'Contact Us'
+    },
+    footer: {
+      description: 'We specialize in product management, UI/UX design, iOS development, and digital marketing. Transforming concepts into reality with precision and creativity.',
+      support: 'Support',
+      helpCenter: 'Help Center',
+      copyright: `© ${new Date().getFullYear()} Pop Up Limited. All rights reserved.`
     },
     cases: {
       title: 'Case Library',

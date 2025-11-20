@@ -1,5 +1,6 @@
 ---
 import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS, SUPPORT_EMAIL } from '../config/site';
+import { translations } from '../i18n/translations';
 ---
 
 <footer class="border-t border-slate-200/60 bg-white/80 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-900/70">
@@ -10,17 +11,17 @@ import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS, SUPPORT_EMAIL } from '../
         <h3 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
           {COMPANY_NAME}
         </h3>
-        <p class="text-sm text-foreground-muted dark:text-slate-300">
+        <p class="text-sm text-foreground-muted dark:text-slate-300" data-i18n="footer.description">
           We specialize in product management, UI/UX design, iOS development, and digital marketing. Transforming concepts into reality with precision and creativity.
         </p>
       </div>
 
       <div class="grid w-full grid-cols-1 gap-10 text-sm md:max-w-md">
         <div class="space-y-2">
-          <h4 class="font-semibold text-foreground dark:text-foreground-dark">Support</h4>
+          <h4 class="font-semibold text-foreground dark:text-foreground-dark" data-i18n="footer.support">Support</h4>
           <ul class="space-y-2 text-foreground-muted dark:text-slate-300">
             <li>
-              <a class="hover:text-brand-600" href="/support">Help Center</a>
+              <a class="hover:text-brand-600" href="/support" data-i18n="footer.helpCenter">Help Center</a>
             </li>
             <li>
               <a class="hover:text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>
@@ -33,7 +34,7 @@ import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS, SUPPORT_EMAIL } from '../
     </div>
 
     <div class="flex flex-col gap-6 border-t border-slate-200/60 pt-6 text-sm text-foreground-muted md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:text-slate-300">
-      <p>{FOOTER_COPYRIGHT}</p>
+      <p data-i18n="footer.copyright">{FOOTER_COPYRIGHT}</p>
 
       <ul class="flex items-center gap-4">
         {SOCIAL_LINKS.map((item) => (
@@ -51,4 +52,53 @@ import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS, SUPPORT_EMAIL } from '../
     </div>
   </div>
 </footer>
+
+<script define:vars={{ translations }}>
+  // Get language from storage or URL
+  function getLanguage() {
+    if (typeof window === 'undefined') return 'zh';
+    const stored = localStorage.getItem('language');
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    return (urlLang === 'en' || urlLang === 'zh') ? urlLang : (stored === 'en' || stored === 'zh') ? stored : 'zh';
+  }
+  
+  // Update footer texts
+  function updateFooterTexts(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    
+    document.querySelectorAll('footer [data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (key) {
+        const keys = key.split('.');
+        let value = t;
+        for (const k of keys) {
+          value = value?.[k];
+        }
+        if (value && typeof value === 'string') {
+          el.textContent = value;
+        }
+      }
+    });
+  }
+  
+  // Make function globally accessible
+  if (typeof window !== 'undefined') {
+    window.updateFooterTexts = updateFooterTexts;
+  }
+  
+  // Initialize on page load
+  if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
+      const lang = getLanguage();
+      updateFooterTexts(lang);
+    });
+    
+    // Listen for language change events
+    window.addEventListener('languagechange', ((e: CustomEvent) => {
+      const newLang = e.detail.lang;
+      updateFooterTexts(newLang);
+    }) as EventListener);
+  }
+</script>
 
