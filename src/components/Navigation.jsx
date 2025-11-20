@@ -12,7 +12,7 @@ export default function Navigation() {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { language } = useLanguage()
-  const t = translations[language]
+  const t = translations[language] || translations['zh']
 
   const resolveActive = (href) => {
     return pathname === href

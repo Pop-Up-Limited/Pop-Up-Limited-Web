@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <body>
         <LanguageProvider>
           <Navigation />
-          {children}
+          <main>{children}</main>
         </LanguageProvider>
       </body>
     </html>
