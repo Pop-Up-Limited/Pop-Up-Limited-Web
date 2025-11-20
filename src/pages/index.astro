@@ -355,15 +355,15 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
     <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
       <div class="mb-10 flex flex-col gap-3">
         <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="whyUs.badge">
-          Why us
+          为什么选择我们
         </span>
         <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="whyUs.title">
-          {WHY_US.headline}
+          为什么选择我们
         </h2>
       </div>
 
       <div class="grid gap-6 md:grid-cols-3">
-        {WHY_US.points.map((point, index) => (
+        {translations.zh.whyUs.points.map((point, index) => (
           <div class="card-surface flex flex-col gap-4 p-6 transition-all duration-300 hover:shadow-lg">
             <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-500/10 text-brand-600">
               {index === 0 && (
@@ -382,10 +382,10 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
                 </svg>
               )}
             </div>
-            <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark">
+            <h3 class="text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n={`whyUs.points.${index}.title`}>
               {point.title}
             </h3>
-            <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            <p class="text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n={`whyUs.points.${index}.description`}>
               {point.description}
             </p>
           </div>
@@ -413,11 +413,45 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 </Layout>
 
 <script define:vars={{ translations, premiumCasesCount: premiumCases.length, premiumPlusCasesCount: premiumPlusCases.length }}>
+  // Chart instances storage (global scope)
+  const chartInstances: { [key: string]: any } = {};
+
   // Get language from storage or URL
   function getLanguage() {
     const stored = localStorage.getItem('language');
     const urlLang = new URLSearchParams(window.location.search).get('lang');
     return (urlLang === 'en' || urlLang === 'zh') ? urlLang : (stored === 'en' || stored === 'zh') ? stored : 'zh';
+  }
+
+  // Function to update charts
+  function updateCharts(lang: string) {
+    const t = translations[lang];
+    if (!t) return;
+
+    // Update design tier chart
+    if (chartInstances['design-tier']) {
+      chartInstances['design-tier'].data.labels = lang === 'zh'
+        ? ['顶级设计', '优质设计']
+        : ['Top-tier Design', 'Premium Design'];
+      chartInstances['design-tier'].update();
+    }
+
+    // Update service type chart
+    if (chartInstances['service-type']) {
+      chartInstances['service-type'].data.labels = lang === 'zh'
+        ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
+        : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'];
+      chartInstances['service-type'].data.datasets[0].label = lang === 'zh' ? '占比 (%)' : 'Percentage (%)';
+      chartInstances['service-type'].update();
+    }
+
+    // Update delivery cycle chart
+    if (chartInstances['delivery-cycle']) {
+      chartInstances['delivery-cycle'].data.labels = lang === 'zh'
+        ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
+        : ['7-10 days', '11-15 days', '16-20 days', '21+ days'];
+      chartInstances['delivery-cycle'].update();
+    }
   }
   
   // Update all texts on page load
@@ -431,21 +465,21 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         const keys = key.split('.');
         let value = t;
         for (const k of keys) {
-          value = value?.[k];
+          // Handle array indices (e.g., "whyUs.points.0.title")
+          if (!isNaN(Number(k))) {
+            value = value?.[Number(k)];
+          } else {
+            value = value?.[k];
+          }
         }
         if (value && typeof value === 'string') {
           el.textContent = value;
-        } else if (Array.isArray(value)) {
-          // Handle array values (like whyUs.points)
-          // This is handled separately in the template
         }
       }
     });
     
     // Update chart labels if charts are already initialized
-    if (typeof chartInstances !== 'undefined') {
-      updateCharts(lang);
-    }
+    updateCharts(lang);
   }
   
   // Initialize on page load
@@ -461,63 +495,26 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
         updateCharts(newLang);
       }
     });
-    
-    // Chart instances storage
-    const chartInstances: { [key: string]: any } = {};
-
-    // Function to update charts
-    function updateCharts(lang: string) {
-      const t = translations[lang];
-      if (!t) return;
-
-      // Update design tier chart
-      if (chartInstances['design-tier']) {
-        chartInstances['design-tier'].data.labels = lang === 'zh'
-          ? ['顶级设计', '优质设计']
-          : ['Top-tier Design', 'Premium Design'];
-        chartInstances['design-tier'].update();
-      }
-
-      // Update service type chart
-      if (chartInstances['service-type']) {
-        chartInstances['service-type'].data.labels = lang === 'zh'
-          ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
-          : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'];
-        chartInstances['service-type'].options.scales.y.ticks.callback = function(value: number) {
-          return value + '%';
-        };
-        chartInstances['service-type'].update();
-      }
-
-      // Update delivery cycle chart
-      if (chartInstances['delivery-cycle']) {
-        chartInstances['delivery-cycle'].data.labels = lang === 'zh'
-          ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
-          : ['7-10 days', '11-15 days', '16-20 days', '21+ days'];
-        chartInstances['delivery-cycle'].update();
-      }
-    }
 
     // Initialize charts
     try {
       const { Chart, registerables } = await import('chart.js');
       Chart.register(...registerables);
 
-    // 设计分级分布图表
-    const designTierCanvas = document.getElementById('design-tier-chart');
-    if (designTierCanvas instanceof HTMLCanvasElement) {
-      const ctx = designTierCanvas.getContext('2d');
-      if (ctx) {
-        const lang = getLanguage();
-        const t = translations[lang];
-        // 计算设计分级分布
-        const premiumCount = premiumCasesCount;
-        const premiumPlusCount = premiumPlusCasesCount;
-        
-        chartInstances['design-tier'] = new Chart(ctx, {
+      // 设计分级分布图表
+      const designTierCanvas = document.getElementById('design-tier-chart');
+      if (designTierCanvas instanceof HTMLCanvasElement) {
+        const ctx = designTierCanvas.getContext('2d');
+        if (ctx) {
+          const currentLang = getLanguage();
+          // 计算设计分级分布
+          const premiumCount = premiumCasesCount;
+          const premiumPlusCount = premiumPlusCasesCount;
+          
+          chartInstances['design-tier'] = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: lang === 'zh'
+          labels: currentLang === 'zh'
             ? ['顶级设计', '优质设计']
             : ['Top-tier Design', 'Premium Design'],
           datasets: [{
@@ -556,24 +553,24 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           }
         }
         });
+        }
       }
     }
 
-    // 服务类型分布图表
-    const serviceTypeCanvas = document.getElementById('service-type-chart');
-    if (serviceTypeCanvas instanceof HTMLCanvasElement) {
-      const ctx = serviceTypeCanvas.getContext('2d');
-      if (ctx) {
-        const lang = getLanguage();
-        const t = translations[lang];
-        chartInstances['service-type'] = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: lang === 'zh' 
-            ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
-            : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'],
-          datasets: [{
-            label: lang === 'zh' ? '占比 (%)' : 'Percentage (%)',
+      // 服务类型分布图表
+      const serviceTypeCanvas = document.getElementById('service-type-chart');
+      if (serviceTypeCanvas instanceof HTMLCanvasElement) {
+        const ctx = serviceTypeCanvas.getContext('2d');
+        if (ctx) {
+          const currentLang = getLanguage();
+          chartInstances['service-type'] = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: currentLang === 'zh' 
+              ? ['网站设计', '前端开发', '品牌设计', 'UI/UX设计', '移动端开发']
+              : ['Web Design', 'Frontend Dev', 'Brand Design', 'UI/UX Design', 'Mobile Dev'],
+            datasets: [{
+              label: currentLang === 'zh' ? '占比 (%)' : 'Percentage (%)',
             data: [85, 100, 60, 90, 75],
             backgroundColor: [
               'rgb(59, 130, 246)',
@@ -613,22 +610,22 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           }
         }
         });
+        }
       }
     }
 
-    // 交付周期统计图表
-    const deliveryCycleCanvas = document.getElementById('delivery-cycle-chart');
-    if (deliveryCycleCanvas instanceof HTMLCanvasElement) {
-      const ctx = deliveryCycleCanvas.getContext('2d');
-      if (ctx) {
-        const lang = getLanguage();
-        const t = translations[lang];
-        chartInstances['delivery-cycle'] = new Chart(ctx, {
-        type: 'pie',
-        data: {
-          labels: lang === 'zh'
-            ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
-            : ['7-10 days', '11-15 days', '16-20 days', '21+ days'],
+      // 交付周期统计图表
+      const deliveryCycleCanvas = document.getElementById('delivery-cycle-chart');
+      if (deliveryCycleCanvas instanceof HTMLCanvasElement) {
+        const ctx = deliveryCycleCanvas.getContext('2d');
+        if (ctx) {
+          const currentLang = getLanguage();
+          chartInstances['delivery-cycle'] = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: currentLang === 'zh'
+              ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
+              : ['7-10 days', '11-15 days', '16-20 days', '21+ days'],
           datasets: [{
             data: [35, 45, 15, 5],
             backgroundColor: [
@@ -656,6 +653,7 @@ const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
           }
         }
         });
+        }
       }
     }
     } catch (error) {
