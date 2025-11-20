@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { COMPANY_NAME } from '../config/site';
+import { translations } from '../i18n/translations';
 
 const plans = [
   {
@@ -121,10 +122,10 @@ const wechatId = 'popup-service';
     <section class="relative mx-auto w-full max-w-7xl px-4 pt-16 pb-8 md:px-6 md:pt-20 md:pb-12">
       <div class="absolute inset-x-0 -top-32 -z-10 h-[300px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
       <div class="text-center">
-        <h1 class="text-3xl font-semibold leading-tight text-foreground md:text-4xl dark:text-foreground-dark">
+        <h1 class="text-3xl font-semibold leading-tight text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="services.title">
           网站开发服务方案
         </h1>
-        <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300">
+        <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300" data-i18n="services.subtitle">
           选择适合您需求的网站开发服务，从标准方案到全定制解决方案，我们为您提供专业的网站开发服务。
         </p>
       </div>
@@ -174,7 +175,7 @@ const wechatId = 'popup-service';
 
               <!-- 网站预览区域 -->
               <div class="mb-4">
-                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">
+                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400" data-i18n="services.plans.representativeCase">
                   代表案例
                 </p>
                 <div class="relative mb-2 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
@@ -207,7 +208,7 @@ const wechatId = 'popup-service';
                     rel="noopener noreferrer"
                     class="block text-xs font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
                   >
-                    {plan.caseName} (点击跳转) →
+                    {plan.caseName} <span data-i18n="services.plans.clickToVisit">(点击跳转)</span> →
                   </a>
                   <a
                     href={plan.caseUrl}
@@ -215,7 +216,7 @@ const wechatId = 'popup-service';
                     rel="noopener noreferrer"
                     class="block break-all text-xs text-foreground-muted hover:text-brand-500 dark:text-slate-400 dark:hover:text-brand-400"
                   >
-                    {plan.caseUrl} (点击跳转)
+                    {plan.caseUrl} <span data-i18n="services.plans.clickToVisit">(点击跳转)</span>
                   </a>
                 </div>
               </div>
@@ -267,6 +268,7 @@ const wechatId = 'popup-service';
                   type="button"
                   data-view-details
                   class="w-full text-xs text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 transition-colors"
+                  data-i18n="services.plans.viewDetails"
                 >
                   查看详细对比 ↓
                 </button>
@@ -278,6 +280,7 @@ const wechatId = 'popup-service';
                     type="button"
                     data-contact-btn
                     class="btn-primary block w-full text-center"
+                    data-i18n="services.plans.contactService"
                   >
                     联系客服
                   </button>
@@ -288,6 +291,7 @@ const wechatId = 'popup-service';
                     class={`block w-full text-center ${
                       plan.popular ? 'btn-primary' : 'btn-secondary'
                     }`}
+                    data-i18n="services.plans.contact"
                   >
                     立即咨询
                   </button>
@@ -538,14 +542,14 @@ const wechatId = 'popup-service';
     <!-- Comparison Table -->
     <section id="detailed-comparison" class="mx-auto w-full max-w-7xl px-4 pb-16 md:px-6 scroll-mt-24">
       <div class="card-surface">
-        <h2 class="mb-8 text-2xl font-semibold text-foreground dark:text-foreground-dark">
+        <h2 class="mb-8 text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.comparison.title">
           详细对比
         </h2>
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead>
               <tr class="border-b border-slate-200 dark:border-slate-700">
-                <th class="px-4 py-3 text-left text-sm font-semibold text-foreground dark:text-foreground-dark">
+                <th class="px-4 py-3 text-left text-sm font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.comparison.serviceItem">
                   服务项
                 </th>
                 {plans.map((plan) => (
@@ -607,7 +611,7 @@ const wechatId = 'popup-service';
     <!-- Design Tier Explanation -->
     <section id="design-tier-explanation" class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6 scroll-mt-24">
       <div class="card-surface rounded-2xl p-6 md:p-8">
-        <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark">
+        <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.designTier.title">
           设计分级说明
         </h2>
         <div class="grid gap-6 md:grid-cols-2">
@@ -618,30 +622,31 @@ const wechatId = 'popup-service';
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark">
+              <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.designTier.premium.title">
                 优质设计（初级）
               </h3>
             </div>
-            <p class="mb-3 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            <p class="mb-3 text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="services.designTier.premium.description">
               适用于标准套餐和标准 Pro 套餐。提供专业、实用的网页设计，注重功能性和用户体验，确保网站美观且易于使用。
             </p>
             <ul class="mb-4 space-y-2 text-sm text-foreground-muted dark:text-slate-300">
               <li class="flex items-start gap-2">
                 <span class="mt-1 text-brand-500">•</span>
-                <span>现代化、简洁的设计风格</span>
+                <span data-i18n="services.designTier.premium.features.0">现代化、简洁的设计风格</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="mt-1 text-brand-500">•</span>
-                <span>响应式布局，适配所有设备</span>
+                <span data-i18n="services.designTier.premium.features.1">响应式布局，适配所有设备</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="mt-1 text-brand-500">•</span>
-                <span>优化的用户体验和交互设计</span>
+                <span data-i18n="services.designTier.premium.features.2">优化的用户体验和交互设计</span>
               </li>
             </ul>
             <a
               href="/cases?tier=premium"
               class="inline-flex items-center gap-2 rounded-lg border-2 border-brand-500 bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-600 hover:border-brand-600"
+              data-i18n="services.designTier.premium.viewCases"
             >
               查看案例
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -657,30 +662,31 @@ const wechatId = 'popup-service';
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
-              <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark">
+              <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.designTier.premiumPlus.title">
                 顶级设计（高级）
               </h3>
             </div>
-            <p class="mb-3 text-sm leading-relaxed text-foreground-muted dark:text-slate-300">
+            <p class="mb-3 text-sm leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="services.designTier.premiumPlus.description">
               适用于全定制套餐。提供卓越的视觉设计和创新体验，结合品牌特色和行业趋势，打造独特且令人印象深刻的网站。
             </p>
             <ul class="mb-4 space-y-2 text-sm text-foreground-muted dark:text-slate-300">
               <li class="flex items-start gap-2">
                 <span class="mt-1 text-purple-500">•</span>
-                <span>定制化、独特的视觉设计</span>
+                <span data-i18n="services.designTier.premiumPlus.features.0">定制化、独特的视觉设计</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="mt-1 text-purple-500">•</span>
-                <span>高级动画和交互效果</span>
+                <span data-i18n="services.designTier.premiumPlus.features.1">高级动画和交互效果</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="mt-1 text-purple-500">•</span>
-                <span>品牌形象深度整合</span>
+                <span data-i18n="services.designTier.premiumPlus.features.2">品牌形象深度整合</span>
               </li>
             </ul>
             <a
               href="/cases?tier=premium-plus"
               class="inline-flex items-center gap-2 rounded-lg border-2 border-purple-500 bg-purple-500 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-purple-600 hover:border-purple-600"
+              data-i18n="services.designTier.premiumPlus.viewCases"
             >
               查看案例
               <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -695,7 +701,7 @@ const wechatId = 'popup-service';
     <!-- Terms & Notes -->
     <section class="mx-auto w-full max-w-4xl px-4 pb-24 md:px-6">
       <div class="space-y-6">
-        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.terms.title">
           服务条款备注
         </h2>
 
@@ -753,14 +759,14 @@ const wechatId = 'popup-service';
     <section class="mx-auto mb-24 w-full max-w-7xl px-4 md:px-6">
       <div class="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
         <div>
-          <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark">
-            成功案例
-          </h2>
-          <p class="mt-2 text-base text-foreground-muted dark:text-slate-300">
-            探索我们为不同行业客户打造的专业网站解决方案
-          </p>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="portfolio.title">
+          成功案例
+        </h2>
+        <p class="mt-2 text-base text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle">
+          探索我们为不同行业客户打造的专业网站解决方案
+        </p>
         </div>
-        <a href="/cases" class="btn-secondary whitespace-nowrap">
+        <a href="/cases" class="btn-secondary whitespace-nowrap" data-i18n="portfolio.viewMore">
           查看更多案例 →
         </a>
       </div>
@@ -808,10 +814,10 @@ const wechatId = 'popup-service';
 
     <!-- CTA Section -->
     <section class="mx-auto mb-24 w-full max-w-6xl rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
-      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100">
+      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100" data-i18n="cta.title">
         准备开始您的项目？
       </h2>
-      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80">
+      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80" data-i18n="cta.subtitle">
         联系我们的专业团队，获取定制化的网站开发解决方案。
       </p>
       <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -899,7 +905,40 @@ const wechatId = 'popup-service';
   </div>
 </Layout>
 
-<script define:vars={{ wechatId }}>
+<script define:vars={{ wechatId, translations }}>
+  // Get language from storage or URL
+  function getLanguage() {
+    const stored = localStorage.getItem('language');
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    return (urlLang === 'en' || urlLang === 'zh') ? urlLang : (stored === 'en' || stored === 'zh') ? stored : 'zh';
+  }
+  
+  // Update all texts on page load
+  function updatePageTexts(lang) {
+    const t = translations[lang];
+    if (!t) return;
+    
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (key) {
+        const keys = key.split('.');
+        let value = t;
+        for (const k of keys) {
+          value = value?.[k];
+        }
+        if (value && typeof value === 'string') {
+          el.textContent = value;
+        }
+      }
+    });
+  }
+  
+  // Initialize language
+  document.addEventListener('DOMContentLoaded', () => {
+    const lang = getLanguage();
+    updatePageTexts(lang);
+  });
+  
   // 弹窗控制
   const modal = document.getElementById('contact-modal');
   const contactButtons = document.querySelectorAll('[data-contact-btn]');

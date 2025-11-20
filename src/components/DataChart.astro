@@ -1,0 +1,30 @@
+---
+interface Props {
+  type: 'bar' | 'line' | 'pie' | 'doughnut';
+  data: any;
+  options?: any;
+  id: string;
+}
+
+const { type, data, options, id } = Astro.props;
+---
+
+<canvas id={id}></canvas>
+
+<script>
+  import { Chart, registerables } from 'chart.js';
+  Chart.register(...registerables);
+
+  const canvas = document.getElementById('{id}');
+  if (canvas instanceof HTMLCanvasElement) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      new Chart(ctx, {
+        type: '{type}',
+        data: {JSON.stringify(data)},
+        options: {JSON.stringify(options || {})}
+      });
+    }
+  }
+</script>
+

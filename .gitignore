@@ -4,6 +4,10 @@ dist/
 # generated types
 .astro/
 
+# Next.js build files (if any)
+.next/
+out/
+
 # dependencies
 node_modules/
 

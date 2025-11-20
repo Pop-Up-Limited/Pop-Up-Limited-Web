@@ -7,7 +7,9 @@ export const SUPPORT_EMAIL = 'contact@popup.limited';
 export const FORM_ENDPOINT = ''; // TODO: paste your Formspree endpoint (e.g. https://formspree.io/f/xxxxxxx)
 
 export const NAV_LINKS = [
-  { href: '/#products', label: 'Products' },
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/cases', label: 'Cases' },
   { href: '/support', label: 'Support' }
 ];
 
