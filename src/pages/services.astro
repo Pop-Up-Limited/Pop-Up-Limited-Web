@@ -144,175 +144,91 @@ const wechatId = 'popup-service';
 
     <!-- Pricing Cards -->
     <section class="mx-auto w-full max-w-7xl px-4 pb-12 md:px-6">
-      <div class="grid gap-4 md:grid-cols-3 lg:gap-6">
+      <div class="grid gap-6 md:grid-cols-3">
         {plans.map((plan) => (
           <div
-            class={`relative flex flex-col rounded-2xl border-2 transition-all duration-300 ${
+            class={`relative flex flex-col rounded-lg border transition-all duration-300 ${
               plan.popular
-                ? 'border-brand-500 bg-gradient-to-br from-brand-500/10 to-transparent shadow-brand-md'
-                : 'border-slate-200 bg-white/70 dark:border-slate-700 dark:bg-black/70'
+                ? 'border-brand-500 bg-white shadow-lg dark:border-brand-500 dark:bg-slate-900'
+                : 'border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800'
             }`}
           >
             {plan.popular && (
               <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span class="inline-flex items-center gap-2 rounded-full border-2 border-brand-500 bg-brand-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-brand-sm" data-i18n="services.plans.popular">
+                <span class="inline-flex items-center rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white" data-i18n="services.plans.popular">
                   推荐
                 </span>
               </div>
             )}
             
-            <div class="flex flex-col p-5">
-              <div class="mb-4">
-                <div class="mb-2 flex items-center gap-2">
-                  <h3 class="text-xl font-semibold text-foreground dark:text-foreground-dark" data-plan-name={plan.id}>
-                    {plan.name}
-                  </h3>
-                  {plan.designTier === 'premium' && (
-                    <span class="inline-flex items-center rounded-full bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-600 dark:text-brand-400" data-i18n="services.designTier.premium.badge">
-                      优质设计
-                    </span>
-                  )}
-                  {plan.designTier === 'premium-plus' && (
-                    <span class="inline-flex items-center rounded-full bg-purple-500/10 px-2.5 py-0.5 text-xs font-semibold text-purple-600 dark:text-purple-400" data-i18n="services.designTier.premiumPlus.badge">
-                      顶级设计
-                    </span>
-                  )}
-                </div>
-                <p class="mt-1 text-xs text-foreground-muted dark:text-slate-300" data-plan-desc={plan.id}>
-                  {plan.description}
-                </p>
-                
-                {/* 普通套餐的限制说明 */}
-                {plan.id === 'standard' && plan.limitations && (
-                  <div class="mt-3 rounded-lg border border-amber-200 bg-amber-50/50 p-2.5 dark:border-amber-800 dark:bg-amber-900/20">
-                    <p class="mb-1.5 text-xs font-semibold text-amber-800 dark:text-amber-300" data-i18n="services.plans.standardLimitations.title">
-                      ⚠️ 套餐限制：
-                    </p>
-                    <ul class="space-y-1 text-xs text-amber-700 dark:text-amber-400">
-                      {plan.limitations.map((limitation, idx) => (
-                        <li class="flex items-start gap-1.5" data-i18n={`services.plans.standardLimitations.${idx}`}>
-                          <span class="mt-0.5 text-amber-600 dark:text-amber-500">•</span>
-                          <span>{limitation}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                {/* 标准Pro和全定制的优势说明 */}
-                {plan.id === 'standard-pro' && plan.advantages && (
-                  <div class="mt-3 rounded-lg border border-brand-200 bg-brand-50/50 p-2.5 dark:border-brand-800 dark:bg-brand-900/20">
-                    <p class="mb-1.5 text-xs font-semibold text-brand-800 dark:text-brand-300" data-i18n="services.plans.standardProAdvantages.title">
-                      ✨ 相比标准套餐：
-                    </p>
-                    <ul class="space-y-1 text-xs text-brand-700 dark:text-brand-400">
-                      {plan.advantages.map((advantage, idx) => (
-                        <li class="flex items-start gap-1.5" data-i18n={`services.plans.standardProAdvantages.${idx}`}>
-                          <span class="mt-0.5 text-brand-600 dark:text-brand-500">✓</span>
-                          <span>{advantage}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                {plan.id === 'custom' && plan.advantages && (
-                  <div class="mt-3 rounded-lg border border-purple-200 bg-purple-50/50 p-2.5 dark:border-purple-800 dark:bg-purple-900/20">
-                    <p class="mb-1.5 text-xs font-semibold text-purple-800 dark:text-purple-300" data-i18n="services.plans.customAdvantages.title">
-                      ✨ 核心优势：
-                    </p>
-                    <ul class="space-y-1 text-xs text-purple-700 dark:text-purple-400">
-                      {plan.advantages.map((advantage, idx) => (
-                        <li class="flex items-start gap-1.5" data-i18n={`services.plans.customAdvantages.${idx}`}>
-                          <span class="mt-0.5 text-purple-600 dark:text-purple-500">✓</span>
-                          <span>{advantage}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-
-              <div class="mb-4 border-b border-slate-200 pb-4 dark:border-slate-700">
-                <div class="flex items-baseline gap-2">
-                  <span class="text-3xl font-bold text-foreground dark:text-foreground-dark">
+            <div class="flex flex-col p-6">
+              {/* 标题和价格 */}
+              <div class="mb-6">
+                <h3 class="mb-2 text-2xl font-bold text-foreground dark:text-foreground-dark" data-plan-name={plan.id}>
+                  {plan.name}
+                </h3>
+                <div class="mb-2">
+                  <span class="text-4xl font-bold text-foreground dark:text-foreground-dark">
                     {plan.price}
                   </span>
                 </div>
                 {plan.price !== '联系专属客服支持' && (
-                  <p class="mt-1 text-xs text-foreground-muted dark:text-slate-400" data-i18n="services.plans.oneTime">
+                  <p class="text-sm text-foreground-muted dark:text-slate-400" data-i18n="services.plans.oneTime">
                     一次性付费
                   </p>
                 )}
               </div>
 
-              <!-- 网站预览区域 -->
-              <div class="mb-4">
-                <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400" data-i18n="services.plans.representativeCase">
-                  代表案例
+              {/* 案例预览图片 */}
+              <div class="mb-6">
+                <div class="relative overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
+                  <a
+                    href={plan.caseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group relative block aspect-video overflow-hidden"
+                  >
+                    <img
+                      src={plan.caseImage}
+                      alt={`${plan.caseName} 预览`}
+                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">
+                        查看案例 →
+                      </span>
+                    </div>
+                  </a>
+                </div>
+                <p class="mt-2 text-center text-xs text-foreground-muted dark:text-slate-400">
+                  {plan.caseName}
                 </p>
-                <div class="relative mb-2 overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900">
-                  <div class="aspect-video relative overflow-hidden group">
-                    <a
-                      href={plan.caseUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="block h-full w-full"
-                    >
-                      <img
-                        src={plan.caseImage}
-                        alt={`${plan.caseName} 预览`}
-                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite">
-                          在新窗口打开 →
-                        </span>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-                <div class="space-y-1">
-                  <a
-                    href={plan.caseUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="block text-xs font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
-                  >
-                    {plan.caseName} <span data-i18n="services.plans.clickToVisit">(点击跳转)</span> →
-                  </a>
-                  <a
-                    href={plan.caseUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="block break-all text-xs text-foreground-muted hover:text-brand-500 dark:text-slate-400 dark:hover:text-brand-400"
-                  >
-                    {plan.caseUrl} <span data-i18n="services.plans.clickToVisit">(点击跳转)</span>
-                  </a>
-                </div>
               </div>
 
-              <!-- 核心要点：只显示三个最重要的 -->
-              <div class="flex-1 space-y-3">
-                {(() => {
-                  const coreFeatures = [
-                    plan.features.find(f => f.label === '交付周期'),
-                    plan.features.find(f => f.label === '设计'),
-                    plan.features.find(f => f.label === '分析支持')
-                  ].filter(Boolean);
-                  
-                  return coreFeatures.map((feature) => (
-                    <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3 last:border-0 dark:border-slate-800">
-                      <div class="flex items-center gap-1.5">
-                        <span class="text-xs font-medium text-foreground-muted dark:text-slate-400" data-feature-label={feature.label}>
+              {/* 功能列表 */}
+              <div class="mb-6 flex-1 space-y-3">
+                {plan.features.map((feature) => (
+                  <div class="flex items-start gap-3">
+                    {feature.value !== '—' ? (
+                      <svg class="mt-0.5 h-5 w-5 shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg class="mt-0.5 h-5 w-5 shrink-0 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                    <div class="flex-1">
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm text-foreground dark:text-foreground-dark" data-feature-label={feature.label}>
                           {feature.label}
                         </span>
                         {feature.label === '设计' && (
                           <a
                             href="#design-tier-explanation"
-                            class="group relative flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 text-slate-500 transition-colors hover:bg-brand-500 hover:text-white dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-brand-500 dark:hover:text-white"
+                            class="flex h-4 w-4 items-center justify-center rounded-full bg-slate-200 text-slate-500 transition-colors hover:bg-brand-500 hover:text-white dark:bg-slate-700 dark:text-slate-400 dark:hover:bg-brand-500 dark:hover:text-white"
                             title="了解设计分级说明"
                           >
                             <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -321,19 +237,47 @@ const wechatId = 'popup-service';
                           </a>
                         )}
                       </div>
-                      <span class={`text-right text-xs font-medium ${
-                        feature.value === '—' 
-                          ? 'text-slate-400 dark:text-slate-600' 
-                          : plan.popular
-                          ? 'text-brand-600 dark:text-brand-400'
-                          : 'text-foreground dark:text-foreground-dark'
-                      }`}>
-                        {feature.value}
-                      </span>
+                      {feature.value !== '—' && (
+                        <p class="mt-0.5 text-xs text-foreground-muted dark:text-slate-400">
+                          {feature.value}
+                        </p>
+                      )}
                     </div>
-                  ));
-                })()}
+                  </div>
+                ))}
               </div>
+
+              {/* CTA按钮 */}
+              <div class="mt-auto">
+                {plan.price === '联系专属客服支持' ? (
+                  <button
+                    type="button"
+                    data-contact-btn
+                    class="w-full rounded-lg bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600 dark:bg-brand-500 dark:hover:bg-brand-600"
+                    data-i18n="services.plans.contactService"
+                  >
+                    联系客服
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    data-contact-btn
+                    class={`w-full rounded-lg px-6 py-3 text-sm font-semibold transition-colors ${
+                      plan.popular
+                        ? 'bg-brand-500 text-white hover:bg-brand-600 dark:bg-brand-500 dark:hover:bg-brand-600'
+                        : 'bg-slate-100 text-foreground hover:bg-slate-200 dark:bg-slate-700 dark:text-foreground-dark dark:hover:bg-slate-600'
+                    }`}
+                    data-i18n="services.plans.contact"
+                  >
+                    立即咨询
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
 
               <!-- 查看详细对比按钮 -->
               <div class="mt-4">
