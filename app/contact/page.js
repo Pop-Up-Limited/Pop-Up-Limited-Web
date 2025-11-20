@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useLanguage } from '../../contexts/LanguageContext'
-import { translations } from '../../i18n/translations'
+import { useLanguage } from '../../src/contexts/LanguageContext'
+import { translations } from '../../src/i18n/translations'
 
 export default function ContactPage() {
   const { language } = useLanguage()
