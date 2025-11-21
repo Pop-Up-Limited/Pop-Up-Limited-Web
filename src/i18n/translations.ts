@@ -75,7 +75,7 @@ export const translations = {
       description1: '我们是一家专注于UI/UX设计、产品管理、iOS开发和数字营销的产品工作室。我们的使命是用精准和创意将概念转化为现实。',
       description2: 'Pop Up Limited 提供专业的网站开发服务。我们用可扩展的设计和数据驱动的解决方案将您的愿景变为现实。',
       quote: '"我专注于将概念转化为现实产品。无论是软件还是游戏，我的作品集旨在让产品成熟。',
-      quoteAuthor: '— Jinyi (Bruce) Li, 创始人'
+      quoteAuthor: '— ailian jiang, 创始人'
     },
     cta: {
       title: '准备与 Pop Up Limited 共同创造？',
@@ -310,7 +310,7 @@ export const translations = {
       description1: 'We are a product studio specializing in UI/UX design, product management, iOS development, and digital marketing. Our mission is to transform concepts into reality with precision and creativity.',
       description2: 'Pop Up Limited provides professional web development services. We bring your vision to life with scalable design and data-driven solutions.',
       quote: '"I specialize in transforming concepts into realistic products. Whether it\'s software or games, my portfolio is designed to mature the product."',
-      quoteAuthor: '— Jinyi (Bruce) Li, Founder'
+      quoteAuthor: '— ailian jiang, Founder'
     },
     cta: {
       title: 'Ready to co-create with Pop Up Limited?',
