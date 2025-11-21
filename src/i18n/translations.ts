@@ -17,7 +17,7 @@ export const translations = {
       secondaryCta: '联系客服',
       features: {
         title: '快速交付，专业品质',
-        description: 'Pop Up Limited 提供从设计到部署的一站式网站开发服务，平均交付周期仅需12天，让您的网站快速上线。',
+        description: 'Pop Up Limited 提供从设计到部署的一站式网站开发服务，首次交付平均只用三天，让您的网站快速上线。',
         item1: '专业设计，确保品牌形象一致',
         item2: '响应式设计，适配所有设备',
         item3: '持续支持，提供长期维护服务'
@@ -215,7 +215,7 @@ export const translations = {
         title: '服务条款备注',
         delivery: {
           title: '*¹ (关于交付周期):',
-          content: '交付周期（如"最快10天"）指我方交付首个完整预览版本（V1）所需的最短工作时间。此周期的起算点为客户方提供了所有必要的、符合要求的资料（包括但不限于最终文案、图片、Logo、及明确的需求文档）之后。因客户方资料延迟或中途提出新需求导致的时间延长，不在此承诺时限内。'
+          content: '交付周期（首次交付平均只用三天）指我方交付首个完整预览版本（V1）所需的平均工作时间。此周期的起算点为客户方提供了所有必要的、符合要求的资料（包括但不限于最终文案、图片、Logo、及明确的需求文档）之后。因客户方资料延迟或中途提出新需求导致的时间延长，不在此承诺时限内。'
         },
         satisfaction: {
           title: '*² (关于"直到满意"):',
@@ -252,7 +252,7 @@ export const translations = {
       secondaryCta: 'Contact Support',
       features: {
         title: 'Fast Delivery, Professional Quality',
-        description: 'Pop Up Limited provides end-to-end web development services from design to deployment, with an average delivery cycle of just 12 days, getting your website online quickly.',
+        description: 'Pop Up Limited provides end-to-end web development services from design to deployment, with an average first delivery time of just 3 days, getting your website online quickly.',
         item1: 'Professional design ensuring consistent brand identity',
         item2: 'Responsive design adapting to all devices',
         item3: 'Ongoing support providing long-term maintenance services'
@@ -453,7 +453,7 @@ export const translations = {
         title: 'Service Terms & Notes',
         delivery: {
           title: '*¹ (About Delivery Cycle):',
-          content: 'Delivery cycle (such as "fastest 10 days") refers to the shortest working time required for us to deliver the first complete preview version (V1). The starting point of this cycle is after the client has provided all necessary and qualified materials (including but not limited to final copy, images, Logo, and clear requirements documents). Time extensions caused by delayed client materials or new requirements raised during the process are not included in this commitment period.'
+          content: 'Delivery cycle (average first delivery time of 3 days) refers to the average working time required for us to deliver the first complete preview version (V1). The starting point of this cycle is after the client has provided all necessary and qualified materials (including but not limited to final copy, images, Logo, and clear requirements documents). Time extensions caused by delayed client materials or new requirements raised during the process are not included in this commitment period.'
         },
         satisfaction: {
           title: '*² (About "Until Satisfied"):',
