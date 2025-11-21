@@ -133,7 +133,7 @@ export const cases: Case[] = [
     name: 'Web Case 6',
     description: 'Professional website with modern design and excellent user experience',
     url: 'https://pop-up-limited.github.io/web-case-6/',
-    image: '/images/projects/popup-limited-website.png',
+    image: '/images/projects/web-case-6.png',
     category: 'Web Design',
     year: '2024',
     tags: ['Website', 'Modern', 'Professional'],
@@ -147,6 +147,28 @@ export const cases: Case[] = [
         'Excellent user experience',
         'Responsive design',
         'Professional layout'
+      ]
+    }
+  },
+  {
+    id: 'aethelgard-website',
+    name: 'Aethelgard Architecture',
+    description: 'Minimalist architecture studio website with elegant design and sophisticated user experience',
+    url: 'https://pop-up-limited.github.io/aethelgard-website/',
+    image: '/images/projects/aethelgard-website.png',
+    category: 'Web Design',
+    year: '2024',
+    tags: ['Architecture', 'Minimalist', 'Portfolio'],
+    isLive: true,
+    designTier: 'premium',
+    details: {
+      services: ['Web Design', 'Web Development', 'UI/UX Design'],
+      technologies: ['HTML', 'CSS', 'JavaScript'],
+      highlights: [
+        'Minimalist and elegant design',
+        'Sophisticated user experience',
+        'Responsive design',
+        'Architecture portfolio showcase'
       ]
     }
   }

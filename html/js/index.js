@@ -122,8 +122,15 @@ function initializeCharts(premiumCount, premiumPlusCount) {
         labels: currentLang === 'zh' ? ['顶级设计', '优质设计'] : ['Top-tier Design', 'Premium Design'],
         datasets: [{
           data: [premiumPlusCount, premiumCount],
-          backgroundColor: ['rgb(168, 85, 247)', 'rgb(59, 130, 246)'],
-          borderWidth: 0
+          backgroundColor: [
+            'rgba(168, 85, 247, 0.8)',  // 紫色 - 顶级设计
+            'rgba(248, 147, 147, 0.8)'  // 品牌粉色 - 优质设计
+          ],
+          borderColor: [
+            'rgba(168, 85, 247, 1)',
+            'rgba(248, 147, 147, 1)'
+          ],
+          borderWidth: 2
         }]
       },
       options: {
@@ -164,12 +171,20 @@ function initializeCharts(premiumCount, premiumPlusCount) {
           label: currentLang === 'zh' ? '占比 (%)' : 'Percentage (%)',
           data: [85, 100, 60, 90, 75],
           backgroundColor: [
-            'rgb(59, 130, 246)',
-            'rgb(34, 197, 94)',
-            'rgb(168, 85, 247)',
-            'rgb(251, 146, 60)',
-            'rgb(239, 68, 68)'
+            'rgba(248, 147, 147, 0.8)',  // 品牌粉色 - 网站设计
+            'rgba(168, 85, 247, 0.8)',   // 紫色 - 前端开发
+            'rgba(229, 145, 197, 0.8)',  // 深粉色 - 品牌设计
+            'rgba(248, 147, 147, 0.6)',  // 浅粉色 - UI/UX设计
+            'rgba(168, 85, 247, 0.6)'    // 浅紫色 - 移动端开发
           ],
+          borderColor: [
+            'rgba(248, 147, 147, 1)',
+            'rgba(168, 85, 247, 1)',
+            'rgba(229, 145, 197, 1)',
+            'rgba(248, 147, 147, 1)',
+            'rgba(168, 85, 247, 1)'
+          ],
+          borderWidth: 2,
           borderRadius: 8
         }]
       },
@@ -214,12 +229,18 @@ function initializeCharts(premiumCount, premiumPlusCount) {
         datasets: [{
           data: [35, 45, 15, 5],
           backgroundColor: [
-            'rgb(34, 197, 94)',
-            'rgb(59, 130, 246)',
-            'rgb(168, 85, 247)',
-            'rgb(239, 68, 68)'
+            'rgba(248, 147, 147, 0.8)',  // 品牌粉色 - 7-10天
+            'rgba(168, 85, 247, 0.8)',   // 紫色 - 11-15天
+            'rgba(229, 145, 197, 0.8)',  // 深粉色 - 16-20天
+            'rgba(248, 147, 147, 0.5)'   // 浅粉色 - 21+天
           ],
-          borderWidth: 0
+          borderColor: [
+            'rgba(248, 147, 147, 1)',
+            'rgba(168, 85, 247, 1)',
+            'rgba(229, 145, 197, 1)',
+            'rgba(248, 147, 147, 1)'
+          ],
+          borderWidth: 2
         }]
       },
       options: {
@@ -246,6 +267,19 @@ function updateCharts(lang) {
       ? ['顶级设计', '优质设计']
       : ['Top-tier Design', 'Premium Design'];
     chartInstances['design-tier'].update();
+  
+  // Update chart colors when language changes (maintain same colors)
+  if (chartInstances['design-tier']) {
+    chartInstances['design-tier'].data.datasets[0].backgroundColor = [
+      'rgba(168, 85, 247, 0.8)',
+      'rgba(248, 147, 147, 0.8)'
+    ];
+    chartInstances['design-tier'].data.datasets[0].borderColor = [
+      'rgba(168, 85, 247, 1)',
+      'rgba(248, 147, 147, 1)'
+    ];
+    chartInstances['design-tier'].update();
+  }
   }
   
   if (chartInstances['service-type']) {
@@ -260,6 +294,41 @@ function updateCharts(lang) {
     chartInstances['delivery-cycle'].data.labels = lang === 'zh'
       ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
       : ['7-10 days', '11-15 days', '16-20 days', '21+ days'];
+    chartInstances['delivery-cycle'].update();
+  }
+  
+  // Update chart colors when language changes (maintain same colors)
+  if (chartInstances['service-type']) {
+    chartInstances['service-type'].data.datasets[0].backgroundColor = [
+      'rgba(248, 147, 147, 0.8)',
+      'rgba(168, 85, 247, 0.8)',
+      'rgba(229, 145, 197, 0.8)',
+      'rgba(248, 147, 147, 0.6)',
+      'rgba(168, 85, 247, 0.6)'
+    ];
+    chartInstances['service-type'].data.datasets[0].borderColor = [
+      'rgba(248, 147, 147, 1)',
+      'rgba(168, 85, 247, 1)',
+      'rgba(229, 145, 197, 1)',
+      'rgba(248, 147, 147, 1)',
+      'rgba(168, 85, 247, 1)'
+    ];
+    chartInstances['service-type'].update();
+  }
+  
+  if (chartInstances['delivery-cycle']) {
+    chartInstances['delivery-cycle'].data.datasets[0].backgroundColor = [
+      'rgba(248, 147, 147, 0.8)',
+      'rgba(168, 85, 247, 0.8)',
+      'rgba(229, 145, 197, 0.8)',
+      'rgba(248, 147, 147, 0.5)'
+    ];
+    chartInstances['delivery-cycle'].data.datasets[0].borderColor = [
+      'rgba(248, 147, 147, 1)',
+      'rgba(168, 85, 247, 1)',
+      'rgba(229, 145, 197, 1)',
+      'rgba(248, 147, 147, 1)'
+    ];
     chartInstances['delivery-cycle'].update();
   }
 }
