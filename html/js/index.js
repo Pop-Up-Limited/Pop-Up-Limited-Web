@@ -224,10 +224,10 @@ function initializeCharts(premiumCount, premiumPlusCount) {
       type: 'pie',
       data: {
         labels: currentLang === 'zh'
-          ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
-          : ['7-10 days', '11-15 days', '16-20 days', '21+ days'],
+          ? ['1-2 天', '3-4 天', '5-6 天', '7+ 天']
+          : ['1-2 days', '3-4 days', '5-6 days', '7+ days'],
         datasets: [{
-          data: [35, 45, 15, 5],
+          data: [50, 40, 8, 2],
           backgroundColor: [
             'rgba(248, 147, 147, 0.85)',  // 品牌粉色 - 7-10天
             'rgba(255, 179, 186, 0.85)',  // 浅粉红色 - 11-15天
@@ -292,8 +292,8 @@ function updateCharts(lang) {
   
   if (chartInstances['delivery-cycle']) {
     chartInstances['delivery-cycle'].data.labels = lang === 'zh'
-      ? ['7-10 天', '11-15 天', '16-20 天', '21+ 天']
-      : ['7-10 days', '11-15 days', '16-20 days', '21+ days'];
+      ? ['1-2 天', '3-4 天', '5-6 天', '7+ 天']
+      : ['1-2 days', '3-4 days', '5-6 days', '7+ days'];
     chartInstances['delivery-cycle'].update();
   }
   
