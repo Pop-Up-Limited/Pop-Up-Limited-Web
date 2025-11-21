@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案例库 · Pop Up Limited</title>
+  <meta name="description" content="浏览我们的服务经验，了解我们为不同行业客户打造的专业网站解决方案。">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-surface text-foreground dark:bg-surface-dark dark:text-foreground-dark">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-500 focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+  
+  <div id="navbar-container"></div>
+  
+  <main id="main-content" class="relative min-h-screen bg-surface dark:bg-surface-dark">
+    <section class="relative container w-full px-4 pt-16 pb-8 md:px-6 md:pt-20 md:pb-12">
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[300px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
+      <div class="text-center">
+        <h1 class="text-3xl font-semibold leading-tight text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="cases.title">案例库</h1>
+        <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300" data-i18n="cases.subtitle">探索我们为不同行业客户打造的专业网站解决方案，从初创企业到大型企业的服务经验</p>
+      </div>
+    </section>
+
+    <section class="container px-4 pb-8 md:px-6">
+      <div class="mb-6 flex flex-wrap items-center justify-center gap-3" id="category-filters">
+        <!-- Category filters will be loaded here -->
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-3" id="tier-filters">
+        <!-- Tier filters will be loaded here -->
+      </div>
+    </section>
+
+    <section class="container px-4 pb-24 md:px-6">
+      <div id="cases-grid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Cases will be loaded here -->
+      </div>
+      <div id="no-cases" class="hidden py-12 text-center">
+        <p class="text-lg text-foreground-muted dark:text-slate-400" data-i18n="cases.noCases">暂无该分类的案例</p>
+      </div>
+    </section>
+  </main>
+  
+  <div id="footer-container"></div>
+  
+  <script src="/js/app.js"></script>
+  <script src="/js/cases.js"></script>
+</body>
+</html>

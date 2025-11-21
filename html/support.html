@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support · Pop Up Limited</title>
+  <meta name="description" content="Find answers to frequent questions and contact Pop Up Limited support for website development services.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-surface text-foreground dark:bg-surface-dark dark:text-foreground-dark">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-500 focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+  
+  <div id="navbar-container"></div>
+  
+  <main id="main-content" class="relative">
+    <section class="container w-full px-4 pb-16 pt-16 md:px-6 md:pt-20">
+      <div class="max-w-3xl space-y-6">
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="nav.support">Support</span>
+        <h1 class="text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark" data-i18n="support.title">How can we help?</h1>
+        <p class="text-base text-foreground-muted dark:text-slate-300" data-i18n="support.subtitle">Explore quick answers or contact us directly for assistance.</p>
+      </div>
+    </section>
+
+    <section class="container px-4 pb-24 md:px-6">
+      <div class="grid gap-8 md:grid-cols-[minmax(0,0.65fr)_minmax(0,0.35fr)] md:gap-10">
+        <div class="space-y-4">
+          <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="support.faqTitle">Frequently asked questions</h2>
+          <div class="grid gap-4" id="faq-list">
+            <!-- FAQs will be loaded here -->
+          </div>
+        </div>
+
+        <div class="card-surface flex flex-col gap-4">
+          <h2 class="text-xl font-semibold text-foreground dark:text-foreground-dark">Contact our support team</h2>
+          <p class="text-sm text-foreground-muted dark:text-slate-300">We aim to respond within one business day for standard plans and within four hours for enterprise coverage.</p>
+          <div class="space-y-3 text-sm">
+            <div>
+              <span class="block text-xs font-semibold uppercase tracking-wide text-slate-400">Email</span>
+              <a href="mailto:contact@popup.limited" class="text-brand-600 hover:text-brand-700">contact@popup.limited</a>
+            </div>
+            <div>
+              <span class="block text-xs font-semibold uppercase tracking-wide text-slate-400">Company</span>
+              <p class="text-foreground dark:text-foreground-dark">Pop Up Limited</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container px-4 pb-24 md:px-6">
+      <div class="card-surface text-center">
+        <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="support.needHelp">Need more help?</h2>
+        <p class="mb-6 text-base text-foreground-muted dark:text-slate-300" data-i18n="support.contactText">Contact us directly and we'll get back to you as soon as possible.</p>
+        <a href="mailto:contact@popup.limited" class="btn-primary" data-i18n="support.contactUs">Contact Us</a>
+        <p class="mt-4 text-sm text-foreground-muted dark:text-slate-400">contact@popup.limited</p>
+      </div>
+    </section>
+  </main>
+  
+  <div id="footer-container"></div>
+  
+  <script src="/js/app.js"></script>
+  <script src="/js/support.js"></script>
+</body>
+</html>
+

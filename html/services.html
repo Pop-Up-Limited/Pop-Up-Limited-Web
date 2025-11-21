@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网站开发服务方案 · Pop Up Limited</title>
+  <meta name="description" content="选择适合您需求的网站开发服务方案：标准、标准 Pro 或全定制服务。">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-surface text-foreground dark:bg-surface-dark dark:text-foreground-dark">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-500 focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+  
+  <div id="navbar-container"></div>
+  
+  <main id="main-content" class="relative min-h-screen bg-surface dark:bg-surface-dark">
+    <section class="relative container w-full px-4 pt-16 pb-8 md:px-6 md:pt-20 md:pb-12">
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[300px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
+      <div class="text-center">
+        <h1 class="text-3xl font-semibold leading-tight text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="services.title">网站开发服务方案</h1>
+        <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300" data-i18n="services.subtitle">选择适合您需求的网站开发服务，从标准方案到全定制解决方案，我们为您提供专业的网站开发服务。</p>
+      </div>
+    </section>
+
+    <section class="container px-4 pb-12 md:px-6">
+      <div class="grid gap-6 md:grid-cols-3" id="plans-grid">
+        <!-- Plans will be loaded here -->
+      </div>
+    </section>
+
+    <section id="cases-showcase" class="container px-4 pb-12 md:px-6 scroll-mt-24">
+      <div class="mb-8 flex flex-col gap-3">
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="services.optional.title">可选服务</span>
+        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="services.optional.subtitle">增强您的网站功能</h2>
+        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300" data-i18n="services.optional.description">根据您的业务需求，我们可以为您提供以下可选服务，让您的网站更加完善和强大。</p>
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="optional-services">
+        <!-- Optional services will be loaded here -->
+      </div>
+      <div class="mt-8 text-center">
+        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300" data-i18n="services.optional.contact">需要了解更多可选服务详情？请联系我们的客服团队获取详细报价。</p>
+        <button type="button" data-contact-btn class="btn-primary" data-i18n="services.optional.contactBtn">联系客服咨询</button>
+      </div>
+    </section>
+
+    <section id="detailed-comparison" class="container px-4 pb-16 md:px-6 scroll-mt-24">
+      <div class="card-surface">
+        <h2 class="mb-8 text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.comparison.title">详细对比</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full" id="comparison-table">
+            <!-- Comparison table will be loaded here -->
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="design-tier-explanation" class="container px-4 pb-12 md:px-6 scroll-mt-24">
+      <div class="card-surface rounded-2xl p-6 md:p-8">
+        <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.designTier.title">设计分级说明</h2>
+        <div class="grid gap-6 md:grid-cols-2" id="design-tier-grid">
+          <!-- Design tier explanations will be loaded here -->
+        </div>
+      </div>
+    </section>
+
+    <section class="container px-4 pb-24 md:px-6">
+      <div class="space-y-6">
+        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="services.terms.title">服务条款备注</h2>
+        <div class="space-y-4 text-sm leading-relaxed text-foreground-muted dark:text-slate-300" id="terms-content">
+          <!-- Terms will be loaded here -->
+        </div>
+      </div>
+    </section>
+
+    <section class="container mb-24 rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-12 text-center shadow-brand-md md:px-12">
+      <h2 class="text-3xl font-semibold text-brand-700 md:text-4xl dark:text-brand-100" data-i18n="cta.title">准备开始您的项目？</h2>
+      <p class="mt-4 text-base text-brand-800/80 dark:text-brand-200/80" data-i18n="cta.subtitle">联系我们的专业团队，获取定制化的网站开发解决方案。</p>
+      <div class="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <button type="button" data-contact-btn class="btn-primary">联系客服</button>
+        <a class="btn-secondary" href="/">返回首页</a>
+      </div>
+    </section>
+  </main>
+  
+  <div id="footer-container"></div>
+  
+  <!-- Contact Modal -->
+  <div id="contact-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" data-modal>
+    <div class="relative mx-auto w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+      <button type="button" data-modal-close class="absolute right-4 top-4 rounded-full p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300" aria-label="关闭">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+      </button>
+      <div class="text-center">
+        <div class="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-brand-500/10">
+          <svg class="h-6 w-6 text-brand-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+        </div>
+        <h3 class="mb-1.5 text-lg font-semibold text-foreground dark:text-foreground-dark">联系客服</h3>
+        <p class="mb-4 text-sm text-foreground-muted dark:text-slate-300">请添加我们的客服微信，我们将尽快为您提供服务</p>
+        <div class="mb-4 rounded-xl border-2 border-brand-500/30 bg-brand-500/5 p-3">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">客服微信</p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
+            <code class="rounded-lg bg-white px-3 py-1.5 text-base font-mono font-semibold text-brand-600 dark:bg-slate-800 dark:text-brand-400">popup-service</code>
+            <button type="button" data-copy-wechat class="rounded-lg border border-brand-500 bg-brand-500 px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-brand-600">复制</button>
+          </div>
+        </div>
+        <div class="mb-2">
+          <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-muted dark:text-slate-400">扫码添加</p>
+          <div class="flex flex-col items-center gap-2">
+            <div class="flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <img src="/wechat-qr-popup-service.png" alt="Popup Service 客服微信二维码" loading="lazy" decoding="async" class="max-w-[280px] h-auto object-contain">
+            </div>
+            <p class="text-xs text-center text-foreground-muted dark:text-slate-400 px-2 pb-2">扫一扫二维码，或直接搜索微信号 <span class="font-semibold text-brand-600 dark:text-brand-400">popup-service</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/js/app.js"></script>
+  <script src="/js/services.js"></script>
+</body>
+</html>
+
