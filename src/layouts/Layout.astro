@@ -74,6 +74,19 @@ const ogImageUrl =
       <slot />
     </main>
     <Footer />
+    
+    <!-- 动效系统加载 -->
+    <script type="module">
+      import { initAllAnimations } from '/src/utils/animations.js';
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          initAllAnimations();
+        });
+      } else {
+        initAllAnimations();
+      }
+    </script>
   </body>
 </html>
 

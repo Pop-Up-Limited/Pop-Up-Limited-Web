@@ -9,11 +9,79 @@ const premiumCases = cases.filter(c => c.designTier === 'premium');
 const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 const heroDefaults = translations.zh.hero;
 const heroFeatureDefaults = heroDefaults.features;
+
+// 获取所有案例用于顶部展示
+const featuredCases = [...premiumPlusCases, ...premiumCases].slice(0, 6);
 ---
 
 <Layout title={`${COMPANY_NAME} · ${COMPANY_TAGLINE}`} description={DEFAULT_DESCRIPTION}>
   <div class="relative overflow-hidden">
-    <section class="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-24 pt-16 md:px-6 md:pt-24">
+    <!-- 案例展示区域 - 放在顶部 -->
+    <section class="relative mx-auto w-full px-4 pb-16 pt-24 md:px-6 md:pt-32" id="featured-cases">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-12 text-center">
+          <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge">精选案例</span>
+          <h2 class="mt-4 text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark" data-i18n="portfolio.title">精选作品集</h2>
+          <p class="mx-auto mt-4 max-w-2xl text-base text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle">探索我们精心打造的高质量创新设计，每个项目都体现了我们对创意和卓越的承诺。</p>
+        </div>
+
+        <!-- 案例网格 - 带堆叠效果 -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {featuredCases.map((caseItem, index) => (
+            <a
+              href={caseItem.url || '#'}
+              target={caseItem.url ? '_blank' : undefined}
+              rel={caseItem.url ? 'noopener noreferrer' : undefined}
+              class="group relative block overflow-hidden rounded-2xl border-2 border-slate-200 bg-white transition-all duration-500 hover:border-brand-500 hover:shadow-xl dark:border-slate-700 dark:bg-slate-900"
+              data-stack
+              data-interactive
+              style={`animation-delay: ${index * 100}ms`}
+            >
+              <div class="relative h-64 overflow-hidden bg-slate-100 dark:bg-slate-800">
+                <img
+                  src={caseItem.image}
+                  alt={caseItem.name}
+                  class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span class="rounded-lg bg-brand-500 px-6 py-3 text-sm font-semibold text-white" data-i18n="cases.visitSite">访问网站</span>
+                </div>
+                {caseItem.designTier === 'premium-plus' && (
+                  <div class="absolute top-4 right-4 z-10">
+                    <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.premiumDesign">顶级设计</span>
+                  </div>
+                )}
+                {caseItem.designTier === 'premium' && (
+                  <div class="absolute top-4 right-4 z-10">
+                    <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.qualityDesign">优质设计</span>
+                  </div>
+                )}
+              </div>
+              <div class="p-6">
+                <h3 class="mb-2 text-xl font-semibold text-foreground dark:text-foreground-dark">{caseItem.name}</h3>
+                <p class="mb-3 text-sm text-foreground-muted dark:text-slate-300">{caseItem.description}</p>
+                <div class="flex flex-wrap gap-2">
+                  {caseItem.tags.slice(0, 3).map((tag) => (
+                    <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div class="mt-12 text-center">
+          <a href="/cases" class="btn-secondary" data-i18n="portfolio.viewMore">查看更多案例</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="relative mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 pb-24 md:px-6 md:pt-24">
       <div class="absolute inset-x-0 -top-32 -z-10 h-[420px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
       <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] md:items-center">
         <div class="space-y-6">
@@ -91,81 +159,6 @@ const heroFeatureDefaults = heroDefaults.features;
           <h3 class="text-xl font-semibold text-brand-700 dark:text-brand-200" data-i18n="about.quote"></h3>
           <p class="text-sm text-brand-800/80 dark:text-brand-100/80" data-i18n="about.quoteAuthor"></p>
         </div>
-      </div>
-    </section>
-
-    <!-- Portfolio Showcase Section -->
-    <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-      <div class="mb-10 flex flex-col gap-3">
-        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge"></span>
-        <h2 class="text-3xl font-semibold text-foreground md:text-4xl dark:text-foreground-dark" data-i18n="portfolio.title"></h2>
-        <p class="max-w-2xl text-sm text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle"></p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <!-- 顶级设计案例 -->
-        {premiumPlusCases.map((caseItem) => (
-          <a
-            href={caseItem.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative block overflow-hidden rounded-xl border-2 border-purple-500/30 bg-white transition-all duration-300 hover:border-purple-500 hover:shadow-lg dark:border-purple-500/50 dark:bg-slate-900"
-          >
-            <div class="absolute top-3 right-3 z-10">
-              <span class="rounded-full bg-purple-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.premiumDesign"></span>
-            </div>
-            <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-              <img
-                src={caseItem.image}
-                alt={caseItem.name}
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite"></span>
-              </div>
-            </div>
-            <div class="p-4">
-              <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">{caseItem.name}</h3>
-              <p class="text-sm text-foreground-muted dark:text-slate-300">{caseItem.description}</p>
-            </div>
-          </a>
-        ))}
-
-        <!-- 优质设计案例 -->
-        {premiumCases.map((caseItem) => (
-          <a
-            href={caseItem.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group relative block overflow-hidden rounded-xl border-2 border-slate-200 bg-white transition-all duration-300 hover:border-brand-500 hover:shadow-lg dark:border-slate-700 dark:bg-slate-900"
-          >
-            <div class="absolute top-3 right-3 z-10">
-              <span class="rounded-full bg-brand-500 px-3 py-1 text-xs font-semibold text-white" data-i18n="portfolio.qualityDesign"></span>
-            </div>
-            <div class="relative h-48 overflow-hidden bg-slate-100 dark:bg-slate-800">
-              <img
-                src={caseItem.image}
-                alt={caseItem.name}
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-                decoding="async"
-              />
-              <div class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <span class="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white" data-i18n="cases.visitSite"></span>
-              </div>
-            </div>
-            <div class="p-4">
-              <h3 class="mb-1 text-lg font-semibold text-foreground dark:text-foreground-dark">{caseItem.name}</h3>
-              <p class="text-sm text-foreground-muted dark:text-slate-300">{caseItem.description}</p>
-            </div>
-          </a>
-        ))}
-      </div>
-
-      <div class="mt-8 text-center">
-        <a href="/cases" class="btn-secondary" data-i18n="portfolio.viewMore"></a>
       </div>
     </section>
 
