@@ -1,7 +1,7 @@
 ---
 ---
 <div id="gemini-particles-container" class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-  <canvas id="gemini-canvas" class="w-full h-full opacity-80"></canvas>
+  <canvas id="gemini-canvas" class="w-full h-full opacity-60"></canvas>
 </div>
 
 <script>
@@ -33,26 +33,26 @@
       this.resize();
       window.addEventListener('resize', () => this.resize());
       
-      // Track mouse relative to canvas, but canvas is fixed/absolute
+      // Track mouse relative to canvas
       document.addEventListener('mousemove', (e) => {
         const rect = this.canvas.getBoundingClientRect();
         this.mouseX = e.clientX - rect.left;
         this.mouseY = e.clientY - rect.top;
         
-        // Add particles on move
-        for (let i = 0; i < 2; i++) {
+        // Add fine particles on move
+        for (let i = 0; i < 3; i++) {
           this.particles.push(new Particle(this.mouseX, this.mouseY, this.ctx));
         }
       });
       
-      // Auto play if no mouse movement
+      // Auto generate particles for ambient effect
       setInterval(() => {
-         if (this.particles.length < 50) {
+         if (this.particles.length < 150) { // Increased count for finer look
             const x = Math.random() * this.width;
             const y = Math.random() * this.height;
             this.particles.push(new Particle(x, y, this.ctx));
          }
-      }, 100);
+      }, 50);
 
       this.animate();
     }
@@ -64,9 +64,7 @@
 
     animate() {
       this.ctx.clearRect(0, 0, this.width, this.height);
-      // this.ctx.fillStyle = 'rgba(0,0,0,0.02)'; // Trail effect
-      // this.ctx.fillRect(0, 0, this.width, this.height);
-
+      
       this.handleParticles();
       this.hue += 0.5;
       requestAnimationFrame(() => this.animate());
@@ -77,16 +75,18 @@
         this.particles[i].update();
         this.particles[i].draw();
         
-        // Connect particles
+        // Connect particles - only close ones for "network" feel
         for (let j = i; j < this.particles.length; j++) {
             const dx = this.particles[i].x - this.particles[j].x;
             const dy = this.particles[i].y - this.particles[j].y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
-            if (distance < 100) {
+            // Finer connections
+            if (distance < 80) {
                 this.ctx.beginPath();
-                this.ctx.strokeStyle = this.particles[i].color;
-                this.ctx.lineWidth = 0.2;
+                // Use gradient or pinkish color for lines
+                this.ctx.strokeStyle = `rgba(248, 147, 147, ${0.15 - distance/800})`; // Brand pinkish
+                this.ctx.lineWidth = 0.15;
                 this.ctx.moveTo(this.particles[i].x, this.particles[i].y);
                 this.ctx.lineTo(this.particles[j].x, this.particles[j].y);
                 this.ctx.stroke();
@@ -94,7 +94,7 @@
             }
         }
 
-        if (this.particles[i].size <= 0.3) {
+        if (this.particles[i].size <= 0.1) {
           this.particles.splice(i, 1);
           i--;
         }
@@ -114,20 +114,27 @@
     constructor(x: number, y: number, ctx: CanvasRenderingContext2D) {
       this.x = x;
       this.y = y;
-      this.size = Math.random() * 8 + 1; // Size
-      this.speedX = Math.random() * 3 - 1.5;
-      this.speedY = Math.random() * 3 - 1.5;
-      // Brand colors: Purple/Pink
-      const colors = ['rgba(147, 51, 234, ', 'rgba(236, 72, 153, ', 'rgba(168, 85, 247, '];
+      this.size = Math.random() * 2 + 0.5; // Small, fine size (0.5 to 2.5)
+      this.speedX = Math.random() * 2 - 1; // Slower movement
+      this.speedY = Math.random() * 2 - 1;
+      
+      // Pinker palette: Light Pink, Hot Pink, Brand Pink
+      const colors = [
+          'rgba(252, 165, 165, ', // Red-300 (Light Pinkish)
+          'rgba(249, 168, 212, ', // Pink-300
+          'rgba(244, 114, 182, ', // Pink-400
+          'rgba(248, 147, 147, '  // Brand Color
+      ];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      this.color = randomColor + Math.random() + ')'; 
+      this.color = randomColor + (Math.random() * 0.5 + 0.3) + ')'; // Alpha 0.3-0.8
       this.ctx = ctx;
     }
 
     update() {
       this.x += this.speedX;
       this.y += this.speedY;
-      if (this.size > 0.2) this.size -= 0.1;
+      // Shrink slowly
+      if (this.size > 0.1) this.size -= 0.02;
     }
 
     draw() {
@@ -143,4 +150,3 @@
     new ParticleSystem();
   });
 </script>
-
