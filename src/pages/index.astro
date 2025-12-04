@@ -3,14 +3,14 @@ import Layout from '../layouts/Layout.astro';
 import { HERO, WHY_US, COMPANY_NAME, COMPANY_TAGLINE, DEFAULT_DESCRIPTION } from '../config/site';
 import { translations } from '../i18n/translations';
 import { cases } from '../data/cases';
-import GeminiParticles from '../components/GeminiParticles.astro';
+import SaturnParticles from '../components/SaturnParticles.astro';
 import Danmaku from '../components/Danmaku.astro';
 
 // 按设计分级分组
 const premiumCases = cases.filter(c => c.designTier === 'premium');
 const premiumPlusCases = cases.filter(c => c.designTier === 'premium-plus');
 // Combine cases for the stacking list, prioritize premium plus
-const allCases = [...premiumPlusCases, ...premiumCases].slice(0, 5); // Limit to 5 for better stacking effect demo
+const allCases = [...premiumPlusCases, ...premiumCases].slice(0, 5); 
 
 const heroDefaults = translations.zh.hero;
 const heroFeatureDefaults = heroDefaults.features;
@@ -26,13 +26,14 @@ const heroFeatureDefaults = heroDefaults.features;
       <div class="absolute inset-x-0 -top-32 -z-10 h-[420px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
       
       <!-- Particle Effect (Right Side / Background) -->
-      <div class="absolute top-0 right-0 w-full md:w-1/2 h-full z-0 opacity-60 md:opacity-100 pointer-events-none">
-         <GeminiParticles />
+      <div class="absolute inset-0 w-full h-full z-0 pointer-events-none">
+         <SaturnParticles />
       </div>
 
-      <div class="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 md:px-6">
+      <div class="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 md:px-6 pointer-events-none">
+        <!-- Content Container - Enable pointer events for buttons -->
         <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-center">
-          <div class="space-y-8 backdrop-blur-sm md:backdrop-blur-none rounded-3xl p-6 md:p-0 bg-white/30 md:bg-transparent dark:bg-black/30 md:dark:bg-transparent border border-white/20 md:border-0">
+          <div class="space-y-8 pointer-events-auto backdrop-blur-sm md:backdrop-blur-none rounded-3xl p-6 md:p-0 bg-white/30 md:bg-transparent dark:bg-black/30 md:dark:bg-transparent border border-white/20 md:border-0">
             <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-brand-600" data-i18n="hero.badge">
               {heroDefaults.badge}
             </span>
@@ -52,8 +53,10 @@ const heroFeatureDefaults = heroDefaults.features;
             </div>
           </div>
           
-          <!-- Right side empty for particles -->
-          <div class="hidden md:block relative"></div>
+          <!-- Right side area for saturn interaction -->
+          <div class="hidden md:block relative h-[500px] pointer-events-auto">
+              <!-- This area captures mouse events for the particles behind it -->
+          </div>
         </div>
       </div>
     </section>
@@ -72,15 +75,22 @@ const heroFeatureDefaults = heroDefaults.features;
         </div>
 
         <div class="mx-auto w-full max-w-5xl px-4 md:px-6 pb-24">
-            <div class="flex flex-col gap-24">
+            <div class="flex flex-col gap-32"> <!-- Increased gap for better scroll distance -->
                 {allCases.map((caseItem, index) => (
-                    <div class="sticky-card sticky top-32 w-full">
+                    <div class="sticky-card-wrapper sticky top-32 w-full" style={`z-index: ${index + 1};`}>
+                         <!-- 
+                            Keyfix for stacking: 
+                            1. Wrapper is sticky.
+                            2. Each subsequent card is naturally lower in the DOM flow.
+                            3. Sticky only works if parent container has height (which flex-col provides).
+                            4. Gap provides scroll space before next card unsticks/arrives.
+                         -->
                         <a
                             href={caseItem.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             class="group relative block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl transition-all duration-500 hover:-translate-y-1 dark:border-slate-700 dark:bg-slate-900"
-                            style={`transform-origin: center top; z-index: ${index + 1};`}
+                            style={`transform-origin: center top; margin-top: ${index * 20}px;`} 
                         >
                             <div class="grid md:grid-cols-2 gap-0 h-[500px] md:h-[400px]">
                                 <div class="relative h-full overflow-hidden bg-slate-100 dark:bg-slate-800 order-2 md:order-1">
