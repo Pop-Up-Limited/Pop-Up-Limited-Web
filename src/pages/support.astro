@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import FAQItem from '../components/FAQItem.astro';
 import ContactCard from '../components/ContactCard.astro';
+import SupportButton from '../components/SupportButton.jsx';
 import { faqs } from '../data/faqs';
 import { COMPANY_NAME, SUPPORT_EMAIL } from '../config/site';
 import { translations } from '../i18n/translations';
@@ -51,9 +52,16 @@ const PAGE_DESCRIPTION =
       <p class="mb-6 text-base text-foreground-muted dark:text-slate-300" data-i18n="support.contactText">
         Contact us directly and we'll get back to you as soon as possible.
       </p>
-      <a href={`mailto:${SUPPORT_EMAIL}`} class="btn-primary" data-i18n="support.contactUs">
-        Contact Us
-      </a>
+      <div class="flex justify-center">
+        <SupportButton 
+          client:visible 
+          text="Contact Us" 
+          className="btn-primary cursor-pointer" 
+          buttonElement={
+            <span class="btn-primary cursor-pointer" data-i18n="support.contactUs">Contact Us</span>
+          }
+        />
+      </div>
       <p class="mt-4 text-sm text-foreground-muted dark:text-slate-400">
         {SUPPORT_EMAIL}
       </p>
@@ -93,6 +101,20 @@ const PAGE_DESCRIPTION =
   document.addEventListener('DOMContentLoaded', () => {
     const lang = getLanguage();
     updatePageTexts(lang);
+    
+    // Listen for language changes
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'language') {
+        const newLang = e.newValue || 'zh';
+        updatePageTexts(newLang);
+      }
+    });
+    
+    window.addEventListener('languagechange', (e) => {
+      const newLang = e.detail?.lang;
+      if (newLang) {
+        updatePageTexts(newLang);
+      }
+    });
   });
 </script>
-

@@ -1,0 +1,393 @@
+---
+---
+<div id="three-saturn-container" class="absolute inset-0 z-0 pointer-events-none w-full h-full"></div>
+
+<script>
+  import * as THREE from 'three';
+
+  class SaturnScene {
+    constructor() {
+      this.container = document.getElementById('three-saturn-container');
+      if (!this.container) return;
+
+      // Scene setup
+      this.scene = new THREE.Scene();
+      this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // High quality
+      this.container.appendChild(this.renderer.domElement);
+
+      // Particle Systems
+      this.planetParticles = null;
+      this.ringParticles = null;
+      this.chaosMode = false;
+      
+      // Configuration
+      this.config = {
+        planetRadius: 1.8,        // Larger planet
+        ringInnerRadius: 2.4,
+        ringOuterRadius: 5.0,
+        planetParticleCount: 6000,
+        ringParticleCount: 12000,
+        tilt: Math.PI / 6,        // 30 degrees
+        rotationSpeed: 0.05
+      };
+
+      // Mouse interaction
+      this.mouseX = 0;
+      this.mouseY = 0;
+      this.targetX = 0;
+      this.targetY = 0;
+      this.windowHalfX = window.innerWidth / 2;
+      this.windowHalfY = window.innerHeight / 2;
+
+      this.init();
+      this.animate();
+      this.addEventListeners();
+    }
+
+    init() {
+      // Camera Position
+      // Position right to overlay right side of screen
+      this.camera.position.z = 8; 
+      this.camera.position.x = 2; // Shift right
+      
+      this.createPlanet();
+      this.createRings();
+
+      // Initial tilt
+      this.scene.rotation.z = this.config.tilt;
+      this.scene.rotation.x = 0.2; // Slight forward tilt
+    }
+
+    createPlanet() {
+      const geometry = new THREE.BufferGeometry();
+      const positions = [];
+      const sizes = [];
+      const brightness = [];
+      const velocities = []; // Store orbital velocity for Kepler simulation
+      const colors = [];
+
+      const colorPalette = [
+        new THREE.Color('#F89393'), // Brand Pink
+        new THREE.Color('#fca5a5'), // Light Pink
+        new THREE.Color('#ec4899'), // Hot Pink
+        new THREE.Color('#f43f5e')  // Rose
+      ];
+
+      for (let i = 0; i < this.config.planetParticleCount; i++) {
+        // Spherical distribution
+        const r = this.config.planetRadius * Math.cbrt(Math.random()); // Uniform volume
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi);
+
+        positions.push(x, y, z);
+        
+        // Size variation
+        sizes.push(Math.random() * 0.05 + 0.01);
+        
+        // Brightness based on distance/size (Simulate "lighting")
+        // Inner brighter, outer darker or vice versa. Let's make larger particles brighter.
+        brightness.push(Math.random());
+
+        // Orbital Velocity (Kepler-like approximation for rotation)
+        // v ~ 1/sqrt(r)
+        const v = 0.02 / Math.sqrt(r + 0.1); 
+        velocities.push(v);
+
+        // Color
+        const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        colors.push(color.r, color.g, color.b);
+      }
+
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+      geometry.setAttribute('brightness', new THREE.Float32BufferAttribute(brightness, 1));
+      geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      // Custom Shader Material for ultimate control
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uScale: { value: 1.0 },
+          uChaos: { value: 0.0 } // 0 to 1
+        },
+        vertexShader: `
+          attribute float size;
+          attribute float brightness;
+          attribute float velocity;
+          attribute vec3 color;
+          
+          varying vec3 vColor;
+          varying float vBrightness;
+          
+          uniform float uTime;
+          uniform float uChaos;
+          
+          // Noise function for chaos
+          float random(vec3 st) {
+            return fract(sin(dot(st.xyz, vec3(12.9898,78.233,45.5432))) * 43758.5453123);
+          }
+
+          void main() {
+            vColor = color;
+            vBrightness = brightness;
+            
+            vec3 pos = position;
+            
+            // 1. Kepler Rotation (simplified: rotation around Y axis)
+            float angle = uTime * velocity;
+            float s = sin(angle);
+            float c = cos(angle);
+            
+            // Rotate pos around Y
+            float x = pos.x * c - pos.z * s;
+            float z = pos.x * s + pos.z * c;
+            pos.x = x;
+            pos.z = z;
+
+            // 2. Chaos (Brownian motion simulation on high zoom/chaos factor)
+            if (uChaos > 0.0) {
+               vec3 noise = vec3(
+                 random(pos + uTime * 0.1),
+                 random(pos + uTime * 0.1 + 10.0),
+                 random(pos + uTime * 0.1 + 20.0)
+               );
+               pos += (noise - 0.5) * uChaos * 2.0; // Chaos amplitude
+            }
+
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            
+            // Size attenuation: larger when closer
+            gl_PointSize = size * (300.0 / -mvPosition.z);
+            
+            // Chaos size flickering
+            if (uChaos > 0.0) {
+                gl_PointSize *= (1.0 + random(pos * uTime) * uChaos);
+            }
+
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vColor;
+          varying float vBrightness;
+          
+          void main() {
+            // Circular particle
+            vec2 coord = gl_PointCoord - vec2(0.5);
+            if(length(coord) > 0.5) discard;
+            
+            // Brightness logic (Small -> Darker, Large/Close -> Brighter)
+            // We use vBrightness passed from vertex
+            float alpha = 0.8 * vBrightness + 0.2;
+            
+            gl_FragColor = vec4(vColor, alpha);
+          }
+        `,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      this.planetParticles = new THREE.Points(geometry, material);
+      this.scene.add(this.planetParticles);
+    }
+
+    createRings() {
+      const geometry = new THREE.BufferGeometry();
+      const positions = [];
+      const sizes = [];
+      const brightness = [];
+      const velocities = [];
+      const colors = [];
+      const initialAngles = [];
+
+      for (let i = 0; i < this.config.ringParticleCount; i++) {
+        // Ring distribution
+        const r = this.config.ringInnerRadius + Math.random() * (this.config.ringOuterRadius - this.config.ringInnerRadius);
+        const theta = Math.random() * Math.PI * 2;
+        
+        const x = r * Math.cos(theta);
+        const y = (Math.random() - 0.5) * 0.1; // Very thin vertical spread
+        const z = r * Math.sin(theta);
+
+        positions.push(x, y, z);
+        
+        // Ring particles are generally smaller and more dust-like
+        sizes.push(Math.random() * 0.03 + 0.005);
+        brightness.push(Math.random());
+        
+        // Kepler Velocity: v = sqrt(GM/r) -> simplified 1/sqrt(r)
+        const v = 0.5 / Math.sqrt(r); 
+        velocities.push(v);
+        initialAngles.push(theta);
+
+        // Ring Colors: White/Pink dust
+        const isPink = Math.random() > 0.7;
+        const color = isPink ? new THREE.Color('#fda4af') : new THREE.Color('#ffffff');
+        colors.push(color.r, color.g, color.b);
+      }
+
+      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+      geometry.setAttribute('velocity', new THREE.Float32BufferAttribute(velocities, 1));
+      geometry.setAttribute('initialAngle', new THREE.Float32BufferAttribute(initialAngles, 1));
+      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      // Store radius for Kepler calc in shader
+      // Since position.x and z are based on r, we can recompute or store r.
+      // For shader simplicity, we'll compute dynamic rotation.
+
+      const material = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uChaos: { value: 0.0 }
+        },
+        vertexShader: `
+          attribute float size;
+          attribute float velocity;
+          attribute float initialAngle;
+          attribute vec3 color;
+          
+          varying vec3 vColor;
+          
+          uniform float uTime;
+          uniform float uChaos;
+          
+          float random(vec3 st) {
+            return fract(sin(dot(st.xyz, vec3(12.9898,78.233,45.5432))) * 43758.5453123);
+          }
+
+          void main() {
+            vColor = color;
+            vec3 pos = position;
+            
+            // Calculate radius from initial position
+            float r = length(vec2(pos.x, pos.z));
+            
+            // Update angle based on Kepler velocity
+            float currentAngle = initialAngle + velocity * uTime * 0.5;
+            
+            // New Position
+            pos.x = r * cos(currentAngle);
+            pos.z = r * sin(currentAngle);
+            
+            // Chaos
+            if (uChaos > 0.0) {
+               vec3 noise = vec3(
+                 random(pos + uTime * 0.2),
+                 random(pos + uTime * 0.2 + 30.0),
+                 random(pos + uTime * 0.2 + 60.0)
+               );
+               pos += (noise - 0.5) * uChaos * 1.5;
+            }
+
+            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            gl_PointSize = size * (300.0 / -mvPosition.z);
+             
+            // Chaos flickering
+            if (uChaos > 0.0) {
+                gl_PointSize *= (1.0 + random(pos * uTime) * uChaos);
+            }
+
+            gl_Position = projectionMatrix * mvPosition;
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vColor;
+          
+          void main() {
+            vec2 coord = gl_PointCoord - vec2(0.5);
+            if(length(coord) > 0.5) discard;
+            gl_FragColor = vec4(vColor, 0.6); // Slightly transparent rings
+          }
+        `,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      this.ringParticles = new THREE.Points(geometry, material);
+      this.scene.add(this.ringParticles);
+    }
+
+    animate() {
+      requestAnimationFrame(() => this.animate());
+
+      const time = performance.now() * 0.001;
+
+      // Update Uniforms
+      if (this.planetParticles) {
+        this.planetParticles.material.uniforms.uTime.value = time;
+        this.planetParticles.material.uniforms.uChaos.value = this.chaosMode ? 0.8 : 0.0;
+      }
+      if (this.ringParticles) {
+        this.ringParticles.material.uniforms.uTime.value = time;
+        this.ringParticles.material.uniforms.uChaos.value = this.chaosMode ? 0.8 : 0.0;
+      }
+
+      // Smooth Camera Movement based on Mouse
+      // Parallax effect
+      this.camera.position.x += (this.mouseX * 0.005 + 2 - this.camera.position.x) * 0.05;
+      this.camera.position.y += (-this.mouseY * 0.005 - this.camera.position.y) * 0.05;
+      this.camera.lookAt(0, 0, 0);
+
+      // Zoom Chaos Trigger
+      // If camera gets too close (simulated via interaction or scroll), trigger chaos
+      // For now, let's trigger chaos on aggressive mouse movement or specific hover areas if needed.
+      // The user requirement: "When particle zoom close... chaos"
+      // We can simulate zoom with mouse interaction?
+      // Or maybe just random "glitch" moments.
+      // Let's map chaos to mouse proximity to center for a cool effect.
+      
+      // Calculate distance from mouse to center of screen (roughly where Saturn is projected)
+      // We positioned Saturn at (0,0,0) but camera is shifted.
+      // Screen projection of (0,0,0) is roughly center.
+      // Actually, let's use a "zoom" factor based on mouse Y (scroll-like) or just a timer loop?
+      // User said: "Particles zoom close to screen... chaos"
+      // Let's make it auto-zoom in and out slowly? Or just static high quality.
+      
+      // Let's stick to mouse-based subtle rotation for now, chaos on click?
+      // Or maybe chaos when mouse moves VERY fast?
+      
+      // Implementing the brightness logic:
+      // Small -> dark, Large -> bright is handled in shader via gl_PointSize and vBrightness.
+
+      this.renderer.render(this.scene, this.camera);
+    }
+
+    addEventListeners() {
+      window.addEventListener('resize', () => {
+        this.windowHalfX = window.innerWidth / 2;
+        this.windowHalfY = window.innerHeight / 2;
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        this.mouseX = (e.clientX - this.windowHalfX);
+        this.mouseY = (e.clientY - this.windowHalfY);
+        
+        // Check for "chaos" condition - maybe corners?
+        // Or maybe toggle chaos on click
+      });
+      
+      // Add chaos on click/hold
+      document.addEventListener('mousedown', () => { this.chaosMode = true; });
+      document.addEventListener('mouseup', () => { this.chaosMode = false; });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    new SaturnScene();
+  });
+</script>
+

@@ -1,7 +1,7 @@
 ---
 ---
-<div id="saturn-particles-container" class="absolute inset-0 z-0 overflow-hidden pointer-events-none translate-x-1/4 translate-y-[-10%]">
-  <canvas id="saturn-canvas" class="w-full h-full opacity-90"></canvas>
+<div id="saturn-particles-container" class="absolute inset-0 z-0 overflow-hidden pointer-events-none translate-x-0 translate-y-0">
+  <canvas id="saturn-canvas" class="w-full h-full opacity-100"></canvas>
 </div>
 
 <script>
@@ -16,6 +16,7 @@
     mouseX: number;
     mouseY: number;
     isHovering: boolean;
+    animationFrameId: number;
 
     // Saturn Configuration
     planetRadius: number;
@@ -34,23 +35,24 @@
       this.particles = [];
       this.width = 0;
       this.height = 0;
-      this.centerX = 0;
-      this.centerY = 0;
       this.mouseX = -1000;
       this.mouseY = -1000;
       this.isHovering = false;
 
-      this.rotationAngle = Math.PI / 6; // Tilt angle (30 degrees)
+      // Tilted perspective
+      this.rotationAngle = Math.PI / 6; // 30 degrees tilt
 
       this.resize();
-      this.initParticles();
       
+      // Debounced resize
+      let resizeTimeout;
       window.addEventListener('resize', () => {
-          this.resize();
-          this.initParticles();
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            this.resize();
+        }, 200);
       });
       
-      // Global mouse tracking for interaction
       document.addEventListener('mousemove', (e) => {
         const rect = this.canvas.getBoundingClientRect();
         this.mouseX = e.clientX - rect.left;
@@ -70,27 +72,33 @@
     resize() {
       this.width = this.canvas.width = this.canvas.offsetWidth;
       this.height = this.canvas.height = this.canvas.offsetHeight;
-      this.centerX = this.width * 0.7; // Position right side
-      this.centerY = this.height * 0.4; // Slightly upper
       
-      // Scale based on screen size
+      // Position it aggressively to the right side, overlapping content if needed
+      // The user wants it "large" and occupying "3/4 of the right half"
+      this.centerX = this.width * 0.75; 
+      this.centerY = this.height * 0.5;
+      
       const minDim = Math.min(this.width, this.height);
-      this.planetRadius = minDim * 0.12;
-      this.ringInnerRadius = minDim * 0.18;
-      this.ringOuterRadius = minDim * 0.35;
+      
+      // Significantly increased sizes
+      this.planetRadius = minDim * 0.35; 
+      this.ringInnerRadius = minDim * 0.45;
+      this.ringOuterRadius = minDim * 0.85;
+
+      this.initParticles();
     }
 
     initParticles() {
       this.particles = [];
-      const particleCount = 1200; // Total particles
+      const particleCount = 5000; // Increased density
 
-      // 1. Planet Body Particles (Sphere)
-      for (let i = 0; i < particleCount * 0.4; i++) {
+      // 1. Planet Body
+      for (let i = 0; i < particleCount * 0.35; i++) {
           this.particles.push(new Particle(this, 'planet'));
       }
 
-      // 2. Ring Particles (Disc)
-      for (let i = 0; i < particleCount * 0.6; i++) {
+      // 2. Rings
+      for (let i = 0; i < particleCount * 0.65; i++) {
           this.particles.push(new Particle(this, 'ring'));
       }
     }
@@ -103,7 +111,7 @@
           p.draw(this.ctx);
       });
       
-      requestAnimationFrame(() => this.animate());
+      this.animationFrameId = requestAnimationFrame(() => this.animate());
     }
   }
 
@@ -111,23 +119,18 @@
     system: SaturnParticleSystem;
     type: 'planet' | 'ring';
     
-    // Target position (The shape)
     targetX: number;
     targetY: number;
-    targetZ: number; // For depth sorting/parallax
-
-    // Current position
+    
     x: number;
     y: number;
     
-    // Properties
-    baseX: number;
-    baseY: number;
     size: number;
     color: string;
-    angle: number; // Orbit angle
-    radius: number; // Orbit radius
+    angle: number;
+    radius: number;
     speed: number;
+    offsetY: number; // For planet sphere height
     
     density: number;
 
@@ -140,99 +143,92 @@
     }
 
     reset() {
-      // Random angle for distribution
       this.angle = Math.random() * Math.PI * 2;
-      this.speed = Math.random() * 0.002 + 0.0005; // Orbit speed
+      this.speed = (Math.random() * 0.001) + 0.0002; 
 
       if (this.type === 'planet') {
-        // Distribute points on a sphere surface (roughly) projected to 2D circle with depth
-        // Simple 2D circle distribution for visual simplicity, z used for sizing
-        const r = Math.sqrt(Math.random()) * this.system.planetRadius;
+        const r = this.system.planetRadius * Math.cbrt(Math.random()); 
         this.radius = r;
-        this.targetZ = Math.cos(this.angle) * r; // Fake depth
+        this.offsetY = (Math.random() - 0.5) * 2 * r; 
         
-        // Color: Pinkish Planet
-        const colors = ['rgba(248, 147, 147, ', 'rgba(244, 114, 182, '];
+        // Adjust radius to maintain spherical shape appearance projected
+        const sliceRadius = Math.sqrt(Math.max(0, r*r - this.offsetY*this.offsetY));
+        this.radius = sliceRadius;
+
+        // Deep Pink / Brand Colors for Planet Body
+        const colors = [
+            'rgba(248, 147, 147, ', // Brand Main
+            'rgba(251, 113, 133, ', // Rose
+            'rgba(244, 114, 182, ', // Pink
+            'rgba(225, 29, 72, '    // Darker Red/Pink for contrast
+        ];
         this.color = colors[Math.floor(Math.random() * colors.length)];
 
       } else {
-        // Ring distribution
+        // Rings
         const r = this.system.ringInnerRadius + Math.random() * (this.system.ringOuterRadius - this.system.ringInnerRadius);
         this.radius = r;
-        this.targetZ = Math.sin(this.angle) * r * 0.5; // Rings are flat but tilted
+        this.offsetY = 0;
         
-        // Color: Lighter Pink/White Rings
-        const colors = ['rgba(252, 165, 165, ', 'rgba(255, 255, 255, '];
+        // Ring Colors: White/Light Pink
+        const colors = [
+            'rgba(255, 255, 255, ',
+            'rgba(252, 165, 165, ', 
+            'rgba(254, 205, 211, '  
+        ];
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
 
-      this.size = Math.random() * 1.5 + 0.5;
-      this.density = (Math.random() * 30) + 1;
+      // Increased particle size for visibility
+      this.size = Math.random() * 2.5 + 0.5; 
+      this.density = (Math.random() * 20) + 1;
     }
 
     update(mouseX: number, mouseY: number) {
-      // 1. Orbit Animation (Move the target position)
       this.angle += this.speed;
       
-      let tx, ty, tz;
+      let tx, ty;
 
       if (this.type === 'planet') {
-          // Simple rotation
           tx = Math.cos(this.angle) * this.radius;
-          ty = Math.sin(this.angle) * this.radius;
-          tz = 0; // Simplify planet sphere
-      } else {
-          // Ring Logic (Elliptical projection based on tilt)
-          const tilt = this.system.rotationAngle;
-          // 3D coordinates of ring
-          const x3d = Math.cos(this.angle) * this.radius;
-          const z3d = Math.sin(this.angle) * this.radius;
+          ty = this.offsetY; 
           
-          // Project to 2D with tilt
-          tx = x3d;
-          ty = z3d * Math.sin(tilt); 
-          tz = z3d * Math.cos(tilt); // Use Z for scale/opacity later if needed
+          // Apply tilt
+          const tilt = this.system.rotationAngle;
+          const yRotated = ty * Math.cos(tilt) - Math.sin(this.angle) * this.radius * Math.sin(tilt);
+          ty = yRotated;
+      } else {
+          // Rings
+          const tilt = this.system.rotationAngle;
+          tx = Math.cos(this.angle) * this.radius;
+          ty = Math.sin(this.angle) * this.radius * Math.sin(tilt); 
       }
 
-      // Center offset
       this.targetX = this.system.centerX + tx;
       this.targetY = this.system.centerY + ty;
 
-      // 2. Mouse Interaction (Disperse)
+      // Interaction
       const dx = mouseX - this.x;
       const dy = mouseY - this.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const forceDistance = 120;
-      
-      // Soft return speed
-      const returnSpeed = 0.08;
+      const forceDistance = 200; // Larger interactive area
+      const returnSpeed = 0.08; 
 
       if (distance < forceDistance) {
-          // Scatter effect
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
           const force = (forceDistance - distance) / forceDistance;
-          const directionX = forceDirectionX * force * this.density * 2; // Stronger scatter
-          const directionY = forceDirectionY * force * this.density * 2;
+          const directionX = (dx / distance) * force * this.density * 5;
+          const directionY = (dy / distance) * force * this.density * 5;
           
           this.x -= directionX;
           this.y -= directionY;
       } else {
-          // Return to shape
-          if (this.x !== this.targetX) {
-              const dx = this.targetX - this.x;
-              this.x += dx * returnSpeed;
-          }
-          if (this.y !== this.targetY) {
-              const dy = this.targetY - this.y;
-              this.y += dy * returnSpeed;
-          }
+          this.x += (this.targetX - this.x) * returnSpeed;
+          this.y += (this.targetY - this.y) * returnSpeed;
       }
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-      const alpha = Math.random() * 0.5 + 0.4;
-      ctx.fillStyle = this.color + alpha + ')';
+      ctx.fillStyle = this.color + '0.9)'; // High opacity to avoid flickering
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
@@ -243,4 +239,3 @@
     new SaturnParticleSystem();
   });
 </script>
-
