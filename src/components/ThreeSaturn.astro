@@ -26,11 +26,11 @@
       
       // Configuration
       this.config = {
-        planetRadius: 3.5,        // HUGE planet
-        ringInnerRadius: 4.5,     // Gap
-        ringOuterRadius: 9.0,     // Massive rings
-        planetParticleCount: 8000,
-        ringParticleCount: 15000,
+        planetRadius: 2.8,        // Slightly reduced to fit better
+        ringInnerRadius: 3.5,     
+        ringOuterRadius: 7.5,     
+        planetParticleCount: 10000, // More dense
+        ringParticleCount: 20000,   // More dense
         tilt: Math.PI / 6,        
         rotationSpeed: 0.05
       };
@@ -50,8 +50,8 @@
 
     init() {
       // Camera Position
-      // Move camera back to see the huge planet
-      this.camera.position.z = 12; 
+      // Adjusted for balanced view
+      this.camera.position.z = 14; 
       this.camera.position.x = 0;
       
       // Group for planet + rings to move them together
@@ -59,8 +59,7 @@
       this.scene.add(this.planetGroup);
       
       // Position the group to the right side
-      // We want it to occupy the right half, so shift positive X
-      this.planetGroup.position.x = 5; 
+      this.planetGroup.position.x = 4.5; 
 
       this.createPlanet();
       this.createRings();
