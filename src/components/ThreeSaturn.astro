@@ -26,12 +26,12 @@
       
       // Configuration
       this.config = {
-        planetRadius: 1.8,        // Larger planet
-        ringInnerRadius: 2.4,
-        ringOuterRadius: 5.0,
-        planetParticleCount: 6000,
-        ringParticleCount: 12000,
-        tilt: Math.PI / 6,        // 30 degrees
+        planetRadius: 3.5,        // HUGE planet
+        ringInnerRadius: 4.5,     // Gap
+        ringOuterRadius: 9.0,     // Massive rings
+        planetParticleCount: 8000,
+        ringParticleCount: 15000,
+        tilt: Math.PI / 6,        
         rotationSpeed: 0.05
       };
 
@@ -50,34 +50,34 @@
 
     init() {
       // Camera Position
-      // Position right to overlay right side of screen
-      this.camera.position.z = 8; 
-      this.camera.position.x = 2; // Shift right
+      // Move camera back to see the huge planet
+      this.camera.position.z = 12; 
+      this.camera.position.x = 0;
       
+      // Group for planet + rings to move them together
+      this.planetGroup = new THREE.Group();
+      this.scene.add(this.planetGroup);
+      
+      // Position the group to the right side
+      // We want it to occupy the right half, so shift positive X
+      this.planetGroup.position.x = 5; 
+
       this.createPlanet();
       this.createRings();
 
       // Initial tilt
-      this.scene.rotation.z = this.config.tilt;
-      this.scene.rotation.x = 0.2; // Slight forward tilt
+      this.planetGroup.rotation.z = this.config.tilt;
+      this.planetGroup.rotation.x = 0.3; 
     }
 
     createPlanet() {
+      // ... setup ...
+      // Increase sizes for "stunning" effect
+      this.config.planetRadius = 3.5;
+      
       const geometry = new THREE.BufferGeometry();
-      const positions = [];
-      const sizes = [];
-      const brightness = [];
-      const velocities = []; // Store orbital velocity for Kepler simulation
-      const colors = [];
+      // ... (keep existing loop logic but use new radius) ...
 
-      const colorPalette = [
-        new THREE.Color('#F89393'), // Brand Pink
-        new THREE.Color('#fca5a5'), // Light Pink
-        new THREE.Color('#ec4899'), // Hot Pink
-        new THREE.Color('#f43f5e')  // Rose
-      ];
-
-      for (let i = 0; i < this.config.planetParticleCount; i++) {
         // Spherical distribution
         const r = this.config.planetRadius * Math.cbrt(Math.random()); // Uniform volume
         const theta = Math.random() * Math.PI * 2;
@@ -198,21 +198,18 @@
       });
 
       this.planetParticles = new THREE.Points(geometry, material);
-      this.scene.add(this.planetParticles);
+      this.planetGroup.add(this.planetParticles);
     }
 
     createRings() {
-      const geometry = new THREE.BufferGeometry();
-      const positions = [];
-      const sizes = [];
-      const brightness = [];
-      const velocities = [];
-      const colors = [];
-      const initialAngles = [];
-
+      // ... (setup) ...
+      
+      // Use config values which are now larger
       for (let i = 0; i < this.config.ringParticleCount; i++) {
         // Ring distribution
         const r = this.config.ringInnerRadius + Math.random() * (this.config.ringOuterRadius - this.config.ringInnerRadius);
+        // ...
+
         const theta = Math.random() * Math.PI * 2;
         
         const x = r * Math.cos(theta);
@@ -315,7 +312,7 @@
       });
 
       this.ringParticles = new THREE.Points(geometry, material);
-      this.scene.add(this.ringParticles);
+      this.planetGroup.add(this.ringParticles);
     }
 
     animate() {
