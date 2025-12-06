@@ -8,12 +8,12 @@ export default function SupportButton({ text, className, buttonElement }) {
       {buttonElement ? (
         <span onClick={() => setIsOpen(true)}>{buttonElement}</span>
       ) : (
-        <button
+      <button 
           className={className}
-          onClick={() => setIsOpen(true)}
-        >
-          {text}
-        </button>
+        onClick={() => setIsOpen(true)} 
+      >
+        {text}
+      </button>
       )}
 
       {isOpen && (

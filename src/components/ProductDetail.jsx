@@ -14,7 +14,7 @@ export default function ProductDetail() {
         </p>
         <SupportButton 
           text="立即咨询" 
-          className="btn-primary" 
+          className="btn-primary"
         />
       </div>
     </div>
