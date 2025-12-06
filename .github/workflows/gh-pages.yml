@@ -34,8 +34,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Copy .nojekyll to dist
-        run: cp .nojekyll dist/.nojekyll || echo ".nojekyll file copied"
+      - name: Copy .nojekyll and CNAME to dist
+        run: |
+          cp .nojekyll dist/.nojekyll || echo ".nojekyll file copied"
+          cp CNAME dist/CNAME || echo "CNAME file copied"
 
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
