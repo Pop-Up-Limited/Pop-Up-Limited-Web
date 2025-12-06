@@ -6,28 +6,28 @@
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  /* Light mode colors (default) */
-  --color-brand-50: #fef2f2;
-  --color-brand-100: #fee2e2;
-  --color-brand-200: #fecaca;
-  --color-brand-300: #fca5a5;
-  --color-brand-400: #f87171;
-  --color-brand-500: #F89393;
-  --color-brand-600: #ef4444;
-  --color-brand-700: #dc2626;
-  --color-brand-800: #b91c1c;
-  --color-brand-900: #991b1b;
+  /* Purple theme colors - based on #3E1D82 */
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #8b5cf6;
+  --color-brand-600: #7c3aed;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #3E1D82;
 
   --color-surface: #ffffff;
-  --color-surface-dark: #000000;
-  --color-foreground: #0f172a;
-  --color-foreground-muted: #4f6275;
+  --color-surface-dark: #0a0515;
+  --color-foreground: #1e1b4b;
+  --color-foreground-muted: #6b7280;
   --color-foreground-dark: #f8fafc;
-  --color-accent: #F89393;
-  --color-accent-foreground: #231f20;
+  --color-accent: #8b5cf6;
+  --color-accent-foreground: #1e1b4b;
 
-  --shadow-brand-sm: 0 10px 30px -10px rgba(248, 147, 147, 0.35);
-  --shadow-brand-md: 0 20px 45px -15px rgba(248, 147, 147, 0.45);
+  --shadow-brand-sm: 0 10px 30px -10px rgba(139, 92, 246, 0.35);
+  --shadow-brand-md: 0 20px 45px -15px rgba(139, 92, 246, 0.45);
 }
 
 @layer base {
@@ -38,23 +38,23 @@
   @media (prefers-color-scheme: dark) {
     :root {
       color-scheme: dark;
-      /* Dark mode colors */
-      --color-brand-50: #fdf4ff;
-      --color-brand-100: #fae8ff;
-      --color-brand-200: #f5d0fe;
-      --color-brand-300: #f0abfc;
-      --color-brand-400: #e879f9;
-      --color-brand-500: #E591C5;
-      --color-brand-600: #d946ef;
-      --color-brand-700: #c026d3;
-      --color-brand-800: #a21caf;
-      --color-brand-900: #86198f;
+      /* Dark mode purple colors */
+      --color-brand-50: #faf5ff;
+      --color-brand-100: #f3e8ff;
+      --color-brand-200: #e9d5ff;
+      --color-brand-300: #d8b4fe;
+      --color-brand-400: #c084fc;
+      --color-brand-500: #a855f7;
+      --color-brand-600: #9333ea;
+      --color-brand-700: #7e22ce;
+      --color-brand-800: #6b21a8;
+      --color-brand-900: #3E1D82;
 
-      --color-accent: #E591C5;
+      --color-accent: #a855f7;
       --color-accent-foreground: #f8fafc;
 
-      --shadow-brand-sm: 0 10px 30px -10px rgba(229, 145, 197, 0.35);
-      --shadow-brand-md: 0 20px 45px -15px rgba(229, 145, 197, 0.45);
+      --shadow-brand-sm: 0 10px 30px -10px rgba(168, 85, 247, 0.35);
+      --shadow-brand-md: 0 20px 45px -15px rgba(168, 85, 247, 0.45);
     }
   }
 

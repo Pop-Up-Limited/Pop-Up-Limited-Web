@@ -6,7 +6,7 @@ import { cases } from '../data/cases';
 import Danmaku from '../components/Danmaku.astro';
 import SupportButton from '../components/SupportButton.jsx';
 import MouseFollower from '../components/MouseFollower.astro';
-import ParticleEffect from '../components/ParticleEffect.astro';
+import SaturnBackground from '../components/SaturnBackground.astro';
 
 // 按设计分级分组
 const premiumCases = cases.filter(c => c.designTier === 'premium');
@@ -20,18 +20,13 @@ const heroFeatureDefaults = heroDefaults.features;
 
 <Layout title={`${COMPANY_NAME} · ${COMPANY_TAGLINE}`} description={DEFAULT_DESCRIPTION}>
   <MouseFollower />
+  <SaturnBackground />
   <div class="relative">
     
     <!-- HERO SECTION -->
     <section class="relative min-h-[90vh] w-full flex items-center overflow-hidden">
-      <!-- Background Elements -->
-      <div class="absolute inset-0 bg-surface dark:bg-surface-dark -z-20"></div>
-      <div class="absolute inset-x-0 -top-32 -z-10 h-[420px] bg-gradient-to-b from-brand-500/25 to-transparent blur-3xl"></div>
-      
-      <!-- Particle Effect -->
-      <div class="absolute inset-0 w-full h-full z-0">
-         <ParticleEffect />
-      </div>
+      <!-- Background gradient overlay -->
+      <div class="absolute inset-x-0 -top-32 -z-10 h-[420px] bg-gradient-to-b from-brand-500/15 to-transparent blur-3xl"></div>
 
       <div class="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 md:px-6 pointer-events-none">
         <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-center">
