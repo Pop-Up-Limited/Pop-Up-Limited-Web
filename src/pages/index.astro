@@ -6,6 +6,7 @@ import { cases } from '../data/cases';
 import ThreeSaturn from '../components/ThreeSaturn.astro';
 import Danmaku from '../components/Danmaku.astro';
 import SupportButton from '../components/SupportButton.jsx';
+import MouseFollower from '../components/MouseFollower.astro';
 
 // 按设计分级分组
 const premiumCases = cases.filter(c => c.designTier === 'premium');
@@ -18,6 +19,7 @@ const heroFeatureDefaults = heroDefaults.features;
 ---
 
 <Layout title={`${COMPANY_NAME} · ${COMPANY_TAGLINE}`} description={DEFAULT_DESCRIPTION}>
+  <MouseFollower />
   <div class="relative">
     
     <!-- HERO SECTION -->
@@ -70,23 +72,22 @@ const heroFeatureDefaults = heroDefaults.features;
     <!-- PORTFOLIO STACKING CARDS SECTION -->
     <!-- Adjusted padding and z-index handling for smoother stacking -->
     <section class="relative z-30 py-24 bg-slate-50 dark:bg-slate-950">
-        <div class="mx-auto w-full max-w-6xl px-4 md:px-6 mb-24 text-center sticky top-24 z-40 pointer-events-none backdrop-blur-sm py-4">
-            <div class="pointer-events-auto inline-block">
-        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge"></span>
-                <h2 class="text-4xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mt-2" data-i18n="portfolio.title"></h2>
-                <p class="max-w-2xl mx-auto mt-4 text-lg text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle"></p>
-            </div>
-      </div>
+        <!-- Title that scrolls with content -->
+        <div class="mx-auto w-full max-w-6xl px-4 md:px-6 mb-24 text-center">
+            <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge"></span>
+            <h2 class="text-4xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mt-2" data-i18n="portfolio.title"></h2>
+            <p class="max-w-2xl mx-auto mt-4 text-lg text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle"></p>
+        </div>
 
         <div class="mx-auto w-full max-w-5xl px-4 md:px-6 pb-24">
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-32">
                 {allCases.map((caseItem, index) => (
-                    <div class="sticky w-full mb-24 last:mb-0" style={`z-index: ${index + 1}; top: ${120 + index * 40}px;`}>
+                    <div class="sticky w-full" style={`z-index: ${index + 1}; top: 120px;`} data-card-index={index}>
           <a
             href={caseItem.url}
             target="_blank"
             rel="noopener noreferrer"
-                            class="group relative block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-brand-sm dark:border-slate-700 dark:bg-slate-900"
+                            class="group relative block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900 card-stack-item"
           >
                             <div class="grid md:grid-cols-2 gap-0 min-h-[450px]">
                                 <div class="relative h-full min-h-[300px] overflow-hidden bg-slate-100 dark:bg-slate-800 order-2 md:order-1">
@@ -653,5 +654,102 @@ const heroFeatureDefaults = heroDefaults.features;
       }
     });
   }
+
+  // Stack Cards Spring Animation with 3D Transform
+  function initStackCards() {
+    const cards = document.querySelectorAll('.card-stack-item');
+    if (cards.length === 0) return;
+
+    // Spring animation helper
+    function springAnimation(current, target, velocity, stiffness = 0.1, damping = 0.8) {
+      const force = (target - current) * stiffness;
+      velocity += force;
+      velocity *= damping;
+      return { value: current + velocity, velocity };
+    }
+
+    cards.forEach((card) => {
+      let scaleX = 1;
+      let scaleY = 1;
+      let translateY = 0;
+      let translateX = 0;
+      let velX = 0;
+      let velY = 0;
+      let velScaleX = 0;
+      let velScaleY = 0;
+      let isAnimating = false;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !isAnimating) {
+            isAnimating = true;
+            
+            function animate() {
+              const rect = entry.boundingClientRect;
+              const viewportHeight = window.innerHeight;
+              const cardCenter = rect.top + rect.height / 2;
+              const viewportCenter = viewportHeight / 2;
+              
+              // Calculate scroll progress (0 to 1)
+              const scrollProgress = Math.max(0, Math.min(1, 
+                (viewportCenter - cardCenter + rect.height) / (rect.height * 2)
+              ));
+
+              // Target values based on scroll progress
+              const targetScaleX = 1 - scrollProgress * 0.15;
+              const targetScaleY = 1 - scrollProgress * 0.15;
+              const targetTranslateY = scrollProgress * 20;
+              const targetTranslateX = (scrollProgress - 0.5) * 30;
+
+              // Animate with spring physics
+              const scaleXResult = springAnimation(scaleX, targetScaleX, velScaleX, 0.15, 0.85);
+              const scaleYResult = springAnimation(scaleY, targetScaleY, velScaleY, 0.15, 0.85);
+              const translateYResult = springAnimation(translateY, targetTranslateY, velY, 0.12, 0.88);
+              const translateXResult = springAnimation(translateX, targetTranslateX, velX, 0.12, 0.88);
+
+              scaleX = scaleXResult.value;
+              scaleY = scaleYResult.value;
+              translateY = translateYResult.value;
+              translateX = translateXResult.value;
+              velScaleX = scaleXResult.velocity;
+              velScaleY = scaleYResult.velocity;
+              velY = translateYResult.velocity;
+              velX = translateXResult.velocity;
+
+              // Apply 3D transform
+              if (card instanceof HTMLElement) {
+                card.style.transform = `
+                  translate3d(${translateX}px, ${translateY}px, ${scrollProgress * -50}px)
+                  scale3d(${scaleX}, ${scaleY}, 1)
+                `;
+                card.style.transformStyle = 'preserve-3d';
+                card.style.willChange = 'transform';
+              }
+
+              if (entry.isIntersecting) {
+                requestAnimationFrame(animate);
+              } else {
+                isAnimating = false;
+              }
+            }
+
+            animate();
+          } else if (!entry.isIntersecting) {
+            isAnimating = false;
+          }
+        });
+      }, {
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+        rootMargin: '-100px 0px -100px 0px'
+      });
+
+      observer.observe(card);
+    });
+  }
+
+  // Initialize stack cards animation
+  document.addEventListener('DOMContentLoaded', () => {
+    initStackCards();
+  });
 
 </script>

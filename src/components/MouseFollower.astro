@@ -1,0 +1,68 @@
+---
+---
+<div id="mouse-follower" class="fixed pointer-events-none z-[9999] transition-transform duration-300 ease-out" style="display: none;">
+  <img src="/images/logo.svg" alt="Logo" class="w-8 h-8 opacity-80" />
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const follower = document.getElementById('mouse-follower');
+    if (!follower) return;
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let followerX = 0;
+    let followerY = 0;
+    let isHoveringClickable = false;
+
+    // Smooth spring animation
+    function animate() {
+      const dx = mouseX - followerX;
+      const dy = mouseY - followerY;
+      
+      // Spring physics (damping and stiffness)
+      followerX += dx * 0.15;
+      followerY += dy * 0.15;
+      
+      const scale = isHoveringClickable ? 1.5 : 1;
+      const rotation = isHoveringClickable ? 45 : 0;
+      
+      follower.style.transform = `translate(${followerX - 16}px, ${followerY - 16}px) scale(${scale}) rotate(${rotation}deg)`;
+      
+      requestAnimationFrame(animate);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      if (follower.style.display === 'none') {
+        follower.style.display = 'block';
+      }
+
+      // Check if hovering over clickable elements
+      const target = e.target;
+      if (target && target instanceof HTMLElement) {
+        const isClickable = target.closest('a, button, [role="button"], .btn-primary, .btn-secondary, [onclick]');
+        isHoveringClickable = !!isClickable;
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      follower.style.display = 'none';
+    });
+
+    animate();
+  });
+</script>
+
+<style>
+  #mouse-follower {
+    will-change: transform;
+  }
+  
+  #mouse-follower img {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  }
+</style>
+

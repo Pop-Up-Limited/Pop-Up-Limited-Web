@@ -400,8 +400,14 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new SaturnScene();
+    });
+  } else {
+    // DOM already loaded
     new SaturnScene();
-  });
+  }
 </script>
 
