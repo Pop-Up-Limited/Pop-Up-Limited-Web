@@ -24,6 +24,14 @@
       this.ringParticles = null;
       this.chaosMode = false;
       
+      // Colors for the planet
+      this.colorPalette = [
+        new THREE.Color('#f8a5c2'), // Pink
+        new THREE.Color('#f78fb3'), // Darker Pink
+        new THREE.Color('#f5cd79'), // Yellowish
+        new THREE.Color('#ffffff')  // White
+      ];
+      
       // Configuration
       this.config = {
         planetRadius: 2.8,        // Slightly reduced to fit better
@@ -101,7 +109,7 @@
         velocities.push(v);
 
         // Color
-        const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+        const color = this.colorPalette[Math.floor(Math.random() * this.colorPalette.length)];
         colors.push(color.r, color.g, color.b);
       } // End of loop
 
