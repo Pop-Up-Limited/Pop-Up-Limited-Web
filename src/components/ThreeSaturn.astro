@@ -103,7 +103,7 @@
         // Color
         const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
         colors.push(color.r, color.g, color.b);
-      } // <--- Added closing brace for loop
+      } // End of loop
 
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
