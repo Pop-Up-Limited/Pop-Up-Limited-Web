@@ -1,77 +1,103 @@
 ---
-// Saturn Background - WebGL particle effect
+// Saturn Background - WebGL particle effect with Bloom
 ---
 
 <div id="saturn-bg-canvas"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script is:inline>
+  // 等待页面完全加载
+  window.addEventListener('load', function() {
+    // 动态加载 Three.js
+    const scripts = [
+      'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
+      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js',
+      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js',
+      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js',
+      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js',
+      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js'
+    ];
 
-<script>
-  class SaturnBackground {
-    constructor(containerId) {
-      this.container = document.getElementById(containerId);
-      if (!this.container) {
-        console.error(`Container ${containerId} not found`);
+    let loadedCount = 0;
+
+    function loadScript(url) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadAllScripts() {
+      for (const url of scripts) {
+        await loadScript(url);
+        loadedCount++;
+        console.log(`Loaded ${loadedCount}/${scripts.length}: ${url.split('/').pop()}`);
+      }
+      initSaturn();
+    }
+
+    function initSaturn() {
+      console.log('Initializing Saturn...');
+      
+      const container = document.getElementById('saturn-bg-canvas');
+      if (!container) {
+        console.error('Saturn container not found');
         return;
       }
 
-      // 配置参数 - 使用紫色调
-      this.config = {
-        particleCount: 60000,
-        baseColor: new THREE.Color(0x9b7ed9), // 紫色
+      if (typeof THREE === 'undefined') {
+        console.error('THREE is not defined');
+        return;
+      }
+
+      // 配置
+      const config = {
+        particleCount: 50000,
         coreRadius: 15,
         ringInnerRadius: 25,
-        ringOuterRadius: 75,
-        chaosThreshold: 0.85
+        ringOuterRadius: 75
       };
 
-      this.mouse = new THREE.Vector2(0, 0);
-      this.targetZoom = 0;
-      this.currentZoom = 0;
-      this.scrollProgress = 0;
+      let mouse = { x: 0, y: 0 };
+      let targetZoom = 0;
+      let currentZoom = 0;
+      let scrollProgress = 0;
 
-      this.init();
-      this.createParticles();
-      this.addEventListeners();
-      this.animate();
-    }
+      // 场景
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
 
-    init() {
-      this.scene = new THREE.Scene();
-      this.scene.fog = new THREE.FogExp2(0x0a0515, 0.002); // 深紫色雾
+      // 摄像机
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.set(0, 20, 100);
 
-      this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      this.camera.position.set(0, 20, 100);
+      // 渲染器
+      const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ReinhardToneMapping;
+      container.appendChild(renderer.domElement);
 
-      this.renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      this.renderer.toneMapping = THREE.ReinhardToneMapping;
-      this.container.appendChild(this.renderer.domElement);
-
-      const renderScene = new THREE.RenderPass(this.scene, this.camera);
+      // 后处理
+      const renderScene = new THREE.RenderPass(scene, camera);
       const bloomPass = new THREE.UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.2;
-      bloomPass.radius = 0.6;
+      bloomPass.strength = 1.0;
+      bloomPass.radius = 0.5;
       bloomPass.threshold = 0.1;
 
-      this.composer = new THREE.EffectComposer(this.renderer);
-      this.composer.addPass(renderScene);
-      this.composer.addPass(bloomPass);
-    }
+      const composer = new THREE.EffectComposer(renderer);
+      composer.addPass(renderScene);
+      composer.addPass(bloomPass);
 
-    createParticles() {
+      // 创建粒子
       const geometry = new THREE.BufferGeometry();
-      const count = this.config.particleCount;
+      const count = config.particleCount;
       const positions = [];
       const orbitParams = [];
       const randomness = [];
@@ -79,17 +105,18 @@
       const colors = [];
 
       // 紫色调色板
-      const colorCore = new THREE.Color(0x3E1D82);      // 深紫核心
-      const colorRingInner = new THREE.Color(0x6B4BA3); // 中紫
-      const colorRingOuter = new THREE.Color(0x9b7ed9); // 浅紫
-      const colorAccent = new THREE.Color(0xc4b5fd);    // 淡紫光
+      const colorCore = new THREE.Color(0x3E1D82);
+      const colorRingInner = new THREE.Color(0x6B4BA3);
+      const colorRingOuter = new THREE.Color(0x9b7ed9);
+      const colorAccent = new THREE.Color(0xc4b5fd);
 
       for (let i = 0; i < count; i++) {
         let r, theta;
         let type = Math.random() < 0.15 ? 0 : 1;
 
         if (type === 0) {
-          r = Math.random() * this.config.coreRadius;
+          // 核心
+          r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
           let phi = Math.acos((Math.random() * 2) - 1);
           positions.push(
@@ -101,9 +128,10 @@
           colors.push(colorCore.r, colorCore.g, colorCore.b);
           sizes.push(Math.random() * 1.5);
         } else {
+          // 环
           let t = 1 - Math.pow(Math.random(), 2);
-          let ringWidth = this.config.ringOuterRadius - this.config.ringInnerRadius;
-          r = this.config.ringInnerRadius + t * ringWidth;
+          let ringWidth = config.ringOuterRadius - config.ringInnerRadius;
+          r = config.ringInnerRadius + t * ringWidth;
 
           if (r > 42 && r < 46 && Math.random() > 0.1) r += 5;
           theta = Math.random() * Math.PI * 2;
@@ -111,9 +139,8 @@
           let speed = 5.0 / Math.sqrt(r);
           orbitParams.push(r, speed, theta);
 
-          let colorMix = (r - this.config.ringInnerRadius) / ringWidth;
+          let colorMix = (r - config.ringInnerRadius) / ringWidth;
           let c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
-          // 随机添加一些亮点
           if (Math.random() > 0.95) {
             c = colorAccent.clone();
           }
@@ -134,16 +161,15 @@
       geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 
-      this.uniforms = {
+      const uniforms = {
         uTime: { value: 0 },
         uZoom: { value: 0 },
         uScroll: { value: 0 },
-        uGlobalAlpha: { value: 1.0 },
-        uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+        uGlobalAlpha: { value: 1.0 }
       };
 
       const material = new THREE.ShaderMaterial({
-        uniforms: this.uniforms,
+        uniforms: uniforms,
         vertexShader: `
           uniform float uTime;
           uniform float uZoom;
@@ -221,66 +247,66 @@
         blending: THREE.AdditiveBlending
       });
 
-      this.particleSystem = new THREE.Points(geometry, material);
-      this.particleSystem.rotation.x = Math.PI / 6;
-      this.particleSystem.rotation.z = Math.PI / 12;
-      this.scene.add(this.particleSystem);
-    }
+      const particleSystem = new THREE.Points(geometry, material);
+      particleSystem.rotation.x = Math.PI / 6;
+      particleSystem.rotation.z = Math.PI / 12;
+      scene.add(particleSystem);
 
-    addEventListeners() {
-      window.addEventListener('resize', () => {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.composer.setSize(window.innerWidth, window.innerHeight);
-        this.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+      console.log('Saturn particle system created with', count, 'particles');
+
+      // 事件监听
+      window.addEventListener('resize', function() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
       });
 
-      document.addEventListener('mousemove', (e) => {
+      document.addEventListener('mousemove', function(e) {
         if (window.scrollY < window.innerHeight) {
-          this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-          this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-          const dist = Math.sqrt(this.mouse.x ** 2 + this.mouse.y ** 2);
-          this.targetZoom = 1.0 - Math.min(dist, 1.0);
+          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+          const dist = Math.sqrt(mouse.x * mouse.x + mouse.y * mouse.y);
+          targetZoom = 1.0 - Math.min(dist, 1.0);
         } else {
-          this.targetZoom = 0;
+          targetZoom = 0;
         }
       });
 
-      window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        this.scrollProgress = Math.min(scrollY / window.innerHeight, 1.0);
+      window.addEventListener('scroll', function() {
+        scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
       });
+
+      // 动画循环
+      function animate() {
+        requestAnimationFrame(animate);
+        const time = performance.now() * 0.001;
+
+        currentZoom += (targetZoom - currentZoom) * 0.05;
+
+        uniforms.uTime.value = time;
+        uniforms.uZoom.value = currentZoom;
+        uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
+        uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.4;
+
+        const baseRotX = Math.PI / 6;
+        const targetRotX = baseRotX + scrollProgress * 0.5;
+        particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
+
+        camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
+        camera.lookAt(0, 0, 0);
+
+        composer.render();
+      }
+
+      animate();
+      console.log('Saturn animation started');
     }
 
-    animate() {
-      requestAnimationFrame(this.animate.bind(this));
-      const time = performance.now() * 0.001;
-
-      this.currentZoom += (this.targetZoom - this.currentZoom) * 0.05;
-
-      this.uniforms.uTime.value = time;
-      this.uniforms.uZoom.value = this.currentZoom;
-      this.uniforms.uScroll.value += (this.scrollProgress - this.uniforms.uScroll.value) * 0.05;
-      this.uniforms.uGlobalAlpha.value = 1.0 - this.uniforms.uScroll.value * 0.4;
-
-      const baseRotX = Math.PI / 6;
-      const targetRotX = baseRotX + this.scrollProgress * 0.5;
-      this.particleSystem.rotation.x += (targetRotX - this.particleSystem.rotation.x) * 0.05;
-
-      this.camera.position.x += (Math.sin(time * 0.1) * 5 - this.camera.position.x) * 0.01;
-      this.camera.lookAt(0, 0, 0);
-
-      this.composer.render();
-    }
-  }
-
-  // 初始化
-  if (typeof window !== 'undefined') {
-    window.addEventListener('load', () => {
-      new SaturnBackground('saturn-bg-canvas');
+    loadAllScripts().catch(err => {
+      console.error('Failed to load scripts:', err);
     });
-  }
+  });
 </script>
 
 <style>
@@ -293,11 +319,10 @@
     z-index: -1;
     display: block;
     pointer-events: auto;
-    background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0a0515 100%);
+    background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0f0720 100%);
   }
 
   #saturn-bg-canvas canvas {
     display: block;
   }
 </style>
-

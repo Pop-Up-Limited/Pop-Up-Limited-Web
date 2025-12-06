@@ -6,28 +6,28 @@
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  /* Purple theme colors - based on #3E1D82 */
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #8b5cf6;
-  --color-brand-600: #7c3aed;
-  --color-brand-700: #6d28d9;
-  --color-brand-800: #5b21b6;
+  /* Purple theme - #3E1D82 based, high contrast */
+  --color-brand-50: #faf5ff;
+  --color-brand-100: #f3e8ff;
+  --color-brand-200: #e9d5ff;
+  --color-brand-300: #d8b4fe;
+  --color-brand-400: #c084fc;
+  --color-brand-500: #a855f7;
+  --color-brand-600: #9333ea;
+  --color-brand-700: #7e22ce;
+  --color-brand-800: #6b21a8;
   --color-brand-900: #3E1D82;
 
-  --color-surface: #ffffff;
+  --color-surface: #faf8ff;
   --color-surface-dark: #0a0515;
-  --color-foreground: #1e1b4b;
-  --color-foreground-muted: #6b7280;
-  --color-foreground-dark: #f8fafc;
-  --color-accent: #8b5cf6;
-  --color-accent-foreground: #1e1b4b;
+  --color-foreground: #1c1033;
+  --color-foreground-muted: #4c4566;
+  --color-foreground-dark: #f5f3ff;
+  --color-accent: #7c3aed;
+  --color-accent-foreground: #ffffff;
 
-  --shadow-brand-sm: 0 10px 30px -10px rgba(139, 92, 246, 0.35);
-  --shadow-brand-md: 0 20px 45px -15px rgba(139, 92, 246, 0.45);
+  --shadow-brand-sm: 0 10px 30px -10px rgba(124, 58, 237, 0.4);
+  --shadow-brand-md: 0 20px 45px -15px rgba(124, 58, 237, 0.5);
 }
 
 @layer base {
@@ -38,7 +38,7 @@
   @media (prefers-color-scheme: dark) {
     :root {
       color-scheme: dark;
-      /* Dark mode purple colors */
+      /* Dark mode - lighter purples for visibility */
       --color-brand-50: #faf5ff;
       --color-brand-100: #f3e8ff;
       --color-brand-200: #e9d5ff;
@@ -50,11 +50,11 @@
       --color-brand-800: #6b21a8;
       --color-brand-900: #3E1D82;
 
-      --color-accent: #a855f7;
-      --color-accent-foreground: #f8fafc;
+      --color-accent: #c084fc;
+      --color-accent-foreground: #0a0515;
 
-      --shadow-brand-sm: 0 10px 30px -10px rgba(168, 85, 247, 0.35);
-      --shadow-brand-md: 0 20px 45px -15px rgba(168, 85, 247, 0.45);
+      --shadow-brand-sm: 0 10px 30px -10px rgba(192, 132, 252, 0.4);
+      --shadow-brand-md: 0 20px 45px -15px rgba(192, 132, 252, 0.5);
     }
   }
 
