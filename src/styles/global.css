@@ -6,7 +6,7 @@
     BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 
-  /* Purple theme - #3E1D82 based, high contrast */
+  /* Dark purple theme - optimized for dark backgrounds */
   --color-brand-50: #faf5ff;
   --color-brand-100: #f3e8ff;
   --color-brand-200: #e9d5ff;
@@ -18,44 +18,22 @@
   --color-brand-800: #6b21a8;
   --color-brand-900: #3E1D82;
 
-  --color-surface: #faf8ff;
+  /* Dark mode as default */
+  --color-surface: #0a0515;
   --color-surface-dark: #0a0515;
-  --color-foreground: #1c1033;
-  --color-foreground-muted: #4c4566;
+  --color-foreground: #f5f3ff;
+  --color-foreground-muted: #a8a3b8;
   --color-foreground-dark: #f5f3ff;
-  --color-accent: #7c3aed;
-  --color-accent-foreground: #ffffff;
+  --color-accent: #c084fc;
+  --color-accent-foreground: #0a0515;
 
-  --shadow-brand-sm: 0 10px 30px -10px rgba(124, 58, 237, 0.4);
-  --shadow-brand-md: 0 20px 45px -15px rgba(124, 58, 237, 0.5);
+  --shadow-brand-sm: 0 10px 30px -10px rgba(192, 132, 252, 0.4);
+  --shadow-brand-md: 0 20px 45px -15px rgba(192, 132, 252, 0.5);
 }
 
 @layer base {
   :root {
-    color-scheme: light;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      color-scheme: dark;
-      /* Dark mode - lighter purples for visibility */
-      --color-brand-50: #faf5ff;
-      --color-brand-100: #f3e8ff;
-      --color-brand-200: #e9d5ff;
-      --color-brand-300: #d8b4fe;
-      --color-brand-400: #c084fc;
-      --color-brand-500: #a855f7;
-      --color-brand-600: #9333ea;
-      --color-brand-700: #7e22ce;
-      --color-brand-800: #6b21a8;
-      --color-brand-900: #3E1D82;
-
-      --color-accent: #c084fc;
-      --color-accent-foreground: #0a0515;
-
-      --shadow-brand-sm: 0 10px 30px -10px rgba(192, 132, 252, 0.4);
-      --shadow-brand-md: 0 20px 45px -15px rgba(192, 132, 252, 0.5);
-    }
+    color-scheme: dark;
   }
 
   html {
@@ -63,26 +41,22 @@
   }
 
   body {
-    @apply bg-surface text-foreground font-sans antialiased;
+    @apply font-sans antialiased;
     min-height: 100vh;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    body {
-      @apply bg-surface-dark text-foreground-dark;
-    }
+    background-color: #0a0515;
+    color: #f5f3ff;
   }
 
   a {
-    @apply text-brand-500 transition-colors duration-200;
+    @apply text-brand-300 transition-colors duration-200;
   }
 
   a:hover {
-    @apply text-brand-600 dark:text-brand-400;
+    @apply text-brand-200;
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-offset-2 ring-brand-400 dark:ring-brand-500;
+    @apply outline-none ring-2 ring-offset-2 ring-brand-400;
   }
 }
 
@@ -92,14 +66,14 @@
   }
 
   .card-surface {
-    @apply rounded-2xl border border-white/10 bg-white/70 p-6 shadow-lg shadow-slate-900/5 backdrop-blur-md transition-transform duration-300 dark:border-white/5 dark:bg-black/70;
+    @apply rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg shadow-purple-900/20 backdrop-blur-md transition-transform duration-300;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-brand-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-600 focus-visible:ring-brand-300 dark:bg-brand-500 dark:hover:bg-brand-400;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-brand-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-brand-400;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 dark:border-slate-700 dark:text-foreground-dark dark:hover:border-brand-400 dark:hover:text-brand-400;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-400 hover:bg-white/5;
   }
 }

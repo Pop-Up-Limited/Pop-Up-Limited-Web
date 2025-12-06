@@ -21,9 +21,9 @@ const resolveActive = (href) => {
 };
 ---
 
-<header class="sticky top-0 z-[100] border-b border-slate-200/60 bg-white/80 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-900/70">
+<header class="sticky top-0 z-[100] border-b border-white/10 bg-black/70 backdrop-blur-md">
   <div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-    <a href="/" class="flex items-center gap-3 text-lg font-bold text-foreground hover:text-brand-500 dark:text-foreground-dark" aria-label={`${COMPANY_NAME} home`}>
+    <a href="/" class="flex items-center gap-3 text-lg font-bold text-white hover:text-brand-400" aria-label={`${COMPANY_NAME} home`}>
       <img src="/images/logo.svg" alt={`${COMPANY_NAME} logo`} class="h-11 w-11" />
       <span class="text-balance">
         {COMPANY_NAME}
@@ -32,11 +32,11 @@ const resolveActive = (href) => {
 
     <div class="flex items-center gap-2 md:hidden">
       <!-- Language Switcher for Mobile -->
-      <div class="flex items-center gap-1 rounded-full border border-slate-200 bg-white p-0.5 dark:border-slate-700 dark:bg-slate-800" data-language-switcher-mobile>
+      <div class="flex items-center gap-1 rounded-full border border-white/20 bg-white/5 p-0.5" data-language-switcher-mobile>
         <button
           type="button"
           data-lang="zh"
-          class="rounded-full px-2 py-1 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-slate-600 dark:data-[active=false]:text-slate-300"
+          class="rounded-full px-2 py-1 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-gray-400"
           aria-label="切换到中文"
         >
           中
@@ -44,7 +44,7 @@ const resolveActive = (href) => {
         <button
           type="button"
           data-lang="en"
-          class="rounded-full px-2 py-1 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-slate-600 dark:data-[active=false]:text-slate-300"
+          class="rounded-full px-2 py-1 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-gray-400"
           aria-label="Switch to English"
         >
           EN
@@ -52,7 +52,7 @@ const resolveActive = (href) => {
       </div>
       <button
         type="button"
-        class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-brand-300 hover:text-brand-600 focus-visible:ring-brand-300 dark:border-slate-700 dark:text-foreground-dark"
+        class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-gray-300 transition hover:border-brand-400 hover:text-brand-400 focus-visible:ring-brand-400"
         aria-label="Toggle navigation"
         aria-controls="primary-navigation"
         aria-expanded="false"
@@ -65,27 +65,27 @@ const resolveActive = (href) => {
     </div>
 
     <nav id="primary-navigation" class="hidden w-full flex-col gap-6 md:flex md:w-auto md:flex-row md:items-center md:gap-8" data-nav-menu>
-      <ul class="flex flex-col gap-4 text-sm font-medium text-foreground md:flex-row md:items-center md:gap-6 dark:text-foreground-dark">
+      <ul class="flex flex-col gap-4 text-sm font-medium text-gray-300 md:flex-row md:items-center md:gap-6">
         {NAV_LINKS.map((item) => (
           item.children ? (
             <li class="relative" data-has-dropdown>
               <details class="group">
-                <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full px-3 py-2 transition hover:bg-slate-100/80 dark:hover:bg-slate-800/80">
-                  <span class={['transition', resolveActive(item.children[0].href) ? 'text-brand-500' : ''].join(' ')}>
+                <summary class="flex cursor-pointer list-none items-center gap-2 rounded-full px-3 py-2 transition hover:bg-white/10">
+                  <span class={['transition', resolveActive(item.children[0].href) ? 'text-brand-400' : ''].join(' ')}>
                     {item.label}
                   </span>
-                  <svg class="h-3.5 w-3.5 text-slate-500 transition group-open:rotate-180" viewBox="0 0 16 16" fill="none">
+                  <svg class="h-3.5 w-3.5 text-gray-500 transition group-open:rotate-180" viewBox="0 0 16 16" fill="none">
                     <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </summary>
-                <div class="md:absolute md:left-0 md:mt-2 md:w-48 md:rounded-2xl md:border md:border-slate-200 md:bg-white md:p-2 md:shadow-xl md:shadow-slate-900/10 dark:md:border-slate-700 dark:md:bg-slate-900">
+                <div class="md:absolute md:left-0 md:mt-2 md:w-48 md:rounded-2xl md:border md:border-white/10 md:bg-black/90 md:p-2 md:shadow-xl md:backdrop-blur-md">
                   <ul class="flex flex-col gap-1 text-sm">
                     {item.children.map((child) => (
                       <li>
                         <a
                           href={child.href}
-                          class={`block rounded-xl px-4 py-2 transition hover:bg-brand-500/10 hover:text-brand-600 ${
-                            resolveActive(child.href) ? 'text-brand-500' : ''
+                          class={`block rounded-xl px-4 py-2 transition hover:bg-white/10 hover:text-brand-400 ${
+                            resolveActive(child.href) ? 'text-brand-400' : ''
                           }`}
                         >
                           {child.label}
@@ -103,8 +103,8 @@ const resolveActive = (href) => {
                 data-nav-link
                 data-href={item.href}
                 data-i18n={`nav.${item.href === '/' ? 'home' : item.href.slice(1)}`}
-                class={`rounded-full px-3 py-2 transition hover:bg-slate-100/80 hover:text-brand-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 ${
-                  resolveActive(item.href) ? 'text-brand-500' : ''
+                class={`rounded-full px-3 py-2 transition hover:bg-white/10 hover:text-brand-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 ${
+                  resolveActive(item.href) ? 'text-brand-400' : ''
                 }`}
               >
                 {item.label}
@@ -115,11 +115,11 @@ const resolveActive = (href) => {
       </ul>
       <div class="flex flex-col gap-3 md:flex-row md:items-center md:gap-3">
         <!-- Language Switcher -->
-        <div class="flex items-center gap-2 rounded-full border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800" data-language-switcher>
+        <div class="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 p-1" data-language-switcher>
           <button
             type="button"
             data-lang="zh"
-            class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-slate-600 hover:bg-slate-100 dark:data-[active=false]:text-slate-300 dark:hover:bg-slate-700"
+            class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-gray-400 hover:bg-white/10"
             aria-label="切换到中文"
           >
             中文
@@ -127,7 +127,7 @@ const resolveActive = (href) => {
           <button
             type="button"
             data-lang="en"
-            class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-slate-600 hover:bg-slate-100 dark:data-[active=false]:text-slate-300 dark:hover:bg-slate-700"
+            class="rounded-full px-3 py-1.5 text-xs font-semibold transition-colors data-[active=true]:bg-brand-500 data-[active=true]:text-white data-[active=false]:text-gray-400 hover:bg-white/10"
             aria-label="Switch to English"
           >
             EN

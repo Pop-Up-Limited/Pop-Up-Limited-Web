@@ -30,14 +30,14 @@ const heroFeatureDefaults = heroDefaults.features;
 
       <div class="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 md:px-6 pointer-events-none">
         <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-center">
-          <div class="space-y-8 pointer-events-auto backdrop-blur-sm md:backdrop-blur-none rounded-3xl p-6 md:p-0 bg-white/30 md:bg-transparent dark:bg-black/30 md:dark:bg-transparent border border-white/20 md:border-0">
-          <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-brand-600" data-i18n="hero.badge">
+          <div class="space-y-8 pointer-events-auto backdrop-blur-sm md:backdrop-blur-none rounded-3xl p-6 md:p-0 bg-black/30 md:bg-transparent border border-white/10 md:border-0">
+          <span class="inline-flex items-center gap-2 rounded-full border border-brand-400/30 bg-brand-500/20 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-brand-300" data-i18n="hero.badge">
             {heroDefaults.badge}
           </span>
-            <h1 class="text-5xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl dark:text-foreground-dark" data-i18n="hero.title">
+            <h1 class="text-5xl font-bold leading-tight text-white md:text-6xl lg:text-7xl" data-i18n="hero.title">
             {heroDefaults.title}
           </h1>
-            <p class="max-w-xl text-xl text-foreground-muted dark:text-slate-300" data-i18n="hero.subtitle">
+            <p class="max-w-xl text-xl text-gray-300" data-i18n="hero.subtitle">
             {heroDefaults.subtitle}
           </p>
             <div class="flex flex-col gap-4 sm:flex-row">
@@ -60,18 +60,17 @@ const heroFeatureDefaults = heroDefaults.features;
     </section>
 
     <!-- DANMAKU SECTION -->
-    <section class="relative z-20 border-y border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <section class="relative z-20 border-y border-white/10 bg-black/50 backdrop-blur-sm">
       <Danmaku />
     </section>
 
     <!-- PORTFOLIO STACKING CARDS SECTION -->
-    <!-- Adjusted padding and z-index handling for smoother stacking -->
-    <section class="relative z-30 py-24 bg-slate-50 dark:bg-slate-950">
+    <section class="relative z-30 py-24 bg-gradient-to-b from-transparent via-black/50 to-black/80">
         <!-- Title that scrolls with content -->
         <div class="mx-auto w-full max-w-6xl px-4 md:px-6 mb-24 text-center">
-            <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge"></span>
-            <h2 class="text-4xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mt-2" data-i18n="portfolio.title"></h2>
-            <p class="max-w-2xl mx-auto mt-4 text-lg text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle"></p>
+            <span class="text-sm font-semibold uppercase tracking-wide text-brand-400" data-i18n="portfolio.badge"></span>
+            <h2 class="text-4xl font-bold text-white md:text-5xl mt-2" data-i18n="portfolio.title"></h2>
+            <p class="max-w-2xl mx-auto mt-4 text-lg text-gray-400" data-i18n="portfolio.subtitle"></p>
         </div>
 
         <div class="mx-auto w-full max-w-5xl px-4 md:px-6 pb-24">
@@ -82,10 +81,10 @@ const heroFeatureDefaults = heroDefaults.features;
             href={caseItem.url}
             target="_blank"
             rel="noopener noreferrer"
-                            class="group relative block overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900 card-stack-item"
+                            class="group relative block overflow-hidden rounded-3xl border border-white/10 bg-black/60 backdrop-blur-md shadow-2xl shadow-purple-900/20 card-stack-item"
           >
                             <div class="grid md:grid-cols-2 gap-0 min-h-[450px]">
-                                <div class="relative h-full min-h-[300px] overflow-hidden bg-slate-100 dark:bg-slate-800 order-2 md:order-1">
+                                <div class="relative h-full min-h-[300px] overflow-hidden bg-black/40 order-2 md:order-1">
               <img
                 src={caseItem.image}
                 alt={caseItem.name}
@@ -102,10 +101,10 @@ const heroFeatureDefaults = heroDefaults.features;
                                     )}
                                 </div>
                                 <div class="p-8 md:p-12 flex flex-col justify-center order-1 md:order-2">
-                                    <h3 class="mb-4 text-3xl font-bold text-foreground dark:text-foreground-dark">{caseItem.name}</h3>
-                                    <p class="text-lg text-foreground-muted dark:text-slate-300 leading-relaxed mb-8">{caseItem.description}</p>
+                                    <h3 class="mb-4 text-3xl font-bold text-white">{caseItem.name}</h3>
+                                    <p class="text-lg text-gray-400 leading-relaxed mb-8">{caseItem.description}</p>
                                     <div>
-                                        <span class="inline-flex items-center gap-2 text-brand-600 font-semibold group-hover:gap-3 transition-all">
+                                        <span class="inline-flex items-center gap-2 text-brand-400 font-semibold group-hover:gap-3 transition-all">
                                             <span data-i18n="cases.visitSite">Visit Website</span>
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                                         </span>
@@ -118,38 +117,38 @@ const heroFeatureDefaults = heroDefaults.features;
             </div>
             
             <div class="mt-24 text-center relative z-50">
-               <a href="/cases" class="btn-secondary px-8 py-3 rounded-full text-lg hover:shadow-lg transition-all bg-white dark:bg-slate-800" data-i18n="portfolio.viewMore"></a>
+               <a href="/cases" class="btn-secondary px-8 py-3 rounded-full text-lg hover:shadow-lg transition-all" data-i18n="portfolio.viewMore"></a>
             </div>
         </div>
     </section>
 
     <!-- About / Services / Why Us (Standard Flow) -->
-    <section class="relative z-40 py-24 bg-surface dark:bg-surface-dark">
+    <section class="relative z-40 py-24 bg-black/80">
         <div class="mx-auto w-full max-w-6xl px-4 md:px-6">
            <div class="flex flex-col md:flex-row gap-12 items-center mb-16">
              <div class="md:w-1/2">
-               <h2 class="text-3xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mb-6" data-i18n="about.title"></h2>
-               <p class="text-lg leading-relaxed text-foreground-muted dark:text-slate-300 mb-4" data-i18n="about.description1"></p>
-               <p class="text-lg leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description2"></p>
+               <h2 class="text-3xl font-bold text-white md:text-5xl mb-6" data-i18n="about.title"></h2>
+               <p class="text-lg leading-relaxed text-gray-400 mb-4" data-i18n="about.description1"></p>
+               <p class="text-lg leading-relaxed text-gray-400" data-i18n="about.description2"></p>
              </div>
              <div class="md:w-1/2">
-               <div class="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-brand-500/5 p-8 backdrop-blur-sm">
-                  <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-brand-500/20 blur-2xl"></div>
-                  <h3 class="text-2xl font-bold text-brand-700 dark:text-brand-200 relative z-10" data-i18n="about.quote"></h3>
-                  <p class="mt-4 text-base font-medium text-brand-800/60 dark:text-brand-100/60 relative z-10" data-i18n="about.quoteAuthor"></p>
+               <div class="relative overflow-hidden rounded-2xl border border-brand-400/20 bg-brand-500/10 p-8 backdrop-blur-sm">
+                  <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-brand-500/30 blur-2xl"></div>
+                  <h3 class="text-2xl font-bold text-brand-300 relative z-10" data-i18n="about.quote"></h3>
+                  <p class="mt-4 text-base font-medium text-brand-200/60 relative z-10" data-i18n="about.quoteAuthor"></p>
                </div>
              </div>
            </div>
 
           <div class="mb-10">
-             <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="whyUs.badge"></span>
-             <h2 class="text-3xl font-bold text-foreground md:text-4xl dark:text-foreground-dark mt-2" data-i18n="whyUs.title"></h2>
+             <span class="text-sm font-semibold uppercase tracking-wide text-brand-400" data-i18n="whyUs.badge"></span>
+             <h2 class="text-3xl font-bold text-white md:text-4xl mt-2" data-i18n="whyUs.title"></h2>
           </div>
 
           <div class="grid gap-6 md:grid-cols-3">
             {translations.zh.whyUs.points.map((point, index) => (
-              <div class="group card-surface flex flex-col gap-4 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
-                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
+              <div class="group card-surface flex flex-col gap-4 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-white/5 rounded-2xl border border-white/10">
+                <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/20 text-brand-400 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                   {index === 0 && (
                     <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -166,8 +165,8 @@ const heroFeatureDefaults = heroDefaults.features;
                     </svg>
                   )}
                 </div>
-                <h3 class="text-xl font-bold text-foreground dark:text-foreground-dark" data-i18n={`whyUs.points.${index}.title`}></h3>
-                <p class="text-base leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n={`whyUs.points.${index}.description`}></p>
+                <h3 class="text-xl font-bold text-white" data-i18n={`whyUs.points.${index}.title`}></h3>
+                <p class="text-base leading-relaxed text-gray-400" data-i18n={`whyUs.points.${index}.description`}></p>
               </div>
         ))}
       </div>
@@ -175,61 +174,61 @@ const heroFeatureDefaults = heroDefaults.features;
     </section>
 
       <!-- Data Visualization Section -->
-      <section class="relative z-50 py-24 bg-slate-50 dark:bg-slate-950">
+      <section class="relative z-50 py-24 bg-black/90">
         <div class="mx-auto w-full max-w-6xl px-4 md:px-6">
       <div class="mb-10 flex flex-col gap-3">
-        <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="stats.badge"></span>
-            <h2 class="text-4xl font-bold text-foreground md:text-5xl dark:text-foreground-dark" data-i18n="stats.title"></h2>
-            <p class="max-w-2xl text-lg text-foreground-muted dark:text-slate-300" data-i18n="stats.subtitle"></p>
+        <span class="text-sm font-semibold uppercase tracking-wide text-brand-400" data-i18n="stats.badge"></span>
+            <h2 class="text-4xl font-bold text-white md:text-5xl" data-i18n="stats.title"></h2>
+            <p class="max-w-2xl text-lg text-gray-400" data-i18n="stats.subtitle"></p>
       </div>
 
       <!-- 核心指标 -->
       <div class="mb-12 grid gap-6 md:grid-cols-4">
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">2000+</div>
-              <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.cases"></div>
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+              <div class="mb-3 text-5xl font-bold text-brand-400">2000+</div>
+              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.cases"></div>
             </div>
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">98%</div>
-              <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.satisfaction"></div>
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+              <div class="mb-3 text-5xl font-bold text-brand-400">98%</div>
+              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.satisfaction"></div>
             </div>
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">3天</div>
-              <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.delivery"></div>
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+              <div class="mb-3 text-5xl font-bold text-brand-400">3天</div>
+              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.delivery"></div>
             </div>
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">6小时</div>
-              <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.support"></div>
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+              <div class="mb-3 text-5xl font-bold text-brand-400">6小时</div>
+              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.support"></div>
             </div>
       </div>
 
       <!-- 详细数据可视化 -->
       <div class="grid gap-6 md:grid-cols-2">
         <!-- 设计分级分布 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-slate-900">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.designTier"></h3>
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+          <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.designTier"></h3>
           <div class="h-64">
             <canvas id="design-tier-chart"></canvas>
           </div>
         </div>
 
         <!-- 服务类型分布 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-slate-900">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.serviceType"></h3>
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+          <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.serviceType"></h3>
           <div class="h-64">
             <canvas id="service-type-chart"></canvas>
           </div>
         </div>
 
         <!-- 交付周期统计 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-slate-900">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.delivery"></h3>
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+          <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.delivery"></h3>
           <div class="h-64">
             <canvas id="delivery-cycle-chart"></canvas>
           </div>
           <div class="mt-4 text-center">
-            <div class="text-xs font-medium text-foreground-muted dark:text-slate-400" data-i18n="stats.charts.avgDelivery"></div>
-            <div class="text-2xl font-bold text-brand-600 dark:text-brand-400">
+            <div class="text-xs font-medium text-gray-400" data-i18n="stats.charts.avgDelivery"></div>
+            <div class="text-2xl font-bold text-brand-400">
               <span>3</span>
               <span data-i18n="stats.charts.days"></span>
             </div>
@@ -237,17 +236,17 @@ const heroFeatureDefaults = heroDefaults.features;
         </div>
 
         <!-- 客户反馈评分 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-slate-900">
-          <h3 class="mb-6 text-lg font-semibold text-foreground dark:text-foreground-dark" data-i18n="stats.charts.feedback"></h3>
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+          <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.feedback"></h3>
               <div class="space-y-6">
             <div>
                   <div class="mb-3 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.designQuality"></span>
-                    <span class="font-bold text-brand-600 dark:text-brand-400">4.8</span>
+                <span class="font-medium text-gray-400" data-i18n="stats.charts.designQuality"></span>
+                    <span class="font-bold text-brand-400">4.8</span>
               </div>
               <div class="flex gap-1">
                      {[1,2,3,4,5].map((i) => (
-                       <svg class={`h-6 w-6 ${i <= 4 ? 'text-yellow-400' : 'text-slate-200 dark:text-slate-700'}`} fill="currentColor" viewBox="0 0 20 20">
+                       <svg class={`h-6 w-6 ${i <= 4 ? 'text-yellow-400' : 'text-gray-700'}`} fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
                      ))}
@@ -255,12 +254,12 @@ const heroFeatureDefaults = heroDefaults.features;
             </div>
             <div>
                   <div class="mb-3 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.developmentEfficiency"></span>
-                    <span class="font-bold text-brand-600 dark:text-brand-400">4.9</span>
+                <span class="font-medium text-gray-400" data-i18n="stats.charts.developmentEfficiency"></span>
+                    <span class="font-bold text-brand-400">4.9</span>
               </div>
               <div class="flex gap-1">
                      {[1,2,3,4,5].map((i) => (
-                       <svg class={`h-6 w-6 ${i <= 4 ? 'text-yellow-400' : 'text-slate-200 dark:text-slate-700'}`} fill="currentColor" viewBox="0 0 20 20">
+                       <svg class={`h-6 w-6 ${i <= 4 ? 'text-yellow-400' : 'text-gray-700'}`} fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
                      ))}
@@ -268,12 +267,12 @@ const heroFeatureDefaults = heroDefaults.features;
             </div>
             <div>
                   <div class="mb-3 flex items-center justify-between text-sm">
-                <span class="font-medium text-foreground-muted dark:text-slate-300" data-i18n="stats.charts.communication"></span>
-                    <span class="font-bold text-brand-600 dark:text-brand-400">4.7</span>
+                <span class="font-medium text-gray-400" data-i18n="stats.charts.communication"></span>
+                    <span class="font-bold text-brand-400">4.7</span>
               </div>
               <div class="flex gap-1">
                      {[1,2,3,4,5].map((i) => (
-                       <svg class={`h-6 w-6 ${i <= 4 ? 'text-yellow-400' : 'text-slate-200 dark:text-slate-700'}`} fill="currentColor" viewBox="0 0 20 20">
+                       <svg class={`h-6 w-6 ${i <= 4 ? 'text-yellow-400' : 'text-gray-700'}`} fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
                      ))}
@@ -287,9 +286,9 @@ const heroFeatureDefaults = heroDefaults.features;
 
       <!-- CTA Section (Normal flow) -->
       <section class="relative z-50 mx-auto w-full max-w-6xl px-4 py-24 md:px-6">
-        <div class="rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-16 text-center shadow-brand-md md:px-16 backdrop-blur-sm">
-          <h2 class="text-3xl font-bold text-brand-700 md:text-5xl dark:text-brand-100" data-i18n="cta.title"></h2>
-          <p class="mt-6 text-lg text-brand-800/80 dark:text-brand-200/80 max-w-2xl mx-auto" data-i18n="cta.subtitle"></p>
+        <div class="rounded-3xl border border-brand-400/30 bg-brand-900/30 px-6 py-16 text-center shadow-brand-md md:px-16 backdrop-blur-sm">
+          <h2 class="text-3xl font-bold text-white md:text-5xl" data-i18n="cta.title"></h2>
+          <p class="mt-6 text-lg text-gray-300 max-w-2xl mx-auto" data-i18n="cta.subtitle"></p>
           <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a class="btn-primary px-8 py-4 text-lg" href="/support" data-i18n="cta.support"></a>
             <a class="btn-secondary px-8 py-4 text-lg" href="/services" data-i18n="cta.services"></a>
@@ -297,7 +296,7 @@ const heroFeatureDefaults = heroDefaults.features;
       </div>
     </section>
 
-      <div class="h-24 bg-surface dark:bg-surface-dark"></div>
+      <div class="h-24 bg-transparent"></div>
 
       </div>
   </div>
@@ -439,7 +438,8 @@ const heroFeatureDefaults = heroDefaults.features;
                   padding: 15,
                   font: {
                     size: 12
-                  }
+                  },
+                  color: '#d1d5db'
                 }
               },
               tooltip: {
@@ -513,7 +513,19 @@ const heroFeatureDefaults = heroDefaults.features;
                 ticks: {
                   callback: function(value) {
                     return value + '%';
-                  }
+                  },
+                  color: '#9ca3af'
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                }
+              },
+              x: {
+                ticks: {
+                  color: '#d1d5db'
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.05)'
                 }
               }
             }
@@ -562,7 +574,8 @@ const heroFeatureDefaults = heroDefaults.features;
                   padding: 15,
                   font: {
                     size: 12
-                  }
+                  },
+                  color: '#d1d5db'
                 }
               }
             }

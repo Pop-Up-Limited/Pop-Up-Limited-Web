@@ -3,26 +3,26 @@ import { COMPANY_NAME, FOOTER_COPYRIGHT, SOCIAL_LINKS, SUPPORT_EMAIL } from '../
 import { translations } from '../i18n/translations';
 ---
 
-<footer class="border-t border-slate-200/60 bg-white/80 backdrop-blur-md dark:border-slate-800/60 dark:bg-slate-900/70">
+<footer class="border-t border-white/10 bg-black/80 backdrop-blur-md">
   <div class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-12 md:px-6 md:py-16">
     <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
       <div class="max-w-sm space-y-3">
-        <span class="text-xs uppercase tracking-widest text-brand-500">Pop Up Limited</span>
-        <h3 class="text-2xl font-semibold text-foreground dark:text-foreground-dark">
+        <span class="text-xs uppercase tracking-widest text-brand-400">Pop Up Limited</span>
+        <h3 class="text-2xl font-semibold text-white">
           {COMPANY_NAME}
         </h3>
-        <p class="text-sm text-foreground-muted dark:text-slate-300" data-i18n="footer.description"></p>
+        <p class="text-sm text-gray-400" data-i18n="footer.description"></p>
       </div>
 
       <div class="grid w-full grid-cols-1 gap-10 text-sm md:max-w-md">
         <div class="space-y-2">
-          <h4 class="font-semibold text-foreground dark:text-foreground-dark" data-i18n="footer.support"></h4>
-          <ul class="space-y-2 text-foreground-muted dark:text-slate-300">
+          <h4 class="font-semibold text-white" data-i18n="footer.support"></h4>
+          <ul class="space-y-2 text-gray-400">
             <li>
-              <a class="hover:text-brand-600" href="/support" data-i18n="footer.helpCenter"></a>
+              <a class="hover:text-brand-400" href="/support" data-i18n="footer.helpCenter"></a>
             </li>
             <li>
-              <a class="hover:text-brand-600" href={`mailto:${SUPPORT_EMAIL}`}>
+              <a class="hover:text-brand-400" href={`mailto:${SUPPORT_EMAIL}`}>
                 {SUPPORT_EMAIL}
               </a>
             </li>
@@ -31,7 +31,7 @@ import { translations } from '../i18n/translations';
       </div>
     </div>
 
-    <div class="flex flex-col gap-6 border-t border-slate-200/60 pt-6 text-sm text-foreground-muted md:flex-row md:items-center md:justify-between dark:border-slate-700 dark:text-slate-300">
+    <div class="flex flex-col gap-6 border-t border-white/10 pt-6 text-sm text-gray-400 md:flex-row md:items-center md:justify-between">
       <p data-i18n="footer.copyright">{FOOTER_COPYRIGHT}</p>
 
       <ul class="flex items-center gap-4">
@@ -39,7 +39,7 @@ import { translations } from '../i18n/translations';
           <li>
             <a
               href={item.href}
-              class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:border-brand-400 hover:text-brand-600 focus-visible:ring-2 focus-visible:ring-brand-300 dark:border-slate-700 dark:text-slate-200"
+              class="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-gray-400 transition hover:border-brand-400 hover:text-brand-400 focus-visible:ring-2 focus-visible:ring-brand-400"
               aria-label={item.label}
             >
               <span class="text-xs font-semibold uppercase">{item.icon}</span>
