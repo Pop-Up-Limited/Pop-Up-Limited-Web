@@ -78,13 +78,17 @@
     } // Added closing brace for init()
 
     createPlanet() {
-      // ... setup ...
       // Increase sizes for "stunning" effect
       this.config.planetRadius = 3.5;
       
       const geometry = new THREE.BufferGeometry();
-      // ... (keep existing loop logic but use new radius) ...
+      const positions = [];
+      const sizes = [];
+      const brightness = [];
+      const velocities = [];
+      const colors = [];
 
+      for (let i = 0; i < this.config.planetParticleCount; i++) {
         // Spherical distribution
         const r = this.config.planetRadius * Math.cbrt(Math.random()); // Uniform volume
         const theta = Math.random() * Math.PI * 2;
@@ -111,7 +115,7 @@
         // Color
         const color = this.colorPalette[Math.floor(Math.random() * this.colorPalette.length)];
         colors.push(color.r, color.g, color.b);
-      } // End of loop
+      }
 
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
@@ -209,7 +213,13 @@
     }
 
     createRings() {
-      // ... (setup) ...
+      const geometry = new THREE.BufferGeometry();
+      const positions = [];
+      const sizes = [];
+      const brightness = [];
+      const velocities = [];
+      const initialAngles = [];
+      const colors = [];
       
       // Use config values which are now larger
       for (let i = 0; i < this.config.ringParticleCount; i++) {
