@@ -1,0 +1,73 @@
+---
+interface Props {
+  direction?: 'up' | 'down' | 'left' | 'right' | 'fade';
+  delay?: number;
+  duration?: number;
+  className?: string;
+  children?: any;
+}
+
+const { direction = 'up', delay = 0, duration = 1, className = '', children } = Astro.props;
+---
+
+<div class={`gsap-reveal ${className}`} data-direction={direction} data-delay={delay} data-duration={duration}>
+  {children}
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+    gsap.registerPlugin(ScrollTrigger);
+
+    const reveals = document.querySelectorAll('.gsap-reveal');
+    
+    reveals.forEach((reveal) => {
+      const direction = reveal.getAttribute('data-direction') || 'up';
+      const delay = parseFloat(reveal.getAttribute('data-delay') || '0');
+      const duration = parseFloat(reveal.getAttribute('data-duration') || '1');
+      
+      let fromVars = { opacity: 0 };
+      let toVars = { opacity: 1, duration, delay, ease: 'power3.out' };
+      
+      switch (direction) {
+        case 'up':
+          fromVars.y = 60;
+          toVars.y = 0;
+          break;
+        case 'down':
+          fromVars.y = -60;
+          toVars.y = 0;
+          break;
+        case 'left':
+          fromVars.x = 60;
+          toVars.x = 0;
+          break;
+        case 'right':
+          fromVars.x = -60;
+          toVars.x = 0;
+          break;
+        case 'fade':
+          // Already set
+          break;
+      }
+      
+      gsap.fromTo(reveal, fromVars, {
+        ...toVars,
+        scrollTrigger: {
+          trigger: reveal,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .gsap-reveal {
+    will-change: transform, opacity;
+  }
+</style>
+

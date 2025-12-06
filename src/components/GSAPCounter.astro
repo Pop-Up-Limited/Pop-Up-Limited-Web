@@ -1,0 +1,53 @@
+---
+interface Props {
+  end: number;
+  duration?: number;
+  prefix?: string;
+  suffix?: string;
+  className?: string;
+}
+
+const { end, duration = 2, prefix = '', suffix = '', className = '' } = Astro.props;
+---
+
+<div class={`gsap-counter ${className}`} data-end={end} data-duration={duration} data-prefix={prefix} data-suffix={suffix}>
+  <span class="counter-value">{prefix}0{suffix}</span>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+    gsap.registerPlugin(ScrollTrigger);
+
+    const counters = document.querySelectorAll('.gsap-counter');
+    
+    counters.forEach((counter) => {
+      const valueEl = counter.querySelector('.counter-value');
+      if (!valueEl) return;
+      
+      const end = parseFloat(counter.getAttribute('data-end') || '0');
+      const duration = parseFloat(counter.getAttribute('data-duration') || '2');
+      const prefix = counter.getAttribute('data-prefix') || '';
+      const suffix = counter.getAttribute('data-suffix') || '';
+      
+      const obj = { value: 0 };
+      
+      gsap.to(obj, {
+        value: end,
+        duration: duration,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: counter,
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        },
+        onUpdate: () => {
+          valueEl.textContent = prefix + Math.round(obj.value) + suffix;
+        }
+      });
+    });
+  });
+</script>
+

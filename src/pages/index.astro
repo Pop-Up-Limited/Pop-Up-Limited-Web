@@ -7,6 +7,11 @@ import ThreeSaturn from '../components/ThreeSaturn.astro';
 import Danmaku from '../components/Danmaku.astro';
 import SupportButton from '../components/SupportButton.jsx';
 import MouseFollower from '../components/MouseFollower.astro';
+import GSAPTextSplit from '../components/GSAPTextSplit.astro';
+import GSAPCounter from '../components/GSAPCounter.astro';
+import GSAPMagneticButton from '../components/GSAPMagneticButton.astro';
+import GSAPReveal from '../components/GSAPReveal.astro';
+import GSAPParallaxImage from '../components/GSAPParallaxImage.astro';
 
 // 按设计分级分组
 const premiumCases = cases.filter(c => c.designTier === 'premium');
@@ -39,8 +44,8 @@ const heroFeatureDefaults = heroDefaults.features;
           <span class="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-brand-600" data-i18n="hero.badge">
             {heroDefaults.badge}
           </span>
-            <h1 class="text-5xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl dark:text-foreground-dark" data-i18n="hero.title">
-            {heroDefaults.title}
+            <h1 class="text-5xl font-bold leading-tight text-foreground md:text-6xl lg:text-7xl dark:text-foreground-dark">
+            <GSAPTextSplit text={heroDefaults.title} className="block" />
           </h1>
             <p class="max-w-xl text-xl text-foreground-muted dark:text-slate-300" data-i18n="hero.subtitle">
             {heroDefaults.subtitle}
@@ -73,11 +78,13 @@ const heroFeatureDefaults = heroDefaults.features;
     <!-- Adjusted padding and z-index handling for smoother stacking -->
     <section class="relative z-30 py-24 bg-slate-50 dark:bg-slate-950">
         <!-- Title that scrolls with content -->
+        <GSAPReveal direction="up" delay={0.1}>
         <div class="mx-auto w-full max-w-6xl px-4 md:px-6 mb-24 text-center">
             <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="portfolio.badge"></span>
             <h2 class="text-4xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mt-2" data-i18n="portfolio.title"></h2>
             <p class="max-w-2xl mx-auto mt-4 text-lg text-foreground-muted dark:text-slate-300" data-i18n="portfolio.subtitle"></p>
         </div>
+        </GSAPReveal>
 
         <div class="mx-auto w-full max-w-5xl px-4 md:px-6 pb-24">
             <div class="flex flex-col gap-32">
@@ -132,18 +139,20 @@ const heroFeatureDefaults = heroDefaults.features;
     <section class="relative z-40 py-24 bg-surface dark:bg-surface-dark">
         <div class="mx-auto w-full max-w-6xl px-4 md:px-6">
            <div class="flex flex-col md:flex-row gap-12 items-center mb-16">
-             <div class="md:w-1/2">
-               <h2 class="text-3xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mb-6" data-i18n="about.title"></h2>
-               <p class="text-lg leading-relaxed text-foreground-muted dark:text-slate-300 mb-4" data-i18n="about.description1"></p>
-               <p class="text-lg leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description2"></p>
-             </div>
-             <div class="md:w-1/2">
+             <GSAPReveal direction="right" delay={0.1} className="md:w-1/2">
+               <div>
+                 <h2 class="text-3xl font-bold text-foreground md:text-5xl dark:text-foreground-dark mb-6" data-i18n="about.title"></h2>
+                 <p class="text-lg leading-relaxed text-foreground-muted dark:text-slate-300 mb-4" data-i18n="about.description1"></p>
+                 <p class="text-lg leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n="about.description2"></p>
+               </div>
+             </GSAPReveal>
+             <GSAPReveal direction="left" delay={0.2} className="md:w-1/2">
                <div class="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-brand-500/5 p-8 backdrop-blur-sm">
                   <div class="absolute top-0 right-0 -mt-4 -mr-4 h-24 w-24 rounded-full bg-brand-500/20 blur-2xl"></div>
                   <h3 class="text-2xl font-bold text-brand-700 dark:text-brand-200 relative z-10" data-i18n="about.quote"></h3>
                   <p class="mt-4 text-base font-medium text-brand-800/60 dark:text-brand-100/60 relative z-10" data-i18n="about.quoteAuthor"></p>
                </div>
-             </div>
+             </GSAPReveal>
            </div>
 
           <div class="mb-10">
@@ -153,6 +162,7 @@ const heroFeatureDefaults = heroDefaults.features;
 
           <div class="grid gap-6 md:grid-cols-3">
             {translations.zh.whyUs.points.map((point, index) => (
+              <GSAPReveal direction="up" delay={index * 0.1}>
               <div class="group card-surface flex flex-col gap-4 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800">
                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/10 text-brand-600 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                   {index === 0 && (
@@ -174,6 +184,7 @@ const heroFeatureDefaults = heroDefaults.features;
                 <h3 class="text-xl font-bold text-foreground dark:text-foreground-dark" data-i18n={`whyUs.points.${index}.title`}></h3>
                 <p class="text-base leading-relaxed text-foreground-muted dark:text-slate-300" data-i18n={`whyUs.points.${index}.description`}></p>
               </div>
+              </GSAPReveal>
         ))}
       </div>
       </div>
@@ -190,28 +201,38 @@ const heroFeatureDefaults = heroDefaults.features;
 
       <!-- 核心指标 -->
       <div class="mb-12 grid gap-6 md:grid-cols-4">
+            <GSAPReveal direction="up" delay={0.1}>
             <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">2000+</div>
+              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">
+                <GSAPCounter end={2000} suffix="+" className="inline-block" />
+              </div>
               <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.cases"></div>
         </div>
+            </GSAPReveal>
+            <GSAPReveal direction="up" delay={0.2}>
             <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
-              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">98%</div>
+              <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">
+                <GSAPCounter end={98} suffix="%" className="inline-block" />
+              </div>
               <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.satisfaction"></div>
         </div>
+            </GSAPReveal>
+            <GSAPReveal direction="up" delay={0.3}>
             <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
               <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">
-            <span>3</span>
-            <span class="text-2xl" data-i18n="stats.charts.days"></span>
-          </div>
+                <GSAPCounter end={3} suffix="天" className="inline-block" />
+              </div>
               <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.delivery"></div>
         </div>
+            </GSAPReveal>
+            <GSAPReveal direction="up" delay={0.4}>
             <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
               <div class="mb-3 text-5xl font-bold text-brand-600 dark:text-brand-400">
-            <span>6</span>
-            <span class="text-2xl" data-i18n="stats.charts.hours"></span>
-          </div>
+                <GSAPCounter end={6} suffix="小时" className="inline-block" />
+              </div>
               <div class="text-sm font-bold text-foreground-muted dark:text-slate-400 uppercase tracking-wider" data-i18n="stats.support"></div>
         </div>
+            </GSAPReveal>
       </div>
 
       <!-- 详细数据可视化 -->
@@ -298,14 +319,16 @@ const heroFeatureDefaults = heroDefaults.features;
 
       <!-- CTA Section (Normal flow) -->
       <section class="relative z-50 mx-auto w-full max-w-6xl px-4 py-24 md:px-6">
+        <GSAPReveal direction="fade" delay={0.2}>
         <div class="rounded-3xl border border-brand-500/20 bg-brand-500/10 px-6 py-16 text-center shadow-brand-md md:px-16 backdrop-blur-sm">
           <h2 class="text-3xl font-bold text-brand-700 md:text-5xl dark:text-brand-100" data-i18n="cta.title"></h2>
           <p class="mt-6 text-lg text-brand-800/80 dark:text-brand-200/80 max-w-2xl mx-auto" data-i18n="cta.subtitle"></p>
           <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a class="btn-primary px-8 py-4 text-lg" href="/support" data-i18n="cta.support"></a>
-            <a class="btn-secondary px-8 py-4 text-lg" href="/services" data-i18n="cta.services"></a>
+            <GSAPMagneticButton href="/support" className="btn-primary px-8 py-4 text-lg" data-i18n="cta.support">联系我们</GSAPMagneticButton>
+            <GSAPMagneticButton href="/services" className="btn-secondary px-8 py-4 text-lg" data-i18n="cta.services">查看服务</GSAPMagneticButton>
           </div>
       </div>
+        </GSAPReveal>
     </section>
 
       <div class="h-24 bg-surface dark:bg-surface-dark"></div>

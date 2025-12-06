@@ -1,0 +1,87 @@
+---
+interface Props {
+  href?: string;
+  className?: string;
+  children?: any;
+}
+
+const { href, className = '', children } = Astro.props;
+---
+
+{href ? (
+  <a href={href} class={`gsap-magnetic-btn ${className}`}>
+    <span class="magnetic-content">{children}</span>
+  </a>
+) : (
+  <button class={`gsap-magnetic-btn ${className}`}>
+    <span class="magnetic-content">{children}</span>
+  </button>
+)}
+
+<script>
+  import { gsap } from 'gsap';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.gsap-magnetic-btn');
+    
+    buttons.forEach((btn) => {
+      const content = btn.querySelector('.magnetic-content');
+      if (!content) return;
+      
+      let bounds;
+      
+      const getBounds = () => {
+        bounds = btn.getBoundingClientRect();
+      };
+      
+      getBounds();
+      window.addEventListener('resize', getBounds);
+      
+      btn.addEventListener('mouseenter', () => {
+        gsap.to(btn, {
+          scale: 1.05,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
+      
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, {
+          scale: 1,
+          x: 0,
+          y: 0,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
+      
+      btn.addEventListener('mousemove', (e) => {
+        const x = e.clientX - bounds.left - bounds.width / 2;
+        const y = e.clientY - bounds.top - bounds.height / 2;
+        
+        gsap.to(btn, {
+          x: x * 0.3,
+          y: y * 0.3,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .gsap-magnetic-btn {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    transform-origin: center;
+  }
+  
+  .magnetic-content {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+</style>
+

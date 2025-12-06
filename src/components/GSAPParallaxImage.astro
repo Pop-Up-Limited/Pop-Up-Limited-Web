@@ -1,0 +1,58 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  speed?: number;
+  className?: string;
+}
+
+const { src, alt, speed = 0.5, className = '' } = Astro.props;
+---
+
+<div class={`gsap-parallax-container ${className}`} data-speed={speed}>
+  <img src={src} alt={alt} class="gsap-parallax-image" />
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+  
+  document.addEventListener('DOMContentLoaded', async () => {
+    const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+    gsap.registerPlugin(ScrollTrigger);
+
+    const containers = document.querySelectorAll('.gsap-parallax-container');
+    
+    containers.forEach((container) => {
+      const img = container.querySelector('.gsap-parallax-image');
+      if (!img) return;
+      
+      const speed = parseFloat(container.getAttribute('data-speed') || '0.5');
+      
+      gsap.to(img, {
+        yPercent: -50 * speed,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: container,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .gsap-parallax-container {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .gsap-parallax-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+</style>
+
