@@ -81,7 +81,7 @@ const heroFeatureDefaults = heroDefaults.features;
             href={caseItem.url}
             target="_blank"
             rel="noopener noreferrer"
-                            class="group relative block overflow-hidden rounded-3xl border border-white/10 bg-black/60 backdrop-blur-md shadow-2xl shadow-purple-900/20 card-stack-item"
+                            class="group relative block overflow-hidden rounded-3xl border border-white/20 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-md shadow-2xl shadow-purple-900/30 card-stack-item"
           >
                             <div class="grid md:grid-cols-2 gap-0 min-h-[450px]">
                                 <div class="relative h-full min-h-[300px] overflow-hidden bg-black/40 order-2 md:order-1">
@@ -147,7 +147,7 @@ const heroFeatureDefaults = heroDefaults.features;
 
           <div class="grid gap-6 md:grid-cols-3">
             {translations.zh.whyUs.points.map((point, index) => (
-              <div class="group card-surface flex flex-col gap-4 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-white/5 rounded-2xl border border-white/10">
+              <div class="group card-surface flex flex-col gap-4 p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 bg-gradient-to-br from-white/15 to-white/5 rounded-2xl border border-white/20">
                 <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-500/20 text-brand-400 transition-colors group-hover:bg-brand-500 group-hover:text-white">
                   {index === 0 && (
                     <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,28 +184,28 @@ const heroFeatureDefaults = heroDefaults.features;
 
       <!-- 核心指标 -->
       <div class="mb-12 grid gap-6 md:grid-cols-4">
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/50">
               <div class="mb-3 text-5xl font-bold text-brand-400">2000+</div>
-              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.cases"></div>
+              <div class="text-sm font-bold text-gray-300 uppercase tracking-wider" data-i18n="stats.cases"></div>
             </div>
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/50">
               <div class="mb-3 text-5xl font-bold text-brand-400">98%</div>
-              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.satisfaction"></div>
+              <div class="text-sm font-bold text-gray-300 uppercase tracking-wider" data-i18n="stats.satisfaction"></div>
             </div>
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/50">
               <div class="mb-3 text-5xl font-bold text-brand-400">3天</div>
-              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.delivery"></div>
+              <div class="text-sm font-bold text-gray-300 uppercase tracking-wider" data-i18n="stats.delivery"></div>
             </div>
-            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface flex flex-col items-center justify-center p-8 text-center rounded-2xl hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/50">
               <div class="mb-3 text-5xl font-bold text-brand-400">6小时</div>
-              <div class="text-sm font-bold text-gray-400 uppercase tracking-wider" data-i18n="stats.support"></div>
+              <div class="text-sm font-bold text-gray-300 uppercase tracking-wider" data-i18n="stats.support"></div>
             </div>
       </div>
 
       <!-- 详细数据可视化 -->
       <div class="grid gap-6 md:grid-cols-2">
         <!-- 设计分级分布 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/30">
           <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.designTier"></h3>
           <div class="h-64">
             <canvas id="design-tier-chart"></canvas>
@@ -213,7 +213,7 @@ const heroFeatureDefaults = heroDefaults.features;
         </div>
 
         <!-- 服务类型分布 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/30">
           <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.serviceType"></h3>
           <div class="h-64">
             <canvas id="service-type-chart"></canvas>
@@ -221,7 +221,7 @@ const heroFeatureDefaults = heroDefaults.features;
         </div>
 
         <!-- 交付周期统计 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/30">
           <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.delivery"></h3>
           <div class="h-64">
             <canvas id="delivery-cycle-chart"></canvas>
@@ -236,7 +236,7 @@ const heroFeatureDefaults = heroDefaults.features;
         </div>
 
         <!-- 客户反馈评分 -->
-            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow bg-white/5 border border-white/10">
+            <div class="card-surface p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 bg-gradient-to-br from-white/15 to-white/5 border border-white/20 hover:border-brand-400/30">
           <h3 class="mb-6 text-lg font-semibold text-white" data-i18n="stats.charts.feedback"></h3>
               <div class="space-y-6">
             <div>
