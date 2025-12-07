@@ -10,9 +10,9 @@ export const translations = {
       contactSupport: '联系客服'
     },
     hero: {
-      badge: 'POP UP 设计工作室',
-      title: '用设计驱动增长',
-      subtitle: '三天交付 · 专业品质 · 持续支持',
+      badge: 'Web Development Studio',
+      title: 'POP UP 设计工作室',
+      subtitle: '用设计驱动增长 · 三天交付 · 专业品质',
       primaryCta: '查看服务',
       secondaryCta: '联系客服',
       features: {
@@ -245,9 +245,9 @@ export const translations = {
       contactSupport: 'Contact Support'
     },
     hero: {
-      badge: 'POP UP Design Studio',
-      title: 'Design that drives growth',
-      subtitle: '3-Day Delivery · Professional Quality · Ongoing Support',
+      badge: 'Web Development Studio',
+      title: 'POP UP Design Studio',
+      subtitle: 'Design that drives growth · 3-Day Delivery · Professional Quality',
       primaryCta: 'See Services',
       secondaryCta: 'Contact Support',
       features: {

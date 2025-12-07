@@ -3,28 +3,14 @@
 ---
 
 <div id="saturn-bg-canvas"></div>
+<div id="intro-overlay"></div>
 
 <script is:inline>
-  // 等待页面完全加载
-  window.addEventListener('load', function() {
-    // 隐藏 UI 直到入场动画完成
-    const navbar = document.querySelector('header');
-    const mainContent = document.querySelector('main');
-    const footer = document.querySelector('footer');
+  (function() {
+    // 入场动画控制
+    const overlay = document.getElementById('intro-overlay');
+    let saturnReady = false;
     
-    if (navbar) {
-      navbar.style.opacity = '0';
-      navbar.style.transition = 'opacity 0.8s ease-out';
-    }
-    if (mainContent) {
-      mainContent.style.opacity = '0';
-      mainContent.style.transition = 'opacity 0.8s ease-out';
-    }
-    if (footer) {
-      footer.style.opacity = '0';
-      footer.style.transition = 'opacity 0.8s ease-out';
-    }
-
     // 动态加载 Three.js
     const scripts = [
       'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
@@ -57,16 +43,9 @@
     }
 
     function initSaturn() {
-      console.log('Initializing Saturn with intro animation...');
-      
       const container = document.getElementById('saturn-bg-canvas');
-      if (!container) {
-        console.error('Saturn container not found');
-        return;
-      }
-
-      if (typeof THREE === 'undefined') {
-        console.error('THREE is not defined');
+      if (!container || typeof THREE === 'undefined') {
+        console.error('Saturn init failed');
         return;
       }
 
@@ -85,17 +64,17 @@
       
       // 入场动画状态
       let introProgress = 0;
-      const introDuration = 2.0; // 2秒入场动画
-      let introStartTime = null;
+      const introDuration = 2.5;
+      let startTime = performance.now() / 1000;
       let introComplete = false;
 
       // 场景
       const scene = new THREE.Scene();
       scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
 
-      // 摄像机 - 初始位置很远
+      // 摄像机
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(0, 80, 300); // 从远处开始
+      camera.position.set(0, 60, 250);
 
       // 渲染器
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
@@ -110,7 +89,7 @@
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.0;
+      bloomPass.strength = 1.2;
       bloomPass.radius = 0.5;
       bloomPass.threshold = 0.1;
 
@@ -127,7 +106,6 @@
       const sizes = [];
       const colors = [];
 
-      // 紫色调色板
       const colorCore = new THREE.Color(0x3E1D82);
       const colorRingInner = new THREE.Color(0x6B4BA3);
       const colorRingOuter = new THREE.Color(0x9b7ed9);
@@ -138,7 +116,6 @@
         let type = Math.random() < 0.15 ? 0 : 1;
 
         if (type === 0) {
-          // 核心
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
           let phi = Math.acos((Math.random() * 2) - 1);
@@ -151,31 +128,21 @@
           colors.push(colorCore.r, colorCore.g, colorCore.b);
           sizes.push(Math.random() * 1.5);
         } else {
-          // 环
           let t = 1 - Math.pow(Math.random(), 2);
           let ringWidth = config.ringOuterRadius - config.ringInnerRadius;
           r = config.ringInnerRadius + t * ringWidth;
-
           if (r > 42 && r < 46 && Math.random() > 0.1) r += 5;
           theta = Math.random() * Math.PI * 2;
           positions.push(0, 0, 0);
           let speed = 5.0 / Math.sqrt(r);
           orbitParams.push(r, speed, theta);
-
           let colorMix = (r - config.ringInnerRadius) / ringWidth;
           let c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
-          if (Math.random() > 0.95) {
-            c = colorAccent.clone();
-          }
+          if (Math.random() > 0.95) c = colorAccent.clone();
           colors.push(c.r, c.g, c.b);
           sizes.push(Math.random() * 1.2 + 0.3);
         }
-
-        randomness.push(
-          (Math.random() - 0.5) * 2,
-          (Math.random() - 0.5) * 2,
-          (Math.random() - 0.5) * 2
-        );
+        randomness.push((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
       }
 
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
@@ -199,39 +166,33 @@
           uniform float uZoom;
           uniform float uScroll;
           uniform float uIntro;
-          
           attribute vec3 aOrbit;
           attribute vec3 aRandom;
           attribute vec3 color;
           attribute float size;
-          
           varying vec3 vColor;
           varying float vAlpha;
 
           void main() {
             vec3 newPos = position;
             float radius = aOrbit.x;
-            
-            // 入场动画：粒子从中心扩散
-            float introScale = 0.3 + uIntro * 0.7;
+            float introScale = 0.2 + uIntro * 0.8;
             
             if (radius > 0.0) {
               float speed = aOrbit.y;
-              float angle = aOrbit.z + uTime * speed * 0.1;
+              float angle = aOrbit.z + uTime * speed * 0.15;
               newPos.x = cos(angle) * radius * introScale;
               newPos.z = sin(angle) * radius * introScale;
-              newPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5;
+              newPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * introScale;
             } else {
-              float angle = uTime * 0.2;
+              float angle = uTime * 0.3;
               float c = cos(angle); float s = sin(angle);
-              float x = newPos.x * c - newPos.z * s;
-              float z = newPos.x * s + newPos.z * c;
-              newPos.x = x * introScale;
-              newPos.z = z * introScale;
+              newPos.x = (newPos.x * c - newPos.z * s) * introScale;
+              newPos.z = (newPos.x * s + newPos.z * c) * introScale;
             }
 
             float chaos = smoothstep(0.7, 1.0, uZoom);
-            if(chaos > 0.0) {
+            if(chaos > 0.0 && uIntro > 0.9) {
               vec3 jitter = aRandom * sin(uTime * 20.0 + aRandom.x) * (5.0 * chaos);
               newPos += jitter + normalize(newPos) * chaos * 10.0;
             }
@@ -242,16 +203,15 @@
             vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            float brightness = 0.6 + uZoom * 1.0 - uScroll * 0.5 + (1.0 - uIntro) * 0.3;
-            brightness = max(0.2, brightness);
+            float brightness = 0.5 + uIntro * 0.3 + uZoom * 0.5 - uScroll * 0.3;
+            brightness = max(0.3, brightness);
 
             float distScale = 300.0 / -mvPosition.z;
-            gl_PointSize = size * distScale * (1.0 + uZoom);
+            gl_PointSize = size * distScale * (0.5 + uIntro * 0.5 + uZoom * 0.5);
 
             vColor = color * brightness;
-
             float distToCam = length(mvPosition.xyz);
-            vAlpha = smoothstep(5.0, 20.0, distToCam);
+            vAlpha = smoothstep(5.0, 30.0, distToCam) * (0.5 + uIntro * 0.5);
             vAlpha *= (1.0 - uScroll * 0.5);
           }
         `,
@@ -259,15 +219,12 @@
           varying vec3 vColor;
           varying float vAlpha;
           uniform float uGlobalAlpha;
-
           void main() {
             vec2 xy = gl_PointCoord.xy - vec2(0.5);
             float ll = length(xy);
             if(ll > 0.5) discard;
-            
             float strength = 1.0 - (ll * 2.0);
             strength = pow(strength, 2.0);
-
             gl_FragColor = vec4(vColor, vAlpha * strength * uGlobalAlpha);
           }
         `,
@@ -281,8 +238,6 @@
       particleSystem.rotation.z = Math.PI / 12;
       scene.add(particleSystem);
 
-      console.log('Saturn particle system created with', count, 'particles');
-
       // 事件监听
       window.addEventListener('resize', function() {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -292,8 +247,7 @@
       });
 
       document.addEventListener('mousemove', function(e) {
-        if (!introComplete) return; // 入场动画期间不响应鼠标
-        
+        if (!introComplete) return;
         if (window.scrollY < window.innerHeight) {
           mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
           mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -309,69 +263,50 @@
         scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
       });
 
-      // Easing function for smooth animation
-      function easeOutCubic(t) {
-        return 1 - Math.pow(1 - t, 3);
-      }
-      
-      function easeInOutQuart(t) {
-        return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+      function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
       }
 
       // 动画循环
       function animate() {
         requestAnimationFrame(animate);
-        const time = performance.now() * 0.001;
+        const time = performance.now() / 1000;
+        const elapsed = time - startTime;
 
-        // 入场动画逻辑
+        // 入场动画
         if (!introComplete) {
-          if (introStartTime === null) {
-            introStartTime = time;
-          }
-          
-          const elapsed = time - introStartTime;
           introProgress = Math.min(elapsed / introDuration, 1.0);
-          const easedProgress = easeInOutQuart(introProgress);
+          const eased = easeOutQuart(introProgress);
           
-          // 相机从远处拉近
-          const startZ = 300;
-          const endZ = 100;
-          const startY = 80;
-          const endY = 20;
+          // 相机运镜：从远拉近 + 旋转
+          camera.position.z = 250 - eased * 150;
+          camera.position.y = 60 - eased * 40;
+          camera.position.x = Math.sin(elapsed * 0.5) * 20 * (1 - eased);
           
-          camera.position.z = startZ + (endZ - startZ) * easedProgress;
-          camera.position.y = startY + (endY - startY) * easedProgress;
+          // 土星旋转
+          particleSystem.rotation.y = (1 - eased) * Math.PI * 0.8;
           
-          // 旋转效果
-          particleSystem.rotation.y = (1 - easedProgress) * Math.PI * 0.5;
+          // Bloom 变化
+          bloomPass.strength = 0.8 + eased * 0.4;
           
-          // 更新 shader uniform
-          uniforms.uIntro.value = easedProgress;
-          
-          // Bloom 强度变化
-          bloomPass.strength = 0.5 + easedProgress * 0.5;
+          uniforms.uIntro.value = eased;
           
           if (introProgress >= 1.0) {
             introComplete = true;
-            console.log('Intro animation complete');
-            
             // 显示 UI
-            if (navbar) navbar.style.opacity = '1';
-            if (mainContent) mainContent.style.opacity = '1';
-            if (footer) footer.style.opacity = '1';
+            document.querySelectorAll('header, main, footer').forEach(el => {
+              el.style.opacity = '1';
+            });
+            if (overlay) overlay.style.opacity = '0';
           }
         } else {
-          // 正常动画逻辑
           currentZoom += (targetZoom - currentZoom) * 0.05;
           uniforms.uZoom.value = currentZoom;
           uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
           uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.4;
-
-          const baseRotX = Math.PI / 6;
-          const targetRotX = baseRotX + scrollProgress * 0.5;
-          particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
           
-          // 轻微的相机漂移
+          const baseRotX = Math.PI / 6;
+          particleSystem.rotation.x += (baseRotX + scrollProgress * 0.5 - particleSystem.rotation.x) * 0.05;
           camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
         }
 
@@ -380,14 +315,18 @@
         composer.render();
       }
 
+      saturnReady = true;
       animate();
-      console.log('Saturn animation started');
     }
 
-    loadAllScripts().catch(err => {
-      console.error('Failed to load scripts:', err);
+    // 页面加载时隐藏 UI
+    document.querySelectorAll('header, main, footer').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity 0.8s ease-out';
     });
-  });
+
+    loadAllScripts().catch(console.error);
+  })();
 </script>
 
 <style>
@@ -405,5 +344,17 @@
 
   #saturn-bg-canvas canvas {
     display: block;
+  }
+  
+  #intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9998;
+    pointer-events: none;
+    background: transparent;
+    transition: opacity 0.5s ease-out;
   }
 </style>
