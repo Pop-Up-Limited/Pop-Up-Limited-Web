@@ -10,9 +10,9 @@ export const translations = {
       contactSupport: '联系客服'
     },
     hero: {
-      badge: '专业的网站开发服务',
-      title: '我们打造专业、美观、高效的网站解决方案。',
-      subtitle: '专注于网站设计、前端开发、UI/UX设计和品牌设计。用精准和创意将您的业务愿景转化为出色的在线体验。',
+      badge: 'Web Development Studio',
+      title: '用设计驱动增长',
+      subtitle: '三天交付 · 专业品质 · 持续支持',
       primaryCta: '查看服务',
       secondaryCta: '联系客服',
       features: {
@@ -245,9 +245,9 @@ export const translations = {
       contactSupport: 'Contact Support'
     },
     hero: {
-      badge: 'Professional Web Development Services',
-      title: 'We craft professional, beautiful, and efficient website solutions.',
-      subtitle: 'Specialized in web design, frontend development, UI/UX design, and brand design. Transforming your business vision into exceptional online experiences with precision and creativity.',
+      badge: 'Web Development Studio',
+      title: 'Design that drives growth',
+      subtitle: '3-Day Delivery · Professional Quality · Ongoing Support',
       primaryCta: 'See Services',
       secondaryCta: 'Contact Support',
       features: {
