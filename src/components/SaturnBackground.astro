@@ -1,5 +1,5 @@
 ---
-// Saturn Background - WebGL particle effect with Bloom
+// Saturn Background - WebGL particle effect with Bloom and Intro Animation
 ---
 
 <div id="saturn-bg-canvas"></div>
@@ -7,6 +7,24 @@
 <script is:inline>
   // 等待页面完全加载
   window.addEventListener('load', function() {
+    // 隐藏 UI 直到入场动画完成
+    const navbar = document.querySelector('header');
+    const mainContent = document.querySelector('main');
+    const footer = document.querySelector('footer');
+    
+    if (navbar) {
+      navbar.style.opacity = '0';
+      navbar.style.transition = 'opacity 0.8s ease-out';
+    }
+    if (mainContent) {
+      mainContent.style.opacity = '0';
+      mainContent.style.transition = 'opacity 0.8s ease-out';
+    }
+    if (footer) {
+      footer.style.opacity = '0';
+      footer.style.transition = 'opacity 0.8s ease-out';
+    }
+
     // 动态加载 Three.js
     const scripts = [
       'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
@@ -34,13 +52,12 @@
       for (const url of scripts) {
         await loadScript(url);
         loadedCount++;
-        console.log(`Loaded ${loadedCount}/${scripts.length}: ${url.split('/').pop()}`);
       }
       initSaturn();
     }
 
     function initSaturn() {
-      console.log('Initializing Saturn...');
+      console.log('Initializing Saturn with intro animation...');
       
       const container = document.getElementById('saturn-bg-canvas');
       if (!container) {
@@ -65,14 +82,20 @@
       let targetZoom = 0;
       let currentZoom = 0;
       let scrollProgress = 0;
+      
+      // 入场动画状态
+      let introProgress = 0;
+      const introDuration = 2.0; // 2秒入场动画
+      let introStartTime = null;
+      let introComplete = false;
 
       // 场景
       const scene = new THREE.Scene();
       scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
 
-      // 摄像机
+      // 摄像机 - 初始位置很远
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(0, 20, 100);
+      camera.position.set(0, 80, 300); // 从远处开始
 
       // 渲染器
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
@@ -165,7 +188,8 @@
         uTime: { value: 0 },
         uZoom: { value: 0 },
         uScroll: { value: 0 },
-        uGlobalAlpha: { value: 1.0 }
+        uGlobalAlpha: { value: 1.0 },
+        uIntro: { value: 0 }
       };
 
       const material = new THREE.ShaderMaterial({
@@ -174,6 +198,7 @@
           uniform float uTime;
           uniform float uZoom;
           uniform float uScroll;
+          uniform float uIntro;
           
           attribute vec3 aOrbit;
           attribute vec3 aRandom;
@@ -187,18 +212,22 @@
             vec3 newPos = position;
             float radius = aOrbit.x;
             
+            // 入场动画：粒子从中心扩散
+            float introScale = 0.3 + uIntro * 0.7;
+            
             if (radius > 0.0) {
               float speed = aOrbit.y;
               float angle = aOrbit.z + uTime * speed * 0.1;
-              newPos.x = cos(angle) * radius;
-              newPos.z = sin(angle) * radius;
+              newPos.x = cos(angle) * radius * introScale;
+              newPos.z = sin(angle) * radius * introScale;
               newPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5;
             } else {
               float angle = uTime * 0.2;
               float c = cos(angle); float s = sin(angle);
               float x = newPos.x * c - newPos.z * s;
               float z = newPos.x * s + newPos.z * c;
-              newPos.x = x; newPos.z = z;
+              newPos.x = x * introScale;
+              newPos.z = z * introScale;
             }
 
             float chaos = smoothstep(0.7, 1.0, uZoom);
@@ -213,7 +242,7 @@
             vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            float brightness = 0.6 + uZoom * 1.0 - uScroll * 0.5;
+            float brightness = 0.6 + uZoom * 1.0 - uScroll * 0.5 + (1.0 - uIntro) * 0.3;
             brightness = max(0.2, brightness);
 
             float distScale = 300.0 / -mvPosition.z;
@@ -263,6 +292,8 @@
       });
 
       document.addEventListener('mousemove', function(e) {
+        if (!introComplete) return; // 入场动画期间不响应鼠标
+        
         if (window.scrollY < window.innerHeight) {
           mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
           mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -274,28 +305,78 @@
       });
 
       window.addEventListener('scroll', function() {
+        if (!introComplete) return;
         scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
       });
+
+      // Easing function for smooth animation
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+      
+      function easeInOutQuart(t) {
+        return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+      }
 
       // 动画循环
       function animate() {
         requestAnimationFrame(animate);
         const time = performance.now() * 0.001;
 
-        currentZoom += (targetZoom - currentZoom) * 0.05;
+        // 入场动画逻辑
+        if (!introComplete) {
+          if (introStartTime === null) {
+            introStartTime = time;
+          }
+          
+          const elapsed = time - introStartTime;
+          introProgress = Math.min(elapsed / introDuration, 1.0);
+          const easedProgress = easeInOutQuart(introProgress);
+          
+          // 相机从远处拉近
+          const startZ = 300;
+          const endZ = 100;
+          const startY = 80;
+          const endY = 20;
+          
+          camera.position.z = startZ + (endZ - startZ) * easedProgress;
+          camera.position.y = startY + (endY - startY) * easedProgress;
+          
+          // 旋转效果
+          particleSystem.rotation.y = (1 - easedProgress) * Math.PI * 0.5;
+          
+          // 更新 shader uniform
+          uniforms.uIntro.value = easedProgress;
+          
+          // Bloom 强度变化
+          bloomPass.strength = 0.5 + easedProgress * 0.5;
+          
+          if (introProgress >= 1.0) {
+            introComplete = true;
+            console.log('Intro animation complete');
+            
+            // 显示 UI
+            if (navbar) navbar.style.opacity = '1';
+            if (mainContent) mainContent.style.opacity = '1';
+            if (footer) footer.style.opacity = '1';
+          }
+        } else {
+          // 正常动画逻辑
+          currentZoom += (targetZoom - currentZoom) * 0.05;
+          uniforms.uZoom.value = currentZoom;
+          uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
+          uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.4;
+
+          const baseRotX = Math.PI / 6;
+          const targetRotX = baseRotX + scrollProgress * 0.5;
+          particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
+          
+          // 轻微的相机漂移
+          camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
+        }
 
         uniforms.uTime.value = time;
-        uniforms.uZoom.value = currentZoom;
-        uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
-        uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.4;
-
-        const baseRotX = Math.PI / 6;
-        const targetRotX = baseRotX + scrollProgress * 0.5;
-        particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
-
-        camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
         camera.lookAt(0, 0, 0);
-
         composer.render();
       }
 
