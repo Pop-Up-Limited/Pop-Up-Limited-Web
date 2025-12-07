@@ -12,7 +12,7 @@
     overflow-x: hidden;
   }
   
-  /* 土星背景：立即可见，不受 UI 动画影响 */
+  /* 土星背景：立即可见，滚动后淡出 */
   #saturn-bg-canvas {
     position: fixed;
     top: 0;
@@ -22,7 +22,8 @@
     z-index: -1;
     display: block;
     pointer-events: auto;
-    opacity: 1 !important; /* 确保始终可见 */
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
   }
   
   #saturn-bg-canvas canvas {
@@ -314,13 +315,35 @@
 
       window.addEventListener('scroll', () => {
         scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
+        
+        // 滚动超过 landing page 后隐藏 canvas 并停止渲染
+        if (scrollProgress >= 0.8) {
+          container.style.opacity = '0';
+          container.style.pointerEvents = 'none';
+        } else {
+          container.style.opacity = '1';
+          container.style.pointerEvents = 'auto';
+        }
       });
 
       // ========== 动画循环 ==========
       const introDuration = 1.0;
       const startTime = performance.now() / 1000;
+      let isRendering = true;
 
       function animate() {
+        // 性能优化：滚动离开 landing page 后停止渲染
+        if (scrollProgress >= 0.95) {
+          isRendering = false;
+        } else {
+          isRendering = true;
+        }
+        
+        if (!isRendering) {
+          requestAnimationFrame(animate);
+          return; // 跳过渲染，节省性能
+        }
+        
         requestAnimationFrame(animate);
         const time = performance.now() * 0.001;
         const elapsed = time - startTime;
