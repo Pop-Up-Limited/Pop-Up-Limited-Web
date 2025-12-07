@@ -35,7 +35,7 @@ export default function SupportButton({ text, className, buttonElement }) {
               </h3>
               <div className="mt-4">
                 <img 
-                  src="/images/wechat-qr.png" 
+                  src="/images/projects/wechat-qr.png" 
                   alt="WeChat QR Code" 
                   className="mx-auto w-64 h-auto rounded-lg object-contain border border-gray-200 dark:border-gray-700"
                 />
