@@ -236,11 +236,11 @@
             float scatterAmount = (1.0 - uIntro) * 100.0;
             newPos += aRandom * scatterAmount;
 
-            // 鼠标交互效果
-            float chaos = smoothstep(0.7, 1.0, uZoom);
-            if(chaos > 0.0) {
-              vec3 jitter = aRandom * sin(uTime * 20.0 + aRandom.x) * (5.0 * chaos);
-              newPos += jitter + normalize(newPos) * chaos * 10.0;
+            // 鼠标交互：hover时打散成一团粒子，但继续圆周运动
+            float scatter = smoothstep(0.3, 1.0, uZoom);
+            if(scatter > 0.0) {
+              // 向外推开，形成一团散开的粒子云
+              newPos += aRandom * scatter * 25.0;
             }
 
             // 滚动时的扩散
@@ -250,11 +250,11 @@
             vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            // 亮度逻辑
-            float brightness = 0.7 + uZoom * 0.8 - uScroll * 0.5;
+            // 亮度逻辑 - 不再因hover变亮
+            float brightness = 0.7 - uScroll * 0.5;
             brightness = max(0.3, brightness);
             float distScale = 300.0 / -mvPosition.z;
-            gl_PointSize = size * distScale * (1.0 + uZoom);
+            gl_PointSize = size * distScale;
 
             vColor = color * brightness;
 
