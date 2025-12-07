@@ -1,33 +1,47 @@
 ---
 // Saturn Background - WebGL particle effect with Bloom and Intro Animation
+// Simplified and Robust Version
 ---
 
 <div id="saturn-bg-canvas"></div>
-<div id="intro-overlay"></div>
+
+<!-- 强制 UI 延迟显示的样式 -->
+<style is:global>
+  body {
+    background-color: #0a0515; /* 防止白屏 */
+  }
+  
+  /* 核心 UI 元素初始隐藏，通过 CSS 动画延迟显示 */
+  header, main, footer {
+    animation: ui-fade-in 1s ease-out 2.5s forwards; /* 2.5s 后开始淡入，持续 1s */
+    opacity: 0; 
+  }
+
+  @keyframes ui-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  #saturn-bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    display: block;
+    pointer-events: auto;
+    background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0f0720 100%);
+  }
+  
+  #saturn-bg-canvas canvas {
+    display: block;
+  }
+</style>
 
 <script is:inline>
   (function() {
-    // 状态标记
-    let isInitialized = false;
-    const MAX_WAIT_TIME = 4000; // 4秒超时
-    
-    // 强制显示 UI 的函数（作为后备方案）
-    function forceShowUI() {
-      if (isInitialized) return;
-      console.warn('Force showing UI due to timeout or error');
-      document.querySelectorAll('header, main, footer').forEach(el => {
-        el.style.opacity = '1';
-        el.style.transition = 'opacity 0.8s ease-out';
-      });
-      const overlay = document.getElementById('intro-overlay');
-      if (overlay) overlay.style.display = 'none';
-      isInitialized = true;
-    }
-
-    // 设置超时定时器
-    setTimeout(forceShowUI, MAX_WAIT_TIME);
-
-    // 动态加载 Three.js
+    // 动态加载脚本并保证顺序
     const scripts = [
       'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
       'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
@@ -40,25 +54,13 @@
 
     function loadScript(url) {
       return new Promise((resolve, reject) => {
-        // 检查是否已经加载
-        const existingScript = document.querySelector(`script[src="${url}"]`);
-        if (existingScript) {
-          if (existingScript.dataset.loaded === 'true') {
-            resolve();
-            return;
-          }
-          existingScript.addEventListener('load', () => resolve());
+        if (document.querySelector(`script[src="${url}"]`)) {
+          resolve();
           return;
         }
-
         const script = document.createElement('script');
         script.src = url;
-        script.async = false; // 保持顺序
-        script.dataset.loaded = 'false';
-        script.onload = () => {
-          script.dataset.loaded = 'true';
-          resolve();
-        };
+        script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);
       });
@@ -66,77 +68,59 @@
 
     async function init() {
       try {
-        // 1. 加载脚本
         for (const url of scripts) {
           await loadScript(url);
         }
-
-        // 2. 等待 THREE 完全可用
-        let retry = 0;
-        while ((typeof THREE === 'undefined' || !THREE.EffectComposer) && retry < 20) {
-          await new Promise(r => setTimeout(r, 100));
-          retry++;
-        }
-
-        if (typeof THREE === 'undefined') {
-          throw new Error('Three.js failed to load');
-        }
-
-        // 3. 初始化场景
-        initSaturn();
-
-      } catch (err) {
-        console.error('Saturn initialization failed:', err);
-        forceShowUI();
+        startSaturn();
+      } catch (e) {
+        console.error('Saturn load error:', e);
+        // 即使出错，CSS动画也会确保 UI 显示
       }
     }
 
-    function initSaturn() {
+    function startSaturn() {
       const container = document.getElementById('saturn-bg-canvas');
-      if (!container) return;
+      if (!container || !window.THREE) return;
 
-      // 配置
+      // === 核心配置 ===
       const config = {
-        particleCount: 40000, // 稍微减少粒子数以提高加载速度
+        particleCount: 45000,
         coreRadius: 15,
         ringInnerRadius: 25,
         ringOuterRadius: 75
       };
 
-      // 场景设置
+      // === 场景搭建 ===
       const scene = new THREE.Scene();
       scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
 
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(0, 60, 250);
+      // 初始相机位置 (远景)
+      camera.position.set(0, 80, 300);
 
-      const renderer = new THREE.WebGLRenderer({ 
-        antialias: false, 
-        alpha: true,
-        powerPreference: "high-performance"
-      });
+      const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       container.appendChild(renderer.domElement);
 
-      // 后处理
+      // === 后处理 ===
       const renderScene = new THREE.RenderPass(scene, camera);
       const bloomPass = new THREE.UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.2;
+      bloomPass.strength = 1.5;
       bloomPass.radius = 0.5;
-      bloomPass.threshold = 0.1;
+      bloomPass.threshold = 0;
 
       const composer = new THREE.EffectComposer(renderer);
       composer.addPass(renderScene);
       composer.addPass(bloomPass);
 
-      // 粒子系统
+      // === 粒子系统 ===
       const geometry = new THREE.BufferGeometry();
       const positions = [];
-      const orbitParams = []; // radius, speed, angle
+      const orbitParams = [];
       const randomness = [];
       const colors = [];
       const sizes = [];
@@ -148,46 +132,30 @@
 
       for (let i = 0; i < config.particleCount; i++) {
         let r, theta, x, y, z;
-        
-        // 20% 核心粒子，80% 环粒子
+        // 20% 核心，80% 环
         if (Math.random() < 0.2) {
-          // 核心：球体分布
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
           const phi = Math.acos((Math.random() * 2) - 1);
-          
           x = r * Math.sin(phi) * Math.cos(theta);
           y = r * Math.sin(phi) * Math.sin(theta);
           z = r * Math.cos(phi);
-          
           positions.push(x, y, z);
-          orbitParams.push(0, 0.5, 0); // 核心不公转
+          orbitParams.push(0, 0.5, 0);
           colors.push(colorCore.r, colorCore.g, colorCore.b);
           sizes.push(Math.random() * 1.5 + 0.5);
         } else {
-          // 环：圆盘分布
           const t = Math.random();
-          // 让环的分布更均匀
           r = config.ringInnerRadius + t * (config.ringOuterRadius - config.ringInnerRadius);
-          
-          // 添加环缝隙
-          if (r > 42 && r < 46 && Math.random() > 0.2) continue;
-
           theta = Math.random() * Math.PI * 2;
-          x = 0; y = 0; z = 0; // 在 shader 中计算位置
-          
-          positions.push(x, y, z);
-          const speed = 15.0 / Math.sqrt(r); // 开普勒运动近似
-          orbitParams.push(r, speed, theta);
-          
+          positions.push(0, 0, 0);
+          orbitParams.push(r, 15.0 / Math.sqrt(r), theta);
           const mix = (r - config.ringInnerRadius) / (config.ringOuterRadius - config.ringInnerRadius);
           const c = colorRingInner.clone().lerp(colorRingOuter, mix);
-          if (Math.random() > 0.97) c.copy(colorAccent); // 闪亮粒子
-          
+          if (Math.random() > 0.97) c.copy(colorAccent);
           colors.push(c.r, c.g, c.b);
           sizes.push(Math.random() * 1.2 + 0.3);
         }
-        
         randomness.push(Math.random(), Math.random(), Math.random());
       }
 
@@ -199,7 +167,7 @@
 
       const uniforms = {
         uTime: { value: 0 },
-        uIntro: { value: 0 },
+        uIntro: { value: 0 }, // 0 = 开始 (远景), 1 = 结束 (近景)
         uScroll: { value: 0 },
         uZoom: { value: 0 }
       };
@@ -211,12 +179,10 @@
           uniform float uIntro;
           uniform float uScroll;
           uniform float uZoom;
-          
           attribute vec3 aOrbit;
           attribute vec3 aRandom;
           attribute vec3 color;
           attribute float size;
-          
           varying vec3 vColor;
           varying float vAlpha;
 
@@ -224,66 +190,51 @@
             vec3 pos = position;
             float radius = aOrbit.x;
             
-            // 入场扩散效果：从紧缩到展开
-            float introExpansion = smoothstep(0.0, 0.8, uIntro);
-            float scale = 0.1 + introExpansion * 0.9;
-            
+            // Intro 动画：粒子从中心炸开
+            float introScale = 0.1 + uIntro * 0.9; 
+
             if (radius > 0.0) {
-              // 环粒子运动
               float speed = aOrbit.y;
               float angle = aOrbit.z + uTime * speed * 0.1;
-              pos.x = cos(angle) * radius * scale;
-              pos.z = sin(angle) * radius * scale;
-              pos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * scale;
+              pos.x = cos(angle) * radius * introScale;
+              pos.z = sin(angle) * radius * introScale;
+              pos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * introScale;
             } else {
-              // 核心粒子自转
+              // Core rotation
               float angle = uTime * 0.2;
               float c = cos(angle); float s = sin(angle);
               float x = pos.x; float z = pos.z;
-              pos.x = (x * c - z * s) * scale;
-              pos.z = (x * s + z * c) * scale;
-              pos.y *= scale;
+              pos.x = (x * c - z * s) * introScale;
+              pos.z = (x * s + z * c) * introScale;
+              pos.y *= introScale;
             }
 
-            // 鼠标交互混乱效果
+            // Mouse chaos
             float chaos = smoothstep(0.6, 1.0, uZoom);
             if (chaos > 0.0 && uIntro > 0.9) {
-              pos += (aRandom - 0.5) * chaos * 10.0;
+              pos += (aRandom - 0.5) * chaos * 15.0;
             }
 
-            // 滚动散开效果
+            // Scroll effect
             pos *= (1.0 + uScroll * 0.5);
 
             vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            // 大小随距离变化
+            float dist = length(mvPosition.xyz);
             gl_PointSize = size * (300.0 / -mvPosition.z);
             
-            // 亮度控制
-            float brightness = 0.8 + uIntro * 0.2;
-            vColor = color * brightness;
-            
-            // 透明度控制
-            float dist = length(mvPosition.xyz);
-            vAlpha = smoothstep(1.0, 50.0, dist) * (1.0 - uScroll * 0.8);
+            vColor = color * (0.5 + uIntro * 0.5); // 逐渐变亮
+            vAlpha = smoothstep(1.0, 50.0, dist);
           }
         `,
         fragmentShader: `
           varying vec3 vColor;
           varying float vAlpha;
-          
           void main() {
-            // 圆形粒子
             vec2 xy = gl_PointCoord.xy - 0.5;
-            float r = length(xy);
-            if (r > 0.5) discard;
-            
-            // 软边缘
-            float strength = 1.0 - (r * 2.0);
-            strength = pow(strength, 1.5);
-            
-            gl_FragColor = vec4(vColor, vAlpha * strength);
+            if (length(xy) > 0.5) discard;
+            gl_FragColor = vec4(vColor, vAlpha);
           }
         `,
         transparent: true,
@@ -292,28 +243,24 @@
       });
 
       const particleSystem = new THREE.Points(geometry, material);
-      // 初始旋转角度
-      particleSystem.rotation.x = Math.PI / 6; 
+      particleSystem.rotation.x = Math.PI / 6;
       particleSystem.rotation.z = Math.PI / 12;
       scene.add(particleSystem);
 
-      // 动画状态
-      let startTime = performance.now() * 0.001;
-      let scrollY = 0;
-      let mouseX = 0, mouseY = 0;
-      const introDuration = 2.5;
-
-      // 交互事件
-      window.addEventListener('scroll', () => {
-        scrollY = window.scrollY / window.innerHeight;
-      });
+      // === 动画循环逻辑 ===
+      const introDuration = 2.5; // 2.5秒运镜
+      const startTime = performance.now() / 1000;
       
-      window.addEventListener('mousemove', (e) => {
-        if (!isInitialized) return;
+      let mouseX = 0, mouseY = 0;
+      let scrollY = 0;
+
+      window.addEventListener('mousemove', e => {
         mouseX = (e.clientX / window.innerWidth) * 2 - 1;
         mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
       });
-      
+      window.addEventListener('scroll', () => {
+        scrollY = window.scrollY / window.innerHeight;
+      });
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -324,46 +271,42 @@
       function animate() {
         requestAnimationFrame(animate);
         
-        const now = performance.now() * 0.001;
+        const now = performance.now() / 1000;
         const elapsed = now - startTime;
         
-        // 1. 计算入场进度 (0 -> 1)
-        const introProgress = Math.min(elapsed / introDuration, 1.0);
-        // 使用 easeOutQuart 缓动
-        const easedIntro = 1 - Math.pow(1 - introProgress, 4);
-        
+        // 计算入场进度 0 -> 1
+        let progress = Math.min(elapsed / introDuration, 1.0);
+        // 缓动函数 easeOutCubic
+        progress = 1 - Math.pow(1 - progress, 3);
+
         uniforms.uTime.value = now;
-        uniforms.uIntro.value = easedIntro;
+        uniforms.uIntro.value = progress;
+
+        // === 关键帧运镜 ===
+        // 1. 相机推近: 300 -> 100 (Z轴), 80 -> 20 (Y轴)
+        camera.position.z = 300 - progress * 200; // 最终 100
+        camera.position.y = 80 - progress * 60;   // 最终 20
         
-        // 2. 更新相机位置 (入场运镜)
-        if (introProgress < 1.0) {
-          // Z轴：从远(300)拉近到(100)
-          camera.position.z = 300 - easedIntro * 200;
-          // Y轴：从高(80)降到(20)
-          camera.position.y = 80 - easedIntro * 60;
-          // 旋转：土星入场时旋转
-          particleSystem.rotation.y = (1.0 - easedIntro) * Math.PI;
-        } else {
-          // 动画完成，标记初始化成功
-          if (!isInitialized) {
-            isInitialized = true;
-            document.querySelectorAll('header, main, footer').forEach(el => {
-              el.style.opacity = '1';
-            });
-            const overlay = document.getElementById('intro-overlay');
-            if (overlay) overlay.style.display = 'none';
-          }
-          
-          // 正常交互逻辑
-          // 鼠标靠近时的 Zoom 效果
+        // 2. 相机轻微摇摄
+        camera.position.x = Math.sin(now * 0.2) * 10 * (1 - progress * 0.5);
+
+        // 3. 土星旋转入场
+        particleSystem.rotation.y = (1 - progress) * Math.PI; // 旋转 180度归位
+
+        // 4. Bloom 强度随入场增加
+        bloomPass.strength = 0.5 + progress * 1.0;
+
+        // === 交互逻辑 (入场后生效) ===
+        if (progress >= 0.95) {
+          // 鼠标 Zoom
           const dist = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
-          const targetZoom = (window.scrollY < window.innerHeight && dist < 0.5) ? (1.0 - dist*2.0) : 0;
+          const targetZoom = (scrollY < 0.1 && dist < 0.5) ? (1.0 - dist*2.0) : 0;
           uniforms.uZoom.value += (targetZoom - uniforms.uZoom.value) * 0.05;
           
-          // 滚动效果
+          // 滚动
           uniforms.uScroll.value += (scrollY - uniforms.uScroll.value) * 0.05;
           
-          // 滚动时土星翻转
+          // 滚动旋转
           const targetRotX = Math.PI/6 + scrollY * 0.5;
           particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
         }
@@ -375,43 +318,6 @@
       animate();
     }
 
-    // 启动
     init();
   })();
 </script>
-
-<style>
-  #saturn-bg-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    display: block;
-    pointer-events: auto;
-    background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0f0720 100%);
-  }
-
-  #saturn-bg-canvas canvas {
-    display: block;
-  }
-  
-  #intro-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9998;
-    pointer-events: none;
-    background: #0a0515; /* 初始全黑，防止看到未加载的画面 */
-    transition: opacity 0.8s ease-out;
-  }
-  
-  /* 初始化时隐藏页面元素 */
-  header, main, footer {
-    opacity: 0;
-    transition: opacity 0.8s ease-out;
-  }
-</style>
