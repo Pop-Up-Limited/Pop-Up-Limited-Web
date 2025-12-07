@@ -2,29 +2,54 @@
 import { COMPANY_NAME, SUPPORT_EMAIL } from '../config/site';
 ---
 
-<section class="card-surface flex flex-col gap-4">
-  <h2 class="text-xl font-semibold text-foreground dark:text-foreground-dark">
-    Contact our support team
+<section class="rounded-2xl border border-white/20 bg-white/5 p-6 flex flex-col gap-6">
+  <h2 class="text-xl font-semibold text-white">
+    联系我们
   </h2>
-  <p class="text-sm text-foreground-muted dark:text-slate-300">
-    We aim to respond within one business day for standard plans and within four hours for enterprise coverage. {/* TODO: adjust SLA messaging */}
-  </p>
+  
+  <!-- 微信二维码 -->
+  <div class="text-center">
+    <img 
+      src="/images/projects/wechat-qr.png" 
+      alt="WeChat QR Code" 
+      class="mx-auto w-48 h-auto rounded-lg border border-white/20"
+    />
+    <p class="mt-2 text-sm text-gray-400">扫码添加客服微信</p>
+  </div>
 
   <div class="space-y-3 text-sm">
     <div>
-      <span class="block text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <span class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
         Email
       </span>
-      <a href={`mailto:${SUPPORT_EMAIL}`} class="text-brand-600 hover:text-brand-700">
+      <a href={`mailto:${SUPPORT_EMAIL}`} class="text-purple-400 hover:text-purple-300">
         {SUPPORT_EMAIL}
       </a>
     </div>
     <div>
-      <span class="block text-xs font-semibold uppercase tracking-wide text-slate-400">
+      <span class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
         Company
       </span>
-      <p class="text-foreground dark:text-foreground-dark">{COMPANY_NAME}</p>
+      <p class="text-white">{COMPANY_NAME}</p>
+    </div>
+  </div>
+
+  <!-- 快捷链接 -->
+  <div class="border-t border-white/10 pt-4 space-y-3">
+    <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wide">快捷链接</h3>
+    <div class="flex flex-col gap-2">
+      <a href="/cases" class="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        查看案例库
+      </a>
+      <a href="/services" class="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        查看报价方案
+      </a>
     </div>
   </div>
 </section>
-

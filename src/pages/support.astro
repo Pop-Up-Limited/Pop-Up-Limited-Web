@@ -15,13 +15,13 @@ const PAGE_DESCRIPTION =
 <Layout title={PAGE_TITLE} description={PAGE_DESCRIPTION}>
   <section class="mx-auto w-full max-w-6xl px-4 pb-16 pt-16 md:px-6 md:pt-20">
     <div class="max-w-3xl space-y-6">
-      <span class="text-sm font-semibold uppercase tracking-wide text-brand-500" data-i18n="nav.support">
+      <span class="text-sm font-semibold uppercase tracking-wide text-purple-400" data-i18n="nav.support">
         Support
       </span>
-      <h1 class="text-4xl font-semibold text-foreground md:text-5xl dark:text-foreground-dark" data-i18n="support.title">
+      <h1 class="text-4xl font-semibold text-white md:text-5xl" data-i18n="support.title">
         How can we help?
       </h1>
-      <p class="text-base text-foreground-muted dark:text-slate-300" data-i18n="support.subtitle">
+      <p class="text-base text-gray-300" data-i18n="support.subtitle">
         Explore quick answers or contact us directly for assistance.
       </p>
     </div>
@@ -30,7 +30,7 @@ const PAGE_DESCRIPTION =
   <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
     <div class="grid gap-8 md:grid-cols-[minmax(0,0.65fr)_minmax(0,0.35fr)] md:gap-10">
       <div class="space-y-4">
-        <h2 class="text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="support.faqTitle">
+        <h2 class="text-2xl font-semibold text-white" data-i18n="support.faqTitle">
           Frequently asked questions
         </h2>
         <div class="grid gap-4">
@@ -45,9 +45,9 @@ const PAGE_DESCRIPTION =
   </section>
 
   <section class="mx-auto w-full max-w-6xl px-4 pb-24 md:px-6">
-    <div class="card-surface text-center">
-      <h2 class="mb-4 text-2xl font-semibold text-foreground dark:text-foreground-dark" data-i18n="support.needHelp">Need more help?</h2>
-      <p class="mb-6 text-base text-foreground-muted dark:text-slate-300" data-i18n="support.contactText">
+    <div class="rounded-2xl border border-white/20 bg-white/5 p-8 text-center">
+      <h2 class="mb-4 text-2xl font-semibold text-white" data-i18n="support.needHelp">Need more help?</h2>
+      <p class="mb-6 text-base text-gray-300" data-i18n="support.contactText">
         Contact us directly and we'll get back to you as soon as possible.
       </p>
       <div class="flex justify-center">
@@ -57,7 +57,7 @@ const PAGE_DESCRIPTION =
           className="btn-primary cursor-pointer"
         />
       </div>
-      <p class="mt-4 text-sm text-foreground-muted dark:text-slate-400">
+      <p class="mt-4 text-sm text-gray-400">
         {SUPPORT_EMAIL}
       </p>
     </div>
