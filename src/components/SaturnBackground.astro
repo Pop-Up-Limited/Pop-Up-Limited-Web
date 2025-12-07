@@ -1,5 +1,6 @@
 ---
 // Saturn Background - 亮紫色粒子，大核心，zoom in
+// 独立于 UI 层，立即显示
 ---
 
 <div id="saturn-bg-canvas"></div>
@@ -11,17 +12,7 @@
     overflow-x: hidden;
   }
   
-  /* UI 元素：1秒后淡入 */
-  header, main, footer {
-    opacity: 0;
-    animation: ui-fade-in 1.0s ease-out 1.0s forwards;
-  }
-
-  @keyframes ui-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
+  /* 土星背景：立即可见，不受 UI 动画影响 */
   #saturn-bg-canvas {
     position: fixed;
     top: 0;
@@ -31,10 +22,31 @@
     z-index: -1;
     display: block;
     pointer-events: auto;
+    opacity: 1 !important; /* 确保始终可见 */
   }
   
   #saturn-bg-canvas canvas {
     display: block;
+    opacity: 1 !important;
+  }
+  
+  /* UI 元素：1秒后淡入 - 使用更精确的选择器 */
+  .ui-fade-target {
+    opacity: 0;
+    animation: ui-fade-in 1.0s ease-out 1.0s forwards;
+  }
+  
+  /* 也应用到 header 和 footer（它们不包含土星） */
+  body > header,
+  body > footer,
+  #main-content > .relative {
+    opacity: 0;
+    animation: ui-fade-in 1.0s ease-out 1.0s forwards;
+  }
+
+  @keyframes ui-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 </style>
 
@@ -72,7 +84,6 @@
         startSaturn();
       } catch (e) {
         console.error('Saturn load error:', e);
-        document.querySelectorAll('header, main, footer').forEach(el => el.style.opacity = '1');
       }
     }
 
@@ -83,16 +94,16 @@
       // ========== 配置：更大核心，亮紫色 ==========
       const config = {
         particleCount: 60000,
-        coreRadius: 22,        // 核心更大 (原15)
-        ringInnerRadius: 30,   // 环内径调整
-        ringOuterRadius: 80    // 环外径调整
+        coreRadius: 22,
+        ringInnerRadius: 30,
+        ringOuterRadius: 80
       };
 
       // 亮紫色系
-      const colorCore = new THREE.Color(0x9b59b6);       // 亮紫色核心
-      const colorRingInner = new THREE.Color(0xa855f7);  // 亮紫内环
-      const colorRingOuter = new THREE.Color(0xc084fc);  // 更亮紫外环
-      const colorAccent = new THREE.Color(0xe9d5ff);     // 高光点
+      const colorCore = new THREE.Color(0x9b59b6);
+      const colorRingInner = new THREE.Color(0xa855f7);
+      const colorRingOuter = new THREE.Color(0xc084fc);
+      const colorAccent = new THREE.Color(0xe9d5ff);
 
       // 场景
       const scene = new THREE.Scene();
@@ -100,7 +111,7 @@
 
       // 摄像机 - zoom in 更近
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(0, 15, 70);  // 更近 (原100)
+      camera.position.set(0, 15, 70);
 
       // 渲染器
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
@@ -109,13 +120,13 @@
       renderer.toneMapping = THREE.ReinhardToneMapping;
       container.appendChild(renderer.domElement);
 
-      // 后处理 (Bloom) - 增强辉光
+      // 后处理 (Bloom)
       const renderScene = new THREE.RenderPass(scene, camera);
       const bloomPass = new THREE.UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.2;  // 增强辉光
+      bloomPass.strength = 1.2;
       bloomPass.radius = 0.6;
       bloomPass.threshold = 0.1;
 
@@ -133,10 +144,10 @@
 
       for (let i = 0; i < config.particleCount; i++) {
         let r, theta;
-        let type = Math.random() < 0.20 ? 0 : 1;  // 20% 核心粒子
+        let type = Math.random() < 0.20 ? 0 : 1;
 
         if (type === 0) {
-          // Core - 更大更密
+          // Core
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
           let phi = Math.acos((Math.random() * 2) - 1);
@@ -147,13 +158,12 @@
           );
           orbitParams.push(0, 0.5, 0);
           colors.push(colorCore.r, colorCore.g, colorCore.b);
-          sizes.push(Math.random() * 2.0 + 0.5);  // 核心粒子更大
+          sizes.push(Math.random() * 2.0 + 0.5);
         } else {
           // Ring
           let t = 1 - Math.pow(Math.random(), 2);
           let ringWidth = config.ringOuterRadius - config.ringInnerRadius;
           r = config.ringInnerRadius + t * ringWidth;
-          // 缝隙
           if (r > 48 && r < 52 && Math.random() > 0.1) r += 5;
           theta = Math.random() * Math.PI * 2;
           positions.push(0, 0, 0);
@@ -161,7 +171,6 @@
           orbitParams.push(r, speed, theta);
           let colorMix = (r - config.ringInnerRadius) / ringWidth;
           let c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
-          // 随机高光点
           if (Math.random() > 0.95) c.copy(colorAccent);
           colors.push(c.r, c.g, c.b);
           sizes.push(Math.random() * 1.5 + 0.3);
@@ -241,7 +250,7 @@
             vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            // 亮度逻辑 - 整体更亮
+            // 亮度逻辑
             float brightness = 0.7 + uZoom * 0.8 - uScroll * 0.5;
             brightness = max(0.3, brightness);
             float distScale = 300.0 / -mvPosition.z;

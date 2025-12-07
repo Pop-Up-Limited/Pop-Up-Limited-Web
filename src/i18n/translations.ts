@@ -247,7 +247,8 @@ export const translations = {
     },
     hero: {
       badge: 'Web Development Studio',
-      title: 'POP UP Design Studio',
+      title: 'POP UP',
+      title2: 'Design Studio',
       subtitle: 'Design that drives growth · 3-Day Delivery · Professional Quality',
       primaryCta: 'See Services',
       secondaryCta: 'Contact Support',
