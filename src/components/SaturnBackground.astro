@@ -1,332 +1,299 @@
 ---
-// Saturn Background - WebGL particle effect with Bloom and Intro Animation
+// Saturn Background - WebGL particle effect with Intro Animation
 ---
 
 <div id="saturn-bg-canvas"></div>
-<div id="intro-overlay"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 
 <script is:inline>
-  (function() {
-    // 入场动画控制
-    const overlay = document.getElementById('intro-overlay');
-    let saturnReady = false;
+  // 立即隐藏 UI
+  document.addEventListener('DOMContentLoaded', function() {
+    var header = document.querySelector('header');
+    var main = document.querySelector('main');
+    var footer = document.querySelector('footer');
+    if (header) { header.style.opacity = '0'; header.style.transition = 'opacity 1s ease-out'; }
+    if (main) { main.style.opacity = '0'; main.style.transition = 'opacity 1s ease-out'; }
+    if (footer) { footer.style.opacity = '0'; footer.style.transition = 'opacity 1s ease-out'; }
+  });
+
+  window.addEventListener('load', function() {
+    setTimeout(initSaturnScene, 100);
+  });
+
+  function initSaturnScene() {
+    console.log('Starting Saturn init...');
     
-    // 动态加载 Three.js
-    const scripts = [
-      'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
-      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
-      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js',
-      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js',
-      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js',
-      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js',
-      'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js'
-    ];
-
-    let loadedCount = 0;
-
-    function loadScript(url) {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = url;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
+    if (typeof THREE === 'undefined') {
+      console.error('THREE not loaded, retrying...');
+      setTimeout(initSaturnScene, 500);
+      return;
     }
 
-    async function loadAllScripts() {
-      for (const url of scripts) {
-        await loadScript(url);
-        loadedCount++;
-      }
-      initSaturn();
+    var container = document.getElementById('saturn-bg-canvas');
+    if (!container) {
+      console.error('Container not found');
+      return;
     }
 
-    function initSaturn() {
-      const container = document.getElementById('saturn-bg-canvas');
-      if (!container || typeof THREE === 'undefined') {
-        console.error('Saturn init failed');
-        return;
-      }
+    console.log('THREE loaded, creating scene...');
 
-      // 配置
-      const config = {
-        particleCount: 50000,
-        coreRadius: 15,
-        ringInnerRadius: 25,
-        ringOuterRadius: 75
-      };
+    // 配置
+    var particleCount = 50000;
+    var coreRadius = 15;
+    var ringInnerRadius = 25;
+    var ringOuterRadius = 75;
 
-      let mouse = { x: 0, y: 0 };
-      let targetZoom = 0;
-      let currentZoom = 0;
-      let scrollProgress = 0;
+    // 状态
+    var mouseX = 0, mouseY = 0;
+    var targetZoom = 0, currentZoom = 0;
+    var scrollProgress = 0;
+    var introProgress = 0;
+    var introDuration = 2.5;
+    var startTime = performance.now() / 1000;
+    var introComplete = false;
+
+    // 场景
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
+
+    // 摄像机 - 从远处开始
+    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(0, 50, 200);
+
+    // 渲染器
+    var renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    container.appendChild(renderer.domElement);
+
+    // Bloom 后处理
+    var renderScene = new THREE.RenderPass(scene, camera);
+    var bloomPass = new THREE.UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.2, 0.4, 0.85
+    );
+    bloomPass.strength = 1.0;
+    bloomPass.radius = 0.5;
+    bloomPass.threshold = 0.1;
+
+    var composer = new THREE.EffectComposer(renderer);
+    composer.addPass(renderScene);
+    composer.addPass(bloomPass);
+
+    // 创建粒子几何体
+    var geometry = new THREE.BufferGeometry();
+    var positions = [];
+    var orbitParams = [];
+    var randoms = [];
+    var sizes = [];
+    var colors = [];
+
+    var colorCore = new THREE.Color(0x3E1D82);
+    var colorRingInner = new THREE.Color(0x6B4BA3);
+    var colorRingOuter = new THREE.Color(0x9b7ed9);
+    var colorAccent = new THREE.Color(0xc4b5fd);
+
+    for (var i = 0; i < particleCount; i++) {
+      var isCore = Math.random() < 0.15;
       
-      // 入场动画状态
-      let introProgress = 0;
-      const introDuration = 2.5;
-      let startTime = performance.now() / 1000;
-      let introComplete = false;
-
-      // 场景
-      const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
-
-      // 摄像机
-      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(0, 60, 250);
-
-      // 渲染器
-      const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.toneMapping = THREE.ReinhardToneMapping;
-      container.appendChild(renderer.domElement);
-
-      // 后处理
-      const renderScene = new THREE.RenderPass(scene, camera);
-      const bloomPass = new THREE.UnrealBloomPass(
-        new THREE.Vector2(window.innerWidth, window.innerHeight),
-        1.5, 0.4, 0.85
-      );
-      bloomPass.strength = 1.2;
-      bloomPass.radius = 0.5;
-      bloomPass.threshold = 0.1;
-
-      const composer = new THREE.EffectComposer(renderer);
-      composer.addPass(renderScene);
-      composer.addPass(bloomPass);
-
-      // 创建粒子
-      const geometry = new THREE.BufferGeometry();
-      const count = config.particleCount;
-      const positions = [];
-      const orbitParams = [];
-      const randomness = [];
-      const sizes = [];
-      const colors = [];
-
-      const colorCore = new THREE.Color(0x3E1D82);
-      const colorRingInner = new THREE.Color(0x6B4BA3);
-      const colorRingOuter = new THREE.Color(0x9b7ed9);
-      const colorAccent = new THREE.Color(0xc4b5fd);
-
-      for (let i = 0; i < count; i++) {
-        let r, theta;
-        let type = Math.random() < 0.15 ? 0 : 1;
-
-        if (type === 0) {
-          r = Math.random() * config.coreRadius;
-          theta = Math.random() * Math.PI * 2;
-          let phi = Math.acos((Math.random() * 2) - 1);
-          positions.push(
-            r * Math.sin(phi) * Math.cos(theta),
-            r * Math.sin(phi) * Math.sin(theta),
-            r * Math.cos(phi)
-          );
-          orbitParams.push(0, 0.5, 0);
-          colors.push(colorCore.r, colorCore.g, colorCore.b);
-          sizes.push(Math.random() * 1.5);
-        } else {
-          let t = 1 - Math.pow(Math.random(), 2);
-          let ringWidth = config.ringOuterRadius - config.ringInnerRadius;
-          r = config.ringInnerRadius + t * ringWidth;
-          if (r > 42 && r < 46 && Math.random() > 0.1) r += 5;
-          theta = Math.random() * Math.PI * 2;
-          positions.push(0, 0, 0);
-          let speed = 5.0 / Math.sqrt(r);
-          orbitParams.push(r, speed, theta);
-          let colorMix = (r - config.ringInnerRadius) / ringWidth;
-          let c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
-          if (Math.random() > 0.95) c = colorAccent.clone();
-          colors.push(c.r, c.g, c.b);
-          sizes.push(Math.random() * 1.2 + 0.3);
-        }
-        randomness.push((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
+      if (isCore) {
+        var r = Math.random() * coreRadius;
+        var theta = Math.random() * Math.PI * 2;
+        var phi = Math.acos((Math.random() * 2) - 1);
+        positions.push(
+          r * Math.sin(phi) * Math.cos(theta),
+          r * Math.sin(phi) * Math.sin(theta),
+          r * Math.cos(phi)
+        );
+        orbitParams.push(0, 0.5, 0);
+        colors.push(colorCore.r, colorCore.g, colorCore.b);
+        sizes.push(Math.random() * 1.5);
+      } else {
+        var t = 1 - Math.pow(Math.random(), 2);
+        var ringWidth = ringOuterRadius - ringInnerRadius;
+        var r = ringInnerRadius + t * ringWidth;
+        if (r > 42 && r < 46 && Math.random() > 0.1) r += 5;
+        var theta = Math.random() * Math.PI * 2;
+        positions.push(0, 0, 0);
+        var speed = 5.0 / Math.sqrt(r);
+        orbitParams.push(r, speed, theta);
+        var colorMix = (r - ringInnerRadius) / ringWidth;
+        var c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
+        if (Math.random() > 0.95) c = colorAccent.clone();
+        colors.push(c.r, c.g, c.b);
+        sizes.push(Math.random() * 1.2 + 0.3);
       }
-
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-      geometry.setAttribute('aOrbit', new THREE.Float32BufferAttribute(orbitParams, 3));
-      geometry.setAttribute('aRandom', new THREE.Float32BufferAttribute(randomness, 3));
-      geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-      geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
-
-      const uniforms = {
-        uTime: { value: 0 },
-        uZoom: { value: 0 },
-        uScroll: { value: 0 },
-        uGlobalAlpha: { value: 1.0 },
-        uIntro: { value: 0 }
-      };
-
-      const material = new THREE.ShaderMaterial({
-        uniforms: uniforms,
-        vertexShader: `
-          uniform float uTime;
-          uniform float uZoom;
-          uniform float uScroll;
-          uniform float uIntro;
-          attribute vec3 aOrbit;
-          attribute vec3 aRandom;
-          attribute vec3 color;
-          attribute float size;
-          varying vec3 vColor;
-          varying float vAlpha;
-
-          void main() {
-            vec3 newPos = position;
-            float radius = aOrbit.x;
-            float introScale = 0.2 + uIntro * 0.8;
-            
-            if (radius > 0.0) {
-              float speed = aOrbit.y;
-              float angle = aOrbit.z + uTime * speed * 0.15;
-              newPos.x = cos(angle) * radius * introScale;
-              newPos.z = sin(angle) * radius * introScale;
-              newPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * introScale;
-            } else {
-              float angle = uTime * 0.3;
-              float c = cos(angle); float s = sin(angle);
-              newPos.x = (newPos.x * c - newPos.z * s) * introScale;
-              newPos.z = (newPos.x * s + newPos.z * c) * introScale;
-            }
-
-            float chaos = smoothstep(0.7, 1.0, uZoom);
-            if(chaos > 0.0 && uIntro > 0.9) {
-              vec3 jitter = aRandom * sin(uTime * 20.0 + aRandom.x) * (5.0 * chaos);
-              newPos += jitter + normalize(newPos) * chaos * 10.0;
-            }
-
-            newPos.x *= (1.0 + uScroll * 0.2);
-            newPos.z *= (1.0 + uScroll * 0.2);
-
-            vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
-            gl_Position = projectionMatrix * mvPosition;
-
-            float brightness = 0.5 + uIntro * 0.3 + uZoom * 0.5 - uScroll * 0.3;
-            brightness = max(0.3, brightness);
-
-            float distScale = 300.0 / -mvPosition.z;
-            gl_PointSize = size * distScale * (0.5 + uIntro * 0.5 + uZoom * 0.5);
-
-            vColor = color * brightness;
-            float distToCam = length(mvPosition.xyz);
-            vAlpha = smoothstep(5.0, 30.0, distToCam) * (0.5 + uIntro * 0.5);
-            vAlpha *= (1.0 - uScroll * 0.5);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vColor;
-          varying float vAlpha;
-          uniform float uGlobalAlpha;
-          void main() {
-            vec2 xy = gl_PointCoord.xy - vec2(0.5);
-            float ll = length(xy);
-            if(ll > 0.5) discard;
-            float strength = 1.0 - (ll * 2.0);
-            strength = pow(strength, 2.0);
-            gl_FragColor = vec4(vColor, vAlpha * strength * uGlobalAlpha);
-          }
-        `,
-        transparent: true,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending
-      });
-
-      const particleSystem = new THREE.Points(geometry, material);
-      particleSystem.rotation.x = Math.PI / 6;
-      particleSystem.rotation.z = Math.PI / 12;
-      scene.add(particleSystem);
-
-      // 事件监听
-      window.addEventListener('resize', function() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        composer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      document.addEventListener('mousemove', function(e) {
-        if (!introComplete) return;
-        if (window.scrollY < window.innerHeight) {
-          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-          mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-          const dist = Math.sqrt(mouse.x * mouse.x + mouse.y * mouse.y);
-          targetZoom = 1.0 - Math.min(dist, 1.0);
-        } else {
-          targetZoom = 0;
-        }
-      });
-
-      window.addEventListener('scroll', function() {
-        if (!introComplete) return;
-        scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
-      });
-
-      function easeOutQuart(t) {
-        return 1 - Math.pow(1 - t, 4);
-      }
-
-      // 动画循环
-      function animate() {
-        requestAnimationFrame(animate);
-        const time = performance.now() / 1000;
-        const elapsed = time - startTime;
-
-        // 入场动画
-        if (!introComplete) {
-          introProgress = Math.min(elapsed / introDuration, 1.0);
-          const eased = easeOutQuart(introProgress);
-          
-          // 相机运镜：从远拉近 + 旋转
-          camera.position.z = 250 - eased * 150;
-          camera.position.y = 60 - eased * 40;
-          camera.position.x = Math.sin(elapsed * 0.5) * 20 * (1 - eased);
-          
-          // 土星旋转
-          particleSystem.rotation.y = (1 - eased) * Math.PI * 0.8;
-          
-          // Bloom 变化
-          bloomPass.strength = 0.8 + eased * 0.4;
-          
-          uniforms.uIntro.value = eased;
-          
-          if (introProgress >= 1.0) {
-            introComplete = true;
-            // 显示 UI
-            document.querySelectorAll('header, main, footer').forEach(el => {
-              el.style.opacity = '1';
-            });
-            if (overlay) overlay.style.opacity = '0';
-          }
-        } else {
-          currentZoom += (targetZoom - currentZoom) * 0.05;
-          uniforms.uZoom.value = currentZoom;
-          uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
-          uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.4;
-          
-          const baseRotX = Math.PI / 6;
-          particleSystem.rotation.x += (baseRotX + scrollProgress * 0.5 - particleSystem.rotation.x) * 0.05;
-          camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
-        }
-
-        uniforms.uTime.value = time;
-        camera.lookAt(0, 0, 0);
-        composer.render();
-      }
-
-      saturnReady = true;
-      animate();
+      randoms.push((Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2, (Math.random() - 0.5) * 2);
     }
 
-    // 页面加载时隐藏 UI
-    document.querySelectorAll('header, main, footer').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transition = 'opacity 0.8s ease-out';
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('aOrbit', new THREE.Float32BufferAttribute(orbitParams, 3));
+    geometry.setAttribute('aRandom', new THREE.Float32BufferAttribute(randoms, 3));
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
+
+    var uniforms = {
+      uTime: { value: 0 },
+      uZoom: { value: 0 },
+      uScroll: { value: 0 },
+      uIntro: { value: 0 }
+    };
+
+    var material = new THREE.ShaderMaterial({
+      uniforms: uniforms,
+      vertexShader: [
+        'uniform float uTime;',
+        'uniform float uZoom;',
+        'uniform float uScroll;',
+        'uniform float uIntro;',
+        'attribute vec3 aOrbit;',
+        'attribute vec3 aRandom;',
+        'attribute vec3 color;',
+        'attribute float size;',
+        'varying vec3 vColor;',
+        'varying float vAlpha;',
+        'void main() {',
+        '  vec3 newPos = position;',
+        '  float radius = aOrbit.x;',
+        '  float scale = 0.3 + uIntro * 0.7;',
+        '  if (radius > 0.0) {',
+        '    float speed = aOrbit.y;',
+        '    float angle = aOrbit.z + uTime * speed * 0.15;',
+        '    newPos.x = cos(angle) * radius * scale;',
+        '    newPos.z = sin(angle) * radius * scale;',
+        '    newPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * scale;',
+        '  } else {',
+        '    float angle = uTime * 0.3;',
+        '    float c = cos(angle);',
+        '    float s = sin(angle);',
+        '    newPos.x = (position.x * c - position.z * s) * scale;',
+        '    newPos.z = (position.x * s + position.z * c) * scale;',
+        '  }',
+        '  float chaos = smoothstep(0.7, 1.0, uZoom);',
+        '  if (chaos > 0.0 && uIntro > 0.9) {',
+        '    vec3 jitter = aRandom * sin(uTime * 20.0 + aRandom.x) * 5.0 * chaos;',
+        '    newPos += jitter + normalize(newPos) * chaos * 10.0;',
+        '  }',
+        '  newPos *= 1.0 + uScroll * 0.2;',
+        '  vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);',
+        '  gl_Position = projectionMatrix * mvPosition;',
+        '  float brightness = 0.5 + uIntro * 0.4 + uZoom * 0.3 - uScroll * 0.2;',
+        '  gl_PointSize = size * (300.0 / -mvPosition.z) * (0.6 + uIntro * 0.4);',
+        '  vColor = color * max(0.4, brightness);',
+        '  vAlpha = smoothstep(5.0, 30.0, length(mvPosition.xyz)) * (0.6 + uIntro * 0.4);',
+        '  vAlpha *= 1.0 - uScroll * 0.4;',
+        '}'
+      ].join('\n'),
+      fragmentShader: [
+        'varying vec3 vColor;',
+        'varying float vAlpha;',
+        'void main() {',
+        '  vec2 xy = gl_PointCoord.xy - vec2(0.5);',
+        '  float ll = length(xy);',
+        '  if (ll > 0.5) discard;',
+        '  float strength = pow(1.0 - ll * 2.0, 2.0);',
+        '  gl_FragColor = vec4(vColor, vAlpha * strength);',
+        '}'
+      ].join('\n'),
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
     });
 
-    loadAllScripts().catch(console.error);
-  })();
+    var particles = new THREE.Points(geometry, material);
+    particles.rotation.x = Math.PI / 6;
+    particles.rotation.z = Math.PI / 12;
+    scene.add(particles);
+
+    console.log('Saturn created with', particleCount, 'particles');
+
+    // 事件
+    window.addEventListener('resize', function() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!introComplete) return;
+      if (window.scrollY < window.innerHeight) {
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        var dist = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
+        targetZoom = 1.0 - Math.min(dist, 1.0);
+      } else {
+        targetZoom = 0;
+      }
+    });
+
+    window.addEventListener('scroll', function() {
+      if (!introComplete) return;
+      scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
+    });
+
+    function easeOutQuart(t) {
+      return 1 - Math.pow(1 - t, 4);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      var time = performance.now() / 1000;
+      var elapsed = time - startTime;
+
+      if (!introComplete) {
+        introProgress = Math.min(elapsed / introDuration, 1.0);
+        var eased = easeOutQuart(introProgress);
+
+        // 相机运镜
+        camera.position.z = 200 - eased * 100;
+        camera.position.y = 50 - eased * 30;
+        camera.position.x = Math.sin(elapsed * 0.8) * 15 * (1 - eased);
+
+        // 土星旋转
+        particles.rotation.y = (1 - eased) * Math.PI * 0.6;
+
+        // Bloom
+        bloomPass.strength = 0.8 + eased * 0.4;
+
+        uniforms.uIntro.value = eased;
+
+        if (introProgress >= 1.0) {
+          introComplete = true;
+          console.log('Intro complete, showing UI');
+          var header = document.querySelector('header');
+          var main = document.querySelector('main');
+          var footer = document.querySelector('footer');
+          if (header) header.style.opacity = '1';
+          if (main) main.style.opacity = '1';
+          if (footer) footer.style.opacity = '1';
+        }
+      } else {
+        currentZoom += (targetZoom - currentZoom) * 0.05;
+        uniforms.uZoom.value = currentZoom;
+        uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
+
+        var baseRotX = Math.PI / 6;
+        particles.rotation.x += (baseRotX + scrollProgress * 0.5 - particles.rotation.x) * 0.05;
+        camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
+      }
+
+      uniforms.uTime.value = time;
+      camera.lookAt(0, 0, 0);
+      composer.render();
+    }
+
+    animate();
+    console.log('Saturn animation started');
+  }
 </script>
 
 <style>
@@ -341,20 +308,7 @@
     pointer-events: auto;
     background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0f0720 100%);
   }
-
   #saturn-bg-canvas canvas {
     display: block;
-  }
-  
-  #intro-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 9998;
-    pointer-events: none;
-    background: transparent;
-    transition: opacity 0.5s ease-out;
   }
 </style>
