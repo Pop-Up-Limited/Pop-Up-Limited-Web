@@ -35,9 +35,9 @@ export default function SupportButton({ text, className, buttonElement }) {
               </h3>
               <div className="mt-4">
                 <img 
-                  src="/wechat-qr-popup-service.png" 
+                  src="/images/wechat-qr.png" 
                   alt="WeChat QR Code" 
-                  className="mx-auto h-48 w-48 rounded-lg object-cover border border-gray-200 dark:border-gray-700"
+                  className="mx-auto w-64 h-auto rounded-lg object-contain border border-gray-200 dark:border-gray-700"
                 />
                 <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                   Scan QR code to add customer service

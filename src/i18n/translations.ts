@@ -11,7 +11,8 @@ export const translations = {
     },
     hero: {
       badge: 'Web Development Studio',
-      title: 'POP UP 设计工作室',
+      title: 'POP UP',
+      title2: '设计工作室',
       subtitle: '用设计驱动增长 · 三天交付 · 专业品质',
       primaryCta: '查看服务',
       secondaryCta: '联系客服',

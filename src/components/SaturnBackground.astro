@@ -1,5 +1,5 @@
 ---
-// Saturn Background - 基于用户原始代码，添加发散->收敛入场动画
+// Saturn Background - 亮紫色粒子，大核心，zoom in
 ---
 
 <div id="saturn-bg-canvas"></div>
@@ -80,26 +80,27 @@
       const container = document.getElementById('saturn-bg-canvas');
       if (!container || !window.THREE) return;
 
-      // ========== 完全使用用户原始参数 ==========
+      // ========== 配置：更大核心，亮紫色 ==========
       const config = {
         particleCount: 60000,
-        coreRadius: 15,
-        ringInnerRadius: 25,
-        ringOuterRadius: 75
+        coreRadius: 22,        // 核心更大 (原15)
+        ringInnerRadius: 30,   // 环内径调整
+        ringOuterRadius: 80    // 环外径调整
       };
 
-      // 颜色改为紫色系
-      const colorCore = new THREE.Color(0x8B7355).multiplyScalar(0.8);
-      const colorRingInner = new THREE.Color(0x655a4f);
-      const colorRingOuter = new THREE.Color(0xa09588);
+      // 亮紫色系
+      const colorCore = new THREE.Color(0x9b59b6);       // 亮紫色核心
+      const colorRingInner = new THREE.Color(0xa855f7);  // 亮紫内环
+      const colorRingOuter = new THREE.Color(0xc084fc);  // 更亮紫外环
+      const colorAccent = new THREE.Color(0xe9d5ff);     // 高光点
 
       // 场景
       const scene = new THREE.Scene();
       scene.fog = new THREE.FogExp2(0x050505, 0.002);
 
-      // 摄像机 - 原始位置
+      // 摄像机 - zoom in 更近
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(0, 20, 100);
+      camera.position.set(0, 15, 70);  // 更近 (原100)
 
       // 渲染器
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
@@ -108,14 +109,14 @@
       renderer.toneMapping = THREE.ReinhardToneMapping;
       container.appendChild(renderer.domElement);
 
-      // 后处理 (Bloom)
+      // 后处理 (Bloom) - 增强辉光
       const renderScene = new THREE.RenderPass(scene, camera);
       const bloomPass = new THREE.UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 0.8;
-      bloomPass.radius = 0.5;
+      bloomPass.strength = 1.2;  // 增强辉光
+      bloomPass.radius = 0.6;
       bloomPass.threshold = 0.1;
 
       const composer = new THREE.EffectComposer(renderer);
@@ -132,10 +133,10 @@
 
       for (let i = 0; i < config.particleCount; i++) {
         let r, theta;
-        let type = Math.random() < 0.15 ? 0 : 1;
+        let type = Math.random() < 0.20 ? 0 : 1;  // 20% 核心粒子
 
         if (type === 0) {
-          // Core
+          // Core - 更大更密
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
           let phi = Math.acos((Math.random() * 2) - 1);
@@ -146,22 +147,24 @@
           );
           orbitParams.push(0, 0.5, 0);
           colors.push(colorCore.r, colorCore.g, colorCore.b);
-          sizes.push(Math.random() * 1.5);
+          sizes.push(Math.random() * 2.0 + 0.5);  // 核心粒子更大
         } else {
           // Ring
           let t = 1 - Math.pow(Math.random(), 2);
           let ringWidth = config.ringOuterRadius - config.ringInnerRadius;
           r = config.ringInnerRadius + t * ringWidth;
           // 缝隙
-          if (r > 42 && r < 46 && Math.random() > 0.1) r += 5;
+          if (r > 48 && r < 52 && Math.random() > 0.1) r += 5;
           theta = Math.random() * Math.PI * 2;
           positions.push(0, 0, 0);
           let speed = 5.0 / Math.sqrt(r);
           orbitParams.push(r, speed, theta);
           let colorMix = (r - config.ringInnerRadius) / ringWidth;
           let c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
+          // 随机高光点
+          if (Math.random() > 0.95) c.copy(colorAccent);
           colors.push(c.r, c.g, c.b);
-          sizes.push(Math.random() * 1.2 + 0.3);
+          sizes.push(Math.random() * 1.5 + 0.3);
         }
         randomness.push(
           (Math.random() - 0.5) * 2,
@@ -182,7 +185,7 @@
         uZoom: { value: 0 },
         uScroll: { value: 0 },
         uGlobalAlpha: { value: 1.0 },
-        uIntro: { value: 0 } // 0=发散, 1=收敛
+        uIntro: { value: 0 }
       };
 
       const material = new THREE.ShaderMaterial({
@@ -220,13 +223,11 @@
               newPos.z = z;
             }
 
-            // ========== 入场动画：发散 -> 收敛 ==========
-            // uIntro: 0 (发散) -> 1 (收敛)
-            // 发散量：开始时很大，粒子飞向远处；结束时为0，粒子归位
+            // 入场动画：发散 -> 收敛
             float scatterAmount = (1.0 - uIntro) * 100.0;
             newPos += aRandom * scatterAmount;
 
-            // 鼠标交互效果 (混乱)
+            // 鼠标交互效果
             float chaos = smoothstep(0.7, 1.0, uZoom);
             if(chaos > 0.0) {
               vec3 jitter = aRandom * sin(uTime * 20.0 + aRandom.x) * (5.0 * chaos);
@@ -240,9 +241,9 @@
             vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            // 亮度逻辑
-            float brightness = 0.5 + uZoom * 1.0 - uScroll * 0.8;
-            brightness = max(0.1, brightness);
+            // 亮度逻辑 - 整体更亮
+            float brightness = 0.7 + uZoom * 0.8 - uScroll * 0.5;
+            brightness = max(0.3, brightness);
             float distScale = 300.0 / -mvPosition.z;
             gl_PointSize = size * distScale * (1.0 + uZoom);
 
@@ -307,7 +308,7 @@
       });
 
       // ========== 动画循环 ==========
-      const introDuration = 1.0; // 1秒收敛
+      const introDuration = 1.0;
       const startTime = performance.now() / 1000;
 
       function animate() {
@@ -315,27 +316,22 @@
         const time = performance.now() * 0.001;
         const elapsed = time - startTime;
 
-        // 入场动画进度: 0 -> 1
+        // 入场动画进度
         let introProgress = Math.min(elapsed / introDuration, 1.0);
-        // easeOutExpo 缓动
         introProgress = introProgress === 1 ? 1 : 1 - Math.pow(2, -10 * introProgress);
         uniforms.uIntro.value = introProgress;
 
-        // 平滑插值
         currentZoom += (targetZoom - currentZoom) * 0.05;
 
-        // 更新 Uniforms
         uniforms.uTime.value = time;
         uniforms.uZoom.value = currentZoom;
         uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
         uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.6;
 
-        // 随滚动改变朝向
         const baseRotX = Math.PI / 6;
         const targetRotX = baseRotX + scrollProgress * 0.5;
         particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
 
-        // 摄像机微动
         camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
         camera.lookAt(0, 0, 0);
 
