@@ -1,27 +1,25 @@
 ---
-// Saturn Background - WebGL particle effect with Bloom and Intro Animation
-// Logic: Immediate Start -> Scatter to Gather -> UI Reveal
+// Saturn Background - 基于用户原始代码，添加发散->收敛入场动画
 ---
 
 <div id="saturn-bg-canvas"></div>
 
-<!-- UI 动画控制 -->
 <style is:global>
   body {
-    background-color: #0a0515;
+    background-color: #050505;
     margin: 0;
     overflow-x: hidden;
   }
   
-  /* 核心 UI 元素初始隐藏，1秒后淡入 */
+  /* UI 元素：1秒后淡入 */
   header, main, footer {
     opacity: 0;
-    animation: ui-fade-in 1.5s ease-out 1.0s forwards;
+    animation: ui-fade-in 1.0s ease-out 1.0s forwards;
   }
 
   @keyframes ui-fade-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   #saturn-bg-canvas {
@@ -33,8 +31,6 @@
     z-index: -1;
     display: block;
     pointer-events: auto;
-    /* 紫色渐变背景 */
-    background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0f0720 100%);
   }
   
   #saturn-bg-canvas canvas {
@@ -44,7 +40,6 @@
 
 <script is:inline>
   (function() {
-    // 动态加载脚本
     const scripts = [
       'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
       'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
@@ -77,7 +72,7 @@
         startSaturn();
       } catch (e) {
         console.error('Saturn load error:', e);
-        document.querySelectorAll('header, main, footer').forEach(el => el.style.opacity = 1);
+        document.querySelectorAll('header, main, footer').forEach(el => el.style.opacity = '1');
       }
     }
 
@@ -85,91 +80,94 @@
       const container = document.getElementById('saturn-bg-canvas');
       if (!container || !window.THREE) return;
 
-      // === 配置 (恢复之前的精细参数) ===
+      // ========== 完全使用用户原始参数 ==========
       const config = {
-        particleCount: 40000, // 稍微增加一点密度，但不至于太密
+        particleCount: 60000,
         coreRadius: 15,
         ringInnerRadius: 25,
         ringOuterRadius: 75
       };
 
-      // === 场景 ===
+      // 颜色改为紫色系
+      const colorCore = new THREE.Color(0x8B7355).multiplyScalar(0.8);
+      const colorRingInner = new THREE.Color(0x655a4f);
+      const colorRingOuter = new THREE.Color(0xa09588);
+
+      // 场景
       const scene = new THREE.Scene();
-      // 移除雾效，防止裁切感
-      // scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
+      scene.fog = new THREE.FogExp2(0x050505, 0.002);
 
+      // 摄像机 - 原始位置
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      // 固定相机位置，确保视角正确，不被裁切
-      camera.position.set(0, 40, 180);
+      camera.position.set(0, 20, 100);
 
+      // 渲染器
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ReinhardToneMapping;
       container.appendChild(renderer.domElement);
 
-      // === 后处理 ===
+      // 后处理 (Bloom)
       const renderScene = new THREE.RenderPass(scene, camera);
       const bloomPass = new THREE.UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.5;
-      bloomPass.radius = 0.6; // 半径稍微大一点，光晕柔和
+      bloomPass.strength = 0.8;
+      bloomPass.radius = 0.5;
       bloomPass.threshold = 0.1;
 
       const composer = new THREE.EffectComposer(renderer);
       composer.addPass(renderScene);
       composer.addPass(bloomPass);
 
-      // === 粒子系统 ===
+      // ========== 粒子创建 ==========
       const geometry = new THREE.BufferGeometry();
       const positions = [];
       const orbitParams = [];
       const randomness = [];
-      const colors = [];
       const sizes = [];
-
-      const colorCore = new THREE.Color(0x3E1D82);
-      const colorRingInner = new THREE.Color(0x6B4BA3);
-      const colorRingOuter = new THREE.Color(0x9b7ed9);
-      const colorAccent = new THREE.Color(0xc4b5fd);
+      const colors = [];
 
       for (let i = 0; i < config.particleCount; i++) {
-        let r, theta, x, y, z;
-        if (Math.random() < 0.15) {
+        let r, theta;
+        let type = Math.random() < 0.15 ? 0 : 1;
+
+        if (type === 0) {
           // Core
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
-          const phi = Math.acos((Math.random() * 2) - 1);
-          x = r * Math.sin(phi) * Math.cos(theta);
-          y = r * Math.sin(phi) * Math.sin(theta);
-          z = r * Math.cos(phi);
-          positions.push(x, y, z);
+          let phi = Math.acos((Math.random() * 2) - 1);
+          positions.push(
+            r * Math.sin(phi) * Math.cos(theta),
+            r * Math.sin(phi) * Math.sin(theta),
+            r * Math.cos(phi)
+          );
           orbitParams.push(0, 0.5, 0);
           colors.push(colorCore.r, colorCore.g, colorCore.b);
-          sizes.push(Math.random() * 1.5 + 0.5);
+          sizes.push(Math.random() * 1.5);
         } else {
           // Ring
-          const t = Math.random();
-          r = config.ringInnerRadius + t * (config.ringOuterRadius - config.ringInnerRadius);
-          if (r > 42 && r < 46 && Math.random() > 0.1) {
-             // Gap in ring
-             continue;
-          }
-          
+          let t = 1 - Math.pow(Math.random(), 2);
+          let ringWidth = config.ringOuterRadius - config.ringInnerRadius;
+          r = config.ringInnerRadius + t * ringWidth;
+          // 缝隙
+          if (r > 42 && r < 46 && Math.random() > 0.1) r += 5;
           theta = Math.random() * Math.PI * 2;
-          positions.push(0, 0, 0); // Shader 会计算位置
-          orbitParams.push(r, 15.0 / Math.sqrt(r), theta);
-          
-          const mix = (r - config.ringInnerRadius) / (config.ringOuterRadius - config.ringInnerRadius);
-          const c = colorRingInner.clone().lerp(colorRingOuter, mix);
-          if (Math.random() > 0.97) c.copy(colorAccent);
-          
+          positions.push(0, 0, 0);
+          let speed = 5.0 / Math.sqrt(r);
+          orbitParams.push(r, speed, theta);
+          let colorMix = (r - config.ringInnerRadius) / ringWidth;
+          let c = colorRingInner.clone().lerp(colorRingOuter, colorMix);
           colors.push(c.r, c.g, c.b);
           sizes.push(Math.random() * 1.2 + 0.3);
         }
-        // 随机向量，用于发散动画
-        randomness.push((Math.random()-0.5)*2, (Math.random()-0.5)*2, (Math.random()-0.5)*2);
+        randomness.push(
+          (Math.random() - 0.5) * 2,
+          (Math.random() - 0.5) * 2,
+          (Math.random() - 0.5) * 2
+        );
       }
 
       geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
@@ -178,20 +176,22 @@
       geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 
+      // ========== Shader材质 ==========
       const uniforms = {
         uTime: { value: 0 },
-        uIntro: { value: 0 }, // 0 = 发散(Chaos), 1 = 收敛(Order)
+        uZoom: { value: 0 },
         uScroll: { value: 0 },
-        uZoom: { value: 0 }
+        uGlobalAlpha: { value: 1.0 },
+        uIntro: { value: 0 } // 0=发散, 1=收敛
       };
 
       const material = new THREE.ShaderMaterial({
         uniforms: uniforms,
         vertexShader: `
           uniform float uTime;
-          uniform float uIntro;
-          uniform float uScroll;
           uniform float uZoom;
+          uniform float uScroll;
+          uniform float uIntro;
           attribute vec3 aOrbit;
           attribute vec3 aRandom;
           attribute vec3 color;
@@ -200,67 +200,72 @@
           varying float vAlpha;
 
           void main() {
-            vec3 pos = position;
+            vec3 newPos = position;
             float radius = aOrbit.x;
-            
-            // 1. 基础轨道运动
-            vec3 orbitPos = pos;
+
+            // 基础运动
             if (radius > 0.0) {
               float speed = aOrbit.y;
               float angle = aOrbit.z + uTime * speed * 0.1;
-              orbitPos.x = cos(angle) * radius;
-              orbitPos.z = sin(angle) * radius;
-              orbitPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5;
+              newPos.x = cos(angle) * radius;
+              newPos.z = sin(angle) * radius;
+              newPos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5;
             } else {
               float angle = uTime * 0.2;
-              float c = cos(angle); float s = sin(angle);
-              float x = pos.x; float z = pos.z;
-              orbitPos.x = x * c - z * s;
-              orbitPos.z = x * s + z * c;
+              float c = cos(angle);
+              float s = sin(angle);
+              float x = newPos.x * c - newPos.z * s;
+              float z = newPos.x * s + newPos.z * c;
+              newPos.x = x;
+              newPos.z = z;
             }
 
-            // 2. 发散 -> 收敛 动画
-            // uIntro 从 0 (发散) 到 1 (收敛)
-            // 发散量：开始时很大 (100)，结束时很小 (0)
-            float scatterAmount = (1.0 - uIntro) * 150.0;
-            
-            // 3. 鼠标交互 (Chaos)
-            // 恢复之前的效果：鼠标靠近时，uZoom 变大，粒子被打散
-            float mouseChaos = smoothstep(0.0, 1.0, uZoom) * 30.0;
-            
-            // 合成最终位置：轨道位置 + (发散偏移 + 鼠标偏移) * 随机方向
-            pos = orbitPos + aRandom * (scatterAmount + mouseChaos);
+            // ========== 入场动画：发散 -> 收敛 ==========
+            // uIntro: 0 (发散) -> 1 (收敛)
+            // 发散量：开始时很大，粒子飞向远处；结束时为0，粒子归位
+            float scatterAmount = (1.0 - uIntro) * 100.0;
+            newPos += aRandom * scatterAmount;
 
-            // 4. 滚动效果：稍微向外扩散
-            pos *= (1.0 + uScroll * 0.5);
+            // 鼠标交互效果 (混乱)
+            float chaos = smoothstep(0.7, 1.0, uZoom);
+            if(chaos > 0.0) {
+              vec3 jitter = aRandom * sin(uTime * 20.0 + aRandom.x) * (5.0 * chaos);
+              newPos += jitter + normalize(newPos) * chaos * 10.0;
+            }
 
-            vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+            // 滚动时的扩散
+            newPos.x *= (1.0 + uScroll * 0.2);
+            newPos.z *= (1.0 + uScroll * 0.2);
+
+            vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
             gl_Position = projectionMatrix * mvPosition;
 
-            float dist = length(mvPosition.xyz);
-            // 粒子大小
-            gl_PointSize = size * (300.0 / -mvPosition.z);
-            
-            // 颜色
-            vColor = color;
-            
+            // 亮度逻辑
+            float brightness = 0.5 + uZoom * 1.0 - uScroll * 0.8;
+            brightness = max(0.1, brightness);
+            float distScale = 300.0 / -mvPosition.z;
+            gl_PointSize = size * distScale * (1.0 + uZoom);
+
+            vColor = color * brightness;
+
             // 透明度
-            vAlpha = smoothstep(1.0, 50.0, dist);
+            float distToCam = length(mvPosition.xyz);
+            vAlpha = smoothstep(5.0, 20.0, distToCam);
+            vAlpha *= (1.0 - uScroll * 0.7);
           }
         `,
         fragmentShader: `
           varying vec3 vColor;
           varying float vAlpha;
+          uniform float uGlobalAlpha;
+
           void main() {
-            vec2 xy = gl_PointCoord.xy - 0.5;
-            float r = length(xy);
-            if (r > 0.5) discard;
-            
-            // 柔和边缘
-            float strength = 1.0 - (r * 2.0);
+            vec2 xy = gl_PointCoord.xy - vec2(0.5);
+            float ll = length(xy);
+            if(ll > 0.5) discard;
+            float strength = 1.0 - (ll * 2.0);
             strength = pow(strength, 2.0);
-            
-            gl_FragColor = vec4(vColor, vAlpha * strength);
+            gl_FragColor = vec4(vColor, vAlpha * strength * uGlobalAlpha);
           }
         `,
         transparent: true,
@@ -271,27 +276,14 @@
       const particleSystem = new THREE.Points(geometry, material);
       particleSystem.rotation.x = Math.PI / 6;
       particleSystem.rotation.z = Math.PI / 12;
-      
-      // 直接把土星放在右侧位置 (Landing Page 需要的位置)
-      // 这样不需要复杂的运镜，它就是在那汇聚
-      particleSystem.position.x = 4.5;
-      
       scene.add(particleSystem);
 
-      // === 动画逻辑 ===
-      const introDuration = 1.5; // 1.5秒收敛
-      const startTime = performance.now() / 1000;
-      
-      let mouseX = 0, mouseY = 0;
-      let scrollY = 0;
+      // ========== 事件监听 ==========
+      let mouse = { x: 0, y: 0 };
+      let targetZoom = 0;
+      let currentZoom = 0;
+      let scrollProgress = 0;
 
-      window.addEventListener('mousemove', e => {
-        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-      });
-      window.addEventListener('scroll', () => {
-        scrollY = window.scrollY / window.innerHeight;
-      });
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -299,45 +291,54 @@
         composer.setSize(window.innerWidth, window.innerHeight);
       });
 
+      document.addEventListener('mousemove', (e) => {
+        if (window.scrollY < window.innerHeight) {
+          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+          const dist = Math.sqrt(mouse.x**2 + mouse.y**2);
+          targetZoom = 1.0 - Math.min(dist, 1.0);
+        } else {
+          targetZoom = 0;
+        }
+      });
+
+      window.addEventListener('scroll', () => {
+        scrollProgress = Math.min(window.scrollY / window.innerHeight, 1.0);
+      });
+
+      // ========== 动画循环 ==========
+      const introDuration = 1.0; // 1秒收敛
+      const startTime = performance.now() / 1000;
+
       function animate() {
         requestAnimationFrame(animate);
-        
-        const now = performance.now() / 1000;
-        const elapsed = now - startTime;
-        
-        // 计算收敛进度 0 -> 1
-        // 使用 easeOutExpo 让收敛过程有力量感：快速开始，缓慢结束
-        let progress = Math.min(elapsed / introDuration, 1.0);
-        // Ease out expo: 1 - pow(2, -10 * t)
-        progress = (progress === 1.0) ? 1.0 : 1.0 - Math.pow(2.0, -10.0 * progress);
+        const time = performance.now() * 0.001;
+        const elapsed = time - startTime;
 
-        uniforms.uTime.value = now;
-        uniforms.uIntro.value = progress;
+        // 入场动画进度: 0 -> 1
+        let introProgress = Math.min(elapsed / introDuration, 1.0);
+        // easeOutExpo 缓动
+        introProgress = introProgress === 1 ? 1 : 1 - Math.pow(2, -10 * introProgress);
+        uniforms.uIntro.value = introProgress;
 
-        // === 交互逻辑 ===
-        // 只有当收敛动画完成大半时，才启用鼠标交互，避免干扰开场
-        if (progress > 0.5) {
-            const dist = Math.sqrt(mouseX*mouseX + mouseY*mouseY);
-            // 恢复鼠标排斥逻辑
-            // 鼠标越靠近中心，targetZoom 越大 (Chaos越强)
-            // uZoom 0 -> 1
-            const targetZoom = Math.max(0, (1.0 - dist * 1.5));
-            uniforms.uZoom.value += (targetZoom - uniforms.uZoom.value) * 0.1;
-        }
-          
-        // 滚动效果
-        uniforms.uScroll.value += (scrollY - uniforms.uScroll.value) * 0.05;
-        
-        // 滚动旋转
-        const targetRotX = Math.PI/6 + scrollY * 0.5;
+        // 平滑插值
+        currentZoom += (targetZoom - currentZoom) * 0.05;
+
+        // 更新 Uniforms
+        uniforms.uTime.value = time;
+        uniforms.uZoom.value = currentZoom;
+        uniforms.uScroll.value += (scrollProgress - uniforms.uScroll.value) * 0.05;
+        uniforms.uGlobalAlpha.value = 1.0 - uniforms.uScroll.value * 0.6;
+
+        // 随滚动改变朝向
+        const baseRotX = Math.PI / 6;
+        const targetRotX = baseRotX + scrollProgress * 0.5;
         particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
-        
-        // 滚动下沉
-        particleSystem.position.y = -scrollY * 10;
 
-        // 始终看向中心
+        // 摄像机微动
+        camera.position.x += (Math.sin(time * 0.1) * 5 - camera.position.x) * 0.01;
         camera.lookAt(0, 0, 0);
-        
+
         composer.render();
       }
 
