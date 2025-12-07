@@ -74,7 +74,6 @@
         startSaturn();
       } catch (e) {
         console.error('Saturn load error:', e);
-        // 即使出错，CSS动画也会确保 UI 显示
       }
     }
 
@@ -82,12 +81,12 @@
       const container = document.getElementById('saturn-bg-canvas');
       if (!container || !window.THREE) return;
 
-      // === 核心配置 ===
+      // === 核心配置 (恢复清爽设计) ===
       const config = {
-        particleCount: 45000,
-        coreRadius: 15,
-        ringInnerRadius: 25,
-        ringOuterRadius: 75
+        particleCount: 25000, // 减少粒子数量，更精致
+        coreRadius: 12,       // 稍微减小核心
+        ringInnerRadius: 22,
+        ringOuterRadius: 70
       };
 
       // === 场景搭建 ===
@@ -95,8 +94,8 @@
       scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
 
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      // 初始相机位置 (远景)
-      camera.position.set(0, 80, 300);
+      // 初始相机位置 (中景，确保一开始就能看到)
+      camera.position.set(0, 60, 200);
 
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -109,9 +108,9 @@
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.5;
-      bloomPass.radius = 0.5;
-      bloomPass.threshold = 0;
+      bloomPass.strength = 1.2; // 稍微降低 Bloom 强度
+      bloomPass.radius = 0.4;
+      bloomPass.threshold = 0.1;
 
       const composer = new THREE.EffectComposer(renderer);
       composer.addPass(renderScene);
@@ -132,8 +131,8 @@
 
       for (let i = 0; i < config.particleCount; i++) {
         let r, theta, x, y, z;
-        // 20% 核心，80% 环
-        if (Math.random() < 0.2) {
+        // 15% 核心，85% 环
+        if (Math.random() < 0.15) {
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
           const phi = Math.acos((Math.random() * 2) - 1);
@@ -143,18 +142,18 @@
           positions.push(x, y, z);
           orbitParams.push(0, 0.5, 0);
           colors.push(colorCore.r, colorCore.g, colorCore.b);
-          sizes.push(Math.random() * 1.5 + 0.5);
+          sizes.push(Math.random() * 1.2 + 0.3); // 稍微变小
         } else {
           const t = Math.random();
           r = config.ringInnerRadius + t * (config.ringOuterRadius - config.ringInnerRadius);
           theta = Math.random() * Math.PI * 2;
           positions.push(0, 0, 0);
-          orbitParams.push(r, 15.0 / Math.sqrt(r), theta);
+          orbitParams.push(r, 12.0 / Math.sqrt(r), theta); // 稍微减慢速度
           const mix = (r - config.ringInnerRadius) / (config.ringOuterRadius - config.ringInnerRadius);
           const c = colorRingInner.clone().lerp(colorRingOuter, mix);
-          if (Math.random() > 0.97) c.copy(colorAccent);
+          if (Math.random() > 0.98) c.copy(colorAccent);
           colors.push(c.r, c.g, c.b);
-          sizes.push(Math.random() * 1.2 + 0.3);
+          sizes.push(Math.random() * 1.0 + 0.2); // 稍微变小
         }
         randomness.push(Math.random(), Math.random(), Math.random());
       }
@@ -167,7 +166,7 @@
 
       const uniforms = {
         uTime: { value: 0 },
-        uIntro: { value: 0 }, // 0 = 开始 (远景), 1 = 结束 (近景)
+        uIntro: { value: 0 }, // 0 = 开始, 1 = 结束
         uScroll: { value: 0 },
         uZoom: { value: 0 }
       };
@@ -190,8 +189,8 @@
             vec3 pos = position;
             float radius = aOrbit.x;
             
-            // Intro 动画：粒子从中心炸开
-            float introScale = 0.1 + uIntro * 0.9; 
+            // Intro 动画：粒子从中心炸开 (确保一开始就有大小，不要完全消失)
+            float introScale = 0.2 + uIntro * 0.8; 
 
             if (radius > 0.0) {
               float speed = aOrbit.y;
@@ -222,9 +221,11 @@
             gl_Position = projectionMatrix * mvPosition;
 
             float dist = length(mvPosition.xyz);
-            gl_PointSize = size * (300.0 / -mvPosition.z);
+            // 大小调整
+            gl_PointSize = size * (350.0 / -mvPosition.z);
             
-            vColor = color * (0.5 + uIntro * 0.5); // 逐渐变亮
+            // 颜色和透明度
+            vColor = color * (0.6 + uIntro * 0.4); 
             vAlpha = smoothstep(1.0, 50.0, dist);
           }
         `,
@@ -282,19 +283,19 @@
         uniforms.uTime.value = now;
         uniforms.uIntro.value = progress;
 
-        // === 关键帧运镜 ===
-        // 1. 相机推近: 300 -> 100 (Z轴), 80 -> 20 (Y轴)
-        camera.position.z = 300 - progress * 200; // 最终 100
-        camera.position.y = 80 - progress * 60;   // 最终 20
+        // === 关键帧运镜：最终位置要和 Landing Page 契合 ===
+        // Z轴：从远(250)拉近到(100)
+        camera.position.z = 250 - progress * 150; // 最终 100
+        // Y轴：从高(60)降到(20)
+        camera.position.y = 60 - progress * 40;   // 最终 20
         
-        // 2. 相机轻微摇摄
-        camera.position.x = Math.sin(now * 0.2) * 10 * (1 - progress * 0.5);
+        // 土星平移：从中间(0) 移动到右侧 (4.5) - 这就是 Landing Page 的位置！
+        // 注意：之前可能没有移动位置，导致和文字重叠
+        const targetX = 4.5;
+        particleSystem.position.x = progress * targetX;
 
         // 3. 土星旋转入场
-        particleSystem.rotation.y = (1 - progress) * Math.PI; // 旋转 180度归位
-
-        // 4. Bloom 强度随入场增加
-        bloomPass.strength = 0.5 + progress * 1.0;
+        particleSystem.rotation.y = (1 - progress) * Math.PI; 
 
         // === 交互逻辑 (入场后生效) ===
         if (progress >= 0.95) {
@@ -307,11 +308,21 @@
           uniforms.uScroll.value += (scrollY - uniforms.uScroll.value) * 0.05;
           
           // 滚动旋转
-          const targetRotX = Math.PI/6 + scrollY * 0.5;
+          const baseRotX = Math.PI/6;
+          const targetRotX = baseRotX + scrollY * 0.5;
           particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
+          
+          // 滚动时稍微下沉，让出更多空间
+          particleSystem.position.y = -scrollY * 10;
         }
 
-        camera.lookAt(0, 0, 0);
+        camera.lookAt(0, 0, 0); // 始终看向中心，配合 particleSystem.position.x 的移动，视觉上土星会移到右边
+        
+        // 微调 LookAt 点，让土星移到右边时相机稍微跟过去一点点，但不完全跟
+        if (progress >= 0.95) {
+             camera.lookAt(particleSystem.position.x * 0.2, 0, 0);
+        }
+
         composer.render();
       }
 
