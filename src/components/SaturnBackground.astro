@@ -1,25 +1,27 @@
 ---
 // Saturn Background - WebGL particle effect with Bloom and Intro Animation
-// Simplified and Robust Version
+// Immediate Visibility Version
 ---
 
 <div id="saturn-bg-canvas"></div>
 
-<!-- 强制 UI 延迟显示的样式 -->
+<!-- UI 延迟显示的样式 -->
 <style is:global>
   body {
-    background-color: #0a0515; /* 防止白屏 */
+    background-color: #0a0515;
+    margin: 0;
+    overflow-x: hidden;
   }
   
-  /* 核心 UI 元素初始隐藏，通过 CSS 动画延迟显示 */
+  /* 核心 UI 元素初始隐藏，2.5秒后淡入 */
   header, main, footer {
-    animation: ui-fade-in 1s ease-out 2.5s forwards; /* 2.5s 后开始淡入，持续 1s */
-    opacity: 0; 
+    opacity: 0;
+    animation: ui-fade-in 1.5s ease-out 2.0s forwards;
   }
 
   @keyframes ui-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   #saturn-bg-canvas {
@@ -31,17 +33,25 @@
     z-index: -1;
     display: block;
     pointer-events: auto;
+    /* 使用 CSS 渐变作为 Canvas 加载前的托底，避免纯黑 */
     background: linear-gradient(135deg, #0a0515 0%, #1a0a2e 50%, #0f0720 100%);
   }
   
   #saturn-bg-canvas canvas {
     display: block;
+    /* 确保 Canvas 加载出来前不覆盖背景 */
+    opacity: 0;
+    animation: canvas-fade-in 0.5s ease-out forwards;
+  }
+  
+  @keyframes canvas-fade-in {
+    to { opacity: 1; }
   }
 </style>
 
 <script is:inline>
   (function() {
-    // 动态加载脚本并保证顺序
+    // 动态加载脚本
     const scripts = [
       'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
       'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
@@ -74,6 +84,8 @@
         startSaturn();
       } catch (e) {
         console.error('Saturn load error:', e);
+        // 出错也要显示 UI
+        document.querySelectorAll('header, main, footer').forEach(el => el.style.opacity = 1);
       }
     }
 
@@ -81,21 +93,22 @@
       const container = document.getElementById('saturn-bg-canvas');
       if (!container || !window.THREE) return;
 
-      // === 核心配置 (恢复清爽设计) ===
+      // === 核心配置 ===
       const config = {
-        particleCount: 25000, // 减少粒子数量，更精致
-        coreRadius: 12,       // 稍微减小核心
+        particleCount: 25000,
+        coreRadius: 12,
         ringInnerRadius: 22,
         ringOuterRadius: 70
       };
 
       // === 场景搭建 ===
       const scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
+      // 移除雾效，确保清晰
+      // scene.fog = new THREE.FogExp2(0x0a0515, 0.002);
 
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      // 初始相机位置 (中景，确保一开始就能看到)
-      camera.position.set(0, 60, 200);
+      // 初始相机位置：正中，稍远，确保第一眼看到完整的土星
+      camera.position.set(0, 40, 220);
 
       const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -108,7 +121,7 @@
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         1.5, 0.4, 0.85
       );
-      bloomPass.strength = 1.2; // 稍微降低 Bloom 强度
+      bloomPass.strength = 1.2;
       bloomPass.radius = 0.4;
       bloomPass.threshold = 0.1;
 
@@ -131,7 +144,6 @@
 
       for (let i = 0; i < config.particleCount; i++) {
         let r, theta, x, y, z;
-        // 15% 核心，85% 环
         if (Math.random() < 0.15) {
           r = Math.random() * config.coreRadius;
           theta = Math.random() * Math.PI * 2;
@@ -142,18 +154,18 @@
           positions.push(x, y, z);
           orbitParams.push(0, 0.5, 0);
           colors.push(colorCore.r, colorCore.g, colorCore.b);
-          sizes.push(Math.random() * 1.2 + 0.3); // 稍微变小
+          sizes.push(Math.random() * 1.2 + 0.3);
         } else {
           const t = Math.random();
           r = config.ringInnerRadius + t * (config.ringOuterRadius - config.ringInnerRadius);
           theta = Math.random() * Math.PI * 2;
           positions.push(0, 0, 0);
-          orbitParams.push(r, 12.0 / Math.sqrt(r), theta); // 稍微减慢速度
+          orbitParams.push(r, 12.0 / Math.sqrt(r), theta);
           const mix = (r - config.ringInnerRadius) / (config.ringOuterRadius - config.ringInnerRadius);
           const c = colorRingInner.clone().lerp(colorRingOuter, mix);
           if (Math.random() > 0.98) c.copy(colorAccent);
           colors.push(c.r, c.g, c.b);
-          sizes.push(Math.random() * 1.0 + 0.2); // 稍微变小
+          sizes.push(Math.random() * 1.0 + 0.2);
         }
         randomness.push(Math.random(), Math.random(), Math.random());
       }
@@ -166,7 +178,7 @@
 
       const uniforms = {
         uTime: { value: 0 },
-        uIntro: { value: 0 }, // 0 = 开始, 1 = 结束
+        uIntro: { value: 0 },
         uScroll: { value: 0 },
         uZoom: { value: 0 }
       };
@@ -189,29 +201,25 @@
             vec3 pos = position;
             float radius = aOrbit.x;
             
-            // Intro 动画：粒子从中心炸开 (确保一开始就有大小，不要完全消失)
-            float introScale = 0.2 + uIntro * 0.8; 
+            // 关键修改：初始就是可见的，不要从 0 开始放大
+            // uIntro 从 0 到 1
+            // Scale 稍微动一下，更有动感，但初始值要是 1.0 (正常大小)
+            // 实际上我们不需要缩放动画了，因为要做的是位移
+            float scale = 1.0;
 
             if (radius > 0.0) {
               float speed = aOrbit.y;
               float angle = aOrbit.z + uTime * speed * 0.1;
-              pos.x = cos(angle) * radius * introScale;
-              pos.z = sin(angle) * radius * introScale;
-              pos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * introScale;
+              pos.x = cos(angle) * radius * scale;
+              pos.z = sin(angle) * radius * scale;
+              pos.y = sin(uTime * speed * 0.5 + aOrbit.z) * 0.5 * scale;
             } else {
-              // Core rotation
               float angle = uTime * 0.2;
               float c = cos(angle); float s = sin(angle);
               float x = pos.x; float z = pos.z;
-              pos.x = (x * c - z * s) * introScale;
-              pos.z = (x * s + z * c) * introScale;
-              pos.y *= introScale;
-            }
-
-            // Mouse chaos
-            float chaos = smoothstep(0.6, 1.0, uZoom);
-            if (chaos > 0.0 && uIntro > 0.9) {
-              pos += (aRandom - 0.5) * chaos * 15.0;
+              pos.x = (x * c - z * s) * scale;
+              pos.z = (x * s + z * c) * scale;
+              pos.y *= scale;
             }
 
             // Scroll effect
@@ -221,11 +229,10 @@
             gl_Position = projectionMatrix * mvPosition;
 
             float dist = length(mvPosition.xyz);
-            // 大小调整
             gl_PointSize = size * (350.0 / -mvPosition.z);
             
-            // 颜色和透明度
-            vColor = color * (0.6 + uIntro * 0.4); 
+            // 颜色始终可见
+            vColor = color;
             vAlpha = smoothstep(1.0, 50.0, dist);
           }
         `,
@@ -244,12 +251,13 @@
       });
 
       const particleSystem = new THREE.Points(geometry, material);
+      // 初始旋转角度
       particleSystem.rotation.x = Math.PI / 6;
       particleSystem.rotation.z = Math.PI / 12;
       scene.add(particleSystem);
 
       // === 动画循环逻辑 ===
-      const introDuration = 2.5; // 2.5秒运镜
+      const introDuration = 2.0; // 2秒入场
       const startTime = performance.now() / 1000;
       
       let mouseX = 0, mouseY = 0;
@@ -277,25 +285,25 @@
         
         // 计算入场进度 0 -> 1
         let progress = Math.min(elapsed / introDuration, 1.0);
-        // 缓动函数 easeOutCubic
-        progress = 1 - Math.pow(1 - progress, 3);
+        // 缓动函数 easeInOutCubic - 平滑起步和结束
+        progress = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
         uniforms.uTime.value = now;
         uniforms.uIntro.value = progress;
 
-        // === 关键帧运镜：最终位置要和 Landing Page 契合 ===
-        // Z轴：从远(250)拉近到(100)
-        camera.position.z = 250 - progress * 150; // 最终 100
-        // Y轴：从高(60)降到(20)
-        camera.position.y = 60 - progress * 40;   // 最终 20
-        
-        // 土星平移：从中间(0) 移动到右侧 (4.5) - 这就是 Landing Page 的位置！
-        // 注意：之前可能没有移动位置，导致和文字重叠
+        // === 关键帧运镜 ===
+        // 1. 位置平移：从正中间(0) 移动到右侧(4.5)
+        // 初始就是可见的，在中间
         const targetX = 4.5;
         particleSystem.position.x = progress * targetX;
 
-        // 3. 土星旋转入场
-        particleSystem.rotation.y = (1 - progress) * Math.PI; 
+        // 2. 相机推进：从稍远(220) 到 标准位置(100)
+        // 这样土星会变大，有一种扑面而来然后移开的感觉
+        camera.position.z = 220 - progress * 120; // 最终 100
+        camera.position.y = 40 - progress * 20;   // 最终 20
+
+        // 3. 旋转展示：转半圈展示全貌
+        particleSystem.rotation.y = (1 - progress) * Math.PI * 0.5;
 
         // === 交互逻辑 (入场后生效) ===
         if (progress >= 0.95) {
@@ -312,17 +320,13 @@
           const targetRotX = baseRotX + scrollY * 0.5;
           particleSystem.rotation.x += (targetRotX - particleSystem.rotation.x) * 0.05;
           
-          // 滚动时稍微下沉，让出更多空间
+          // 滚动时跟随
           particleSystem.position.y = -scrollY * 10;
         }
 
-        camera.lookAt(0, 0, 0); // 始终看向中心，配合 particleSystem.position.x 的移动，视觉上土星会移到右边
+        // 始终看向中心，配合 position.x 的移动，视觉上土星会移到右边
+        camera.lookAt(0, 0, 0);
         
-        // 微调 LookAt 点，让土星移到右边时相机稍微跟过去一点点，但不完全跟
-        if (progress >= 0.95) {
-             camera.lookAt(particleSystem.position.x * 0.2, 0, 0);
-        }
-
         composer.render();
       }
 
