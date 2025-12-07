@@ -324,7 +324,9 @@
         // 滚动下沉
         particleSystem.position.y = -scrollY * 15;
 
+        // 始终看向中心
         camera.lookAt(0, 0, 0);
+        
         composer.render();
       }
 
