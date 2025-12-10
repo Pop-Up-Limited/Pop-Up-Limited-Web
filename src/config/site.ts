@@ -9,6 +9,7 @@ export const FORM_ENDPOINT = ''; // TODO: paste your Formspree endpoint (e.g. ht
 export const NAV_LINKS = [
   { href: '/', label: 'Home' },
   { href: '/services', label: 'Services' },
+  { href: '/process', label: 'Process' },
   { href: '/cases', label: 'Cases' },
   { href: '/support', label: 'Support' }
 ];

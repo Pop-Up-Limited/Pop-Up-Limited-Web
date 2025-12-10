@@ -5,6 +5,7 @@ export const translations = {
     nav: {
       home: '首页',
       services: '服务方案',
+      process: '服务流程',
       cases: '案例库',
       support: '支持中心',
       contactSupport: '联系客服'
@@ -235,12 +236,79 @@ export const translations = {
           content: '"品牌设计"服务（如 Logo、VI、配色方案）为独立于网站部署的专业服务。如果客户选择此服务包，网站的"交付周期"(*¹) 将从品牌设计方案最终确认后开始计算。'
         }
       }
+    },
+    process: {
+      title: '全链路设计流程',
+      subtitle: '从需求分析到最终交付，我们为您提供完整的设计服务流程',
+      steps: {
+        '1': {
+          title: '探索与定义：项目的基石',
+          subtitle: '通过数据和访谈，明确"为什么做"以及"为谁做"。',
+          name: '需求分析',
+          images: [
+            { caption: '用户画像与数据分析' },
+            { caption: '竞品分析矩阵' },
+            { caption: '需求梳理思维导图' }
+          ]
+        },
+        '2': {
+          title: '梳理逻辑：用户体验蓝图',
+          subtitle: '规划清晰的信息架构和流畅的任务路径。',
+          name: 'UX 设计',
+          images: [
+            { caption: '用户旅程地图 (Journey Map)' },
+            { caption: '信息架构 (IA)' },
+            { caption: '关键任务流程图' }
+          ]
+        },
+        '3': {
+          title: '骨架构建：快速迭代验证',
+          subtitle: '剥离视觉干扰，专注于核心功能和布局结构。',
+          name: '低保真原型图',
+          images: [
+            { caption: '早期手绘草稿' },
+            { caption: '数字线框图 (Wireframe)' },
+            { caption: '原型交互流程测试' }
+          ]
+        },
+        '4': {
+          title: '视觉探索：确立情感基调',
+          subtitle: '收集灵感，定义色彩、字体和整体氛围。',
+          name: 'Mood Board',
+          images: [
+            { caption: '核心色彩体系提取' },
+            { caption: '字体与排版风格' },
+            { caption: '材质与图像调性' }
+          ]
+        },
+        '5': {
+          title: '规范建立：一致性与复用',
+          subtitle: '构建可扩展的组件库和设计指南。',
+          name: 'Design System',
+          images: [
+            { caption: '基础原子组件库' },
+            { caption: 'Design Tokens 规范' },
+            { caption: '图标系统规范' }
+          ]
+        },
+        '6': {
+          title: '最终交付：高保真视觉呈现',
+          subtitle: '输出像素完美的设计稿和开发交付物。',
+          name: 'UI 设计成品',
+          images: [
+            { caption: '高保真首页视觉' },
+            { caption: '高保真详情页' },
+            { caption: '开发交付标注稿' }
+          ]
+        }
+      }
     }
   },
   en: {
     nav: {
       home: 'Home',
       services: 'Services',
+      process: 'Process',
       cases: 'Cases',
       support: 'Support',
       contactSupport: 'Contact Support'
@@ -472,6 +540,72 @@ export const translations = {
         branding: {
           title: '*⁴ (About Brand Design):',
           content: '"Brand design" service (such as Logo, VI, color scheme) is a professional service independent of website deployment. If the client chooses this service package, the website\'s "delivery cycle" (*¹) will start calculating after the brand design plan is finally confirmed.'
+        }
+      }
+    },
+    process: {
+      title: 'Full-Stack Design Process',
+      subtitle: 'From requirements analysis to final delivery, we provide you with a complete design service process',
+      steps: {
+        '1': {
+          title: 'Exploration & Definition: The Foundation of Projects',
+          subtitle: 'Through data and interviews, clarify "why to do" and "for whom".',
+          name: 'Requirements Analysis',
+          images: [
+            { caption: 'User Persona & Data Analysis' },
+            { caption: 'Competitive Analysis Matrix' },
+            { caption: 'Requirements Mind Map' }
+          ]
+        },
+        '2': {
+          title: 'Logic Organization: User Experience Blueprint',
+          subtitle: 'Plan clear information architecture and smooth task paths.',
+          name: 'UX Design',
+          images: [
+            { caption: 'User Journey Map' },
+            { caption: 'Information Architecture (IA)' },
+            { caption: 'Key Task Flow Diagram' }
+          ]
+        },
+        '3': {
+          title: 'Skeleton Construction: Rapid Iteration & Validation',
+          subtitle: 'Strip away visual distractions, focus on core functionality and layout structure.',
+          name: 'Low-Fidelity Prototype',
+          images: [
+            { caption: 'Early Hand-drawn Sketches' },
+            { caption: 'Digital Wireframe' },
+            { caption: 'Prototype Interaction Flow Testing' }
+          ]
+        },
+        '4': {
+          title: 'Visual Exploration: Establishing Emotional Tone',
+          subtitle: 'Collect inspiration, define colors, typography and overall atmosphere.',
+          name: 'Mood Board',
+          images: [
+            { caption: 'Core Color System Extraction' },
+            { caption: 'Typography & Layout Style' },
+            { caption: 'Material & Image Tone' }
+          ]
+        },
+        '5': {
+          title: 'Standardization: Consistency & Reusability',
+          subtitle: 'Build scalable component libraries and design guidelines.',
+          name: 'Design System',
+          images: [
+            { caption: 'Basic Atomic Component Library' },
+            { caption: 'Design Tokens Specification' },
+            { caption: 'Icon System Specification' }
+          ]
+        },
+        '6': {
+          title: 'Final Delivery: High-Fidelity Visual Presentation',
+          subtitle: 'Output pixel-perfect design drafts and development deliverables.',
+          name: 'UI Design Final',
+          images: [
+            { caption: 'High-Fidelity Homepage Visual' },
+            { caption: 'High-Fidelity Detail Page' },
+            { caption: 'Development Handoff Specs' }
+          ]
         }
       }
     }
