@@ -7,7 +7,7 @@ import { translations } from '../i18n/translations';
 const urlLang = Astro.url.searchParams.get('lang');
 const initialLang = (urlLang === 'en' || urlLang === 'zh') ? urlLang : 'zh';
 
-// Process steps data with unique images and detailed descriptions
+// Process steps data with unique images matching captions
 const processSteps = [
   {
     id: '1',
@@ -71,17 +71,17 @@ const processSteps = [
     descriptionEn: 'After determining the user experience strategy, we begin building the skeleton structure of the product. First, we quickly record design ideas through hand-drawn sketches, which help us quickly explore different layout solutions. Then, we use professional tools to create digital wireframes that detail the layout structure, functional modules, and element positions of each page. These low-fidelity prototypes do not include visual details, focusing on functional layout and interaction logic, making it easy for us to quickly communicate with clients and development teams, verify design ideas in time, and make adjustments and optimizations.',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop&q=80',
+        url: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=600&fit=crop&q=80',
         caption: '手绘设计草图',
         captionEn: 'Hand-drawn Design Sketches'
       },
       {
-        url: 'https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop&q=80',
+        url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80',
         caption: '数字线框图设计',
         captionEn: 'Digital Wireframe Design'
       },
       {
-        url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&q=80',
+        url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80',
         caption: '原型交互测试',
         captionEn: 'Prototype Interaction Testing'
       }
@@ -192,7 +192,7 @@ const processSteps = [
 
     <!-- Process Container -->
     <section class="mx-auto w-full max-w-7xl px-4 pb-24 md:px-6">
-      <div class="flex flex-col gap-8 lg:flex-row lg:gap-12">
+      <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
         <!-- Left Sidebar: Timeline Navigation -->
         <aside class="lg:w-80 lg:shrink-0">
           <div class="sticky top-24 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
@@ -210,6 +210,7 @@ const processSteps = [
                       index === 0 ? 'active' : ''
                     }`}
                     data-target={`content-${step.id}`}
+                    data-step-index={index}
                   >
                     <!-- Timeline Marker -->
                     <div class="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-4 rounded-full border-2 border-white/30 bg-white/5 transition-all duration-300 timeline-marker"></div>
@@ -233,6 +234,7 @@ const processSteps = [
             <section 
               id={`content-${step.id}`}
               class={`content-section ${index === 0 ? 'active' : ''} ${index === 0 ? '' : 'hidden'}`}
+              data-step-index={index}
             >
               <div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md md:p-10">
                 <!-- Content Header -->
@@ -250,7 +252,7 @@ const processSteps = [
                 </div>
 
                 <!-- Image Grid -->
-                <div class={`image-grid grid gap-6 ${
+                <div class={`image-grid grid gap-6 mb-8 ${
                   step.id === '4' 
                     ? 'grid-cols-1 md:grid-cols-2' 
                     : step.id === '6'
@@ -281,6 +283,41 @@ const processSteps = [
                       </div>
                     </div>
                   ))}
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex items-center justify-between gap-4 pt-6 border-t border-white/10">
+                  <button
+                    type="button"
+                    class={`nav-button-prev flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:border-brand-400 hover:bg-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      index === 0 ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    data-step-index={index}
+                    disabled={index === 0}
+                  >
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span data-i18n-prev>上一个</span>
+                  </button>
+                  
+                  <div class="text-sm text-gray-400">
+                    <span data-step-counter>{index + 1}</span> / <span data-total-steps>{processSteps.length}</span>
+                  </div>
+                  
+                  <button
+                    type="button"
+                    class={`nav-button-next flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:border-brand-400 hover:bg-brand-500/20 disabled:opacity-50 disabled:cursor-not-allowed ${
+                      index === processSteps.length - 1 ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                    data-step-index={index}
+                    disabled={index === processSteps.length - 1}
+                  >
+                    <span data-i18n-next>下一个</span>
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </section>
@@ -318,6 +355,14 @@ const processSteps = [
           el.textContent = value;
         }
       }
+    });
+
+    // Update navigation button texts
+    document.querySelectorAll('[data-i18n-prev]').forEach((el) => {
+      el.textContent = lang === 'en' ? 'Previous' : '上一个';
+    });
+    document.querySelectorAll('[data-i18n-next]').forEach((el) => {
+      el.textContent = lang === 'en' ? 'Next' : '下一个';
     });
 
     // Update step names
@@ -362,76 +407,109 @@ const processSteps = [
     });
   }
 
-  // Timeline navigation functionality
-  function initTimelineNavigation() {
+  // Function to switch to a specific step
+  function switchToStep(stepIndex) {
     const timelineItems = document.querySelectorAll('.timeline-item');
     const contentSections = document.querySelectorAll('.content-section');
 
-    timelineItems.forEach((item) => {
-      item.addEventListener('click', function() {
-        // Remove active state from all items
-        timelineItems.forEach((i) => {
-          i.classList.remove('active');
-          const marker = i.querySelector('.timeline-marker');
-          const text = i.querySelector('.timeline-text');
-          if (marker) {
-            marker.classList.remove('border-brand-500', 'bg-brand-500', 'shadow-lg', 'shadow-brand-500/50');
-            marker.classList.add('border-white/30', 'bg-white/5');
-          }
-          if (text) {
-            text.classList.remove('bg-brand-500', 'text-white');
-            text.classList.add('text-gray-400');
-          }
-        });
-
-        // Add active state to clicked item
-        this.classList.add('active');
-        const marker = this.querySelector('.timeline-marker');
-        const text = this.querySelector('.timeline-text');
-        if (marker) {
+    // Update timeline
+    timelineItems.forEach((item, index) => {
+      item.classList.toggle('active', index === stepIndex);
+      const marker = item.querySelector('.timeline-marker');
+      const text = item.querySelector('.timeline-text');
+      if (marker && text) {
+        if (index === stepIndex) {
           marker.classList.remove('border-white/30', 'bg-white/5');
           marker.classList.add('border-brand-500', 'bg-brand-500', 'shadow-lg', 'shadow-brand-500/50');
-        }
-        if (text) {
           text.classList.remove('text-gray-400');
           text.classList.add('bg-brand-500', 'text-white');
+        } else {
+          marker.classList.remove('border-brand-500', 'bg-brand-500', 'shadow-lg', 'shadow-brand-500/50');
+          marker.classList.add('border-white/30', 'bg-white/5');
+          text.classList.remove('bg-brand-500', 'text-white');
+          text.classList.add('text-gray-400');
         }
+      }
+    });
 
-        // Get target content ID
-        const targetId = this.getAttribute('data-target');
+    // Update content sections
+    contentSections.forEach((section, index) => {
+      if (index === stepIndex) {
+        section.classList.remove('hidden');
+        section.classList.add('active');
+      } else {
+        section.classList.remove('active');
+        section.classList.add('hidden');
+      }
+    });
 
-        // Hide all content sections
-        contentSections.forEach((section) => {
-          section.classList.remove('active');
-          section.classList.add('hidden');
-        });
+    // Update navigation buttons
+    updateNavigationButtons(stepIndex);
 
-        // Show target content section
-        const targetSection = document.getElementById(targetId);
-        if (targetSection) {
-          targetSection.classList.remove('hidden');
-          targetSection.classList.add('active');
-          
-          // Smooth scroll to section
-          setTimeout(() => {
-            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 100);
+    // Scroll to top of content area (not to section, to avoid jumping)
+    const contentArea = document.querySelector('main');
+    if (contentArea) {
+      contentArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Update navigation buttons state
+  function updateNavigationButtons(currentIndex) {
+    const prevButtons = document.querySelectorAll('.nav-button-prev');
+    const nextButtons = document.querySelectorAll('.nav-button-next');
+
+    prevButtons.forEach((btn) => {
+      const stepIndex = parseInt(btn.getAttribute('data-step-index'));
+      if (stepIndex === currentIndex) {
+        btn.disabled = currentIndex === 0;
+        btn.classList.toggle('opacity-50', currentIndex === 0);
+        btn.classList.toggle('cursor-not-allowed', currentIndex === 0);
+      }
+    });
+
+    nextButtons.forEach((btn) => {
+      const stepIndex = parseInt(btn.getAttribute('data-step-index'));
+      if (stepIndex === currentIndex) {
+        btn.disabled = currentIndex === processSteps.length - 1;
+        btn.classList.toggle('opacity-50', currentIndex === processSteps.length - 1);
+        btn.classList.toggle('cursor-not-allowed', currentIndex === processSteps.length - 1);
+      }
+    });
+  }
+
+  // Timeline navigation functionality
+  function initTimelineNavigation() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+
+    timelineItems.forEach((item) => {
+      item.addEventListener('click', function() {
+        const stepIndex = parseInt(this.getAttribute('data-step-index'));
+        switchToStep(stepIndex);
+      });
+    });
+  }
+
+  // Navigation buttons functionality
+  function initNavigationButtons() {
+    // Previous buttons
+    document.querySelectorAll('.nav-button-prev').forEach((btn) => {
+      btn.addEventListener('click', function() {
+        const currentIndex = parseInt(this.getAttribute('data-step-index'));
+        if (currentIndex > 0) {
+          switchToStep(currentIndex - 1);
         }
       });
     });
 
-    // Initialize first item as active
-    if (timelineItems.length > 0) {
-      const firstItem = timelineItems[0];
-      const firstMarker = firstItem.querySelector('.timeline-marker');
-      const firstText = firstItem.querySelector('.timeline-text');
-      if (firstMarker) {
-        firstMarker.classList.add('border-brand-500', 'bg-brand-500', 'shadow-lg', 'shadow-brand-500/50');
-      }
-      if (firstText) {
-        firstText.classList.add('bg-brand-500', 'text-white');
-      }
-    }
+    // Next buttons
+    document.querySelectorAll('.nav-button-next').forEach((btn) => {
+      btn.addEventListener('click', function() {
+        const currentIndex = parseInt(this.getAttribute('data-step-index'));
+        if (currentIndex < processSteps.length - 1) {
+          switchToStep(currentIndex + 1);
+        }
+      });
+    });
   }
 
   // Initialize on page load
@@ -439,6 +517,8 @@ const processSteps = [
     const lang = getLanguage();
     updatePageTexts(lang);
     initTimelineNavigation();
+    initNavigationButtons();
+    updateNavigationButtons(0); // Initialize buttons for first step
   }
 
   if (typeof window !== 'undefined') {
@@ -487,7 +567,7 @@ const processSteps = [
     transition: all 0.3s ease;
   }
 
-  /* Ensure proper alignment */
+  /* Ensure proper alignment - top aligned */
   .image-grid {
     display: grid;
     align-items: start;
@@ -496,5 +576,15 @@ const processSteps = [
   .grid-item {
     display: flex;
     flex-direction: column;
+  }
+
+  /* Ensure content sections align to top */
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-section {
+    scroll-margin-top: 0;
   }
 </style>
