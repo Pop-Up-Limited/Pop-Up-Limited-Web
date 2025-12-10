@@ -7,7 +7,7 @@ import { translations } from '../i18n/translations';
 const urlLang = Astro.url.searchParams.get('lang');
 const initialLang = (urlLang === 'en' || urlLang === 'zh') ? urlLang : 'zh';
 
-// Process steps data
+// Process steps data with unique images and detailed descriptions
 const processSteps = [
   {
     id: '1',
@@ -15,23 +15,23 @@ const processSteps = [
     nameEn: 'Requirements Analysis',
     title: '探索与定义：项目的基石',
     titleEn: 'Exploration & Definition: The Foundation of Projects',
-    subtitle: '通过数据和访谈，明确"为什么做"以及"为谁做"。',
-    subtitleEn: 'Through data and interviews, clarify "why to do" and "for whom".',
+    description: '我们通过与客户的深入沟通，全面了解项目背景、业务目标、目标用户群体和核心功能需求。通过用户访谈、市场调研和数据分析，我们明确项目的设计方向和功能范围，确保最终产品能够真正解决用户问题并满足业务目标。',
+    descriptionEn: 'Through in-depth communication with clients, we comprehensively understand project background, business objectives, target user groups, and core functional requirements. Through user interviews, market research, and data analysis, we clarify the design direction and functional scope of the project, ensuring the final product truly solves user problems and meets business goals.',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80',
-        caption: '用户画像与数据分析',
-        captionEn: 'User Persona & Data Analysis'
+        caption: '用户画像分析',
+        captionEn: 'User Persona Analysis'
       },
       {
         url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80',
-        caption: '竞品分析矩阵',
-        captionEn: 'Competitive Analysis Matrix'
+        caption: '竞品分析研究',
+        captionEn: 'Competitive Analysis Research'
       },
       {
         url: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop&q=80',
-        caption: '需求梳理思维导图',
-        captionEn: 'Requirements Mind Map'
+        caption: '需求文档整理',
+        captionEn: 'Requirements Documentation'
       }
     ]
   },
@@ -41,23 +41,23 @@ const processSteps = [
     nameEn: 'UX Design',
     title: '梳理逻辑：用户体验蓝图',
     titleEn: 'Logic Organization: User Experience Blueprint',
-    subtitle: '规划清晰的信息架构和流畅的任务路径。',
-    subtitleEn: 'Plan clear information architecture and smooth task paths.',
+    description: '基于需求分析的结果，我们制定完整的用户体验策略。通过创建用户旅程地图，我们梳理用户在使用产品过程中的每个接触点和情感体验。同时，我们设计清晰的信息架构，规划合理的导航结构和内容组织方式，确保用户能够轻松找到所需信息。我们还绘制关键任务流程图，优化用户完成核心任务的路径，提升产品的易用性和用户满意度。',
+    descriptionEn: 'Based on the results of requirements analysis, we develop a complete user experience strategy. By creating user journey maps, we organize every touchpoint and emotional experience users have when using the product. At the same time, we design clear information architecture, plan reasonable navigation structures and content organization methods, ensuring users can easily find the information they need. We also draw key task flow diagrams to optimize the paths users take to complete core tasks, improving product usability and user satisfaction.',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=600&fit=crop&q=80',
-        caption: '用户旅程地图 (Journey Map)',
-        captionEn: 'User Journey Map'
+        caption: '用户旅程地图设计',
+        captionEn: 'User Journey Map Design'
       },
       {
         url: 'https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop&q=80',
-        caption: '信息架构 (IA)',
-        captionEn: 'Information Architecture (IA)'
+        caption: '信息架构规划',
+        captionEn: 'Information Architecture Planning'
       },
       {
-        url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80',
-        caption: '关键任务流程图',
-        captionEn: 'Key Task Flow Diagram'
+        url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&q=80',
+        caption: '交互流程设计',
+        captionEn: 'Interaction Flow Design'
       }
     ]
   },
@@ -67,23 +67,23 @@ const processSteps = [
     nameEn: 'Low-Fidelity Prototype',
     title: '骨架构建：快速迭代验证',
     titleEn: 'Skeleton Construction: Rapid Iteration & Validation',
-    subtitle: '剥离视觉干扰，专注于核心功能和布局结构。',
-    subtitleEn: 'Strip away visual distractions, focus on core functionality and layout structure.',
+    description: '在确定用户体验策略后，我们开始构建产品的骨架结构。首先，我们通过手绘草图快速记录设计想法，这些早期草稿帮助我们快速探索不同的布局方案。然后，我们使用专业工具创建数字线框图，详细展示每个页面的布局结构、功能模块和元素位置。这些低保真原型不包含视觉细节，专注于功能布局和交互逻辑，便于我们与客户和开发团队快速沟通，及时验证设计思路并进行调整优化。',
+    descriptionEn: 'After determining the user experience strategy, we begin building the skeleton structure of the product. First, we quickly record design ideas through hand-drawn sketches, which help us quickly explore different layout solutions. Then, we use professional tools to create digital wireframes that detail the layout structure, functional modules, and element positions of each page. These low-fidelity prototypes do not include visual details, focusing on functional layout and interaction logic, making it easy for us to quickly communicate with clients and development teams, verify design ideas in time, and make adjustments and optimizations.',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop&q=80',
-        caption: '早期手绘草稿',
-        captionEn: 'Early Hand-drawn Sketches'
+        caption: '手绘设计草图',
+        captionEn: 'Hand-drawn Design Sketches'
       },
       {
         url: 'https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop&q=80',
-        caption: '数字线框图 (Wireframe)',
-        captionEn: 'Digital Wireframe'
+        caption: '数字线框图设计',
+        captionEn: 'Digital Wireframe Design'
       },
       {
-        url: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=600&fit=crop&q=80',
-        caption: '原型交互流程测试',
-        captionEn: 'Prototype Interaction Flow Testing'
+        url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&q=80',
+        caption: '原型交互测试',
+        captionEn: 'Prototype Interaction Testing'
       }
     ]
   },
@@ -93,24 +93,24 @@ const processSteps = [
     nameEn: 'Mood Board',
     title: '视觉探索：确立情感基调',
     titleEn: 'Visual Exploration: Establishing Emotional Tone',
-    subtitle: '收集灵感，定义色彩、字体和整体氛围。',
-    subtitleEn: 'Collect inspiration, define colors, typography and overall atmosphere.',
+    description: '在确定功能布局后，我们开始探索产品的视觉风格。我们收集大量设计灵感素材，包括色彩搭配、字体选择、图像风格、材质质感等视觉元素。通过整理这些素材，我们确定产品的整体视觉风格和情感基调，比如是专业严谨还是轻松活泼，是现代简约还是复古经典。这个阶段帮助我们统一设计语言，确保后续的视觉设计能够准确传达品牌形象和产品定位。',
+    descriptionEn: 'After determining the functional layout, we begin exploring the visual style of the product. We collect a large number of design inspiration materials, including color combinations, font choices, image styles, material textures, and other visual elements. By organizing these materials, we determine the overall visual style and emotional tone of the product, such as professional and rigorous or relaxed and lively, modern and minimalist or retro and classic. This stage helps us unify the design language, ensuring that subsequent visual design can accurately convey brand image and product positioning.',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=1000&fit=crop&q=80',
-        caption: '核心色彩体系提取',
-        captionEn: 'Core Color System Extraction',
+        caption: '色彩体系探索',
+        captionEn: 'Color System Exploration',
         span: 2
       },
       {
-        url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=500&fit=crop&q=80',
+        url: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=800&h=500&fit=crop&q=80',
         caption: '字体与排版风格',
         captionEn: 'Typography & Layout Style'
       },
       {
-        url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=500&fit=crop&q=80',
-        caption: '材质与图像调性',
-        captionEn: 'Material & Image Tone'
+        url: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=500&fit=crop&q=80',
+        caption: '视觉风格参考',
+        captionEn: 'Visual Style Reference'
       }
     ]
   },
@@ -120,21 +120,21 @@ const processSteps = [
     nameEn: 'Design System',
     title: '规范建立：一致性与复用',
     titleEn: 'Standardization: Consistency & Reusability',
-    subtitle: '构建可扩展的组件库和设计指南。',
-    subtitleEn: 'Build scalable component libraries and design guidelines.',
+    description: '为了确保设计的一致性和开发效率，我们建立完整的设计系统。设计系统包括基础组件库，如按钮、输入框、卡片等常用界面元素，每个组件都有明确的使用规范和交互状态。我们还定义设计变量（Design Tokens），包括颜色、字体、间距、圆角等设计属性的标准值，确保整个产品的视觉风格统一。此外，我们建立图标系统规范，确保图标风格一致且易于维护。这套设计系统不仅提高了设计效率，也为开发团队提供了清晰的实现指南。',
+    descriptionEn: 'To ensure design consistency and development efficiency, we establish a complete design system. The design system includes a basic component library, such as buttons, input boxes, cards, and other common interface elements, each with clear usage specifications and interaction states. We also define design tokens, including standard values for design attributes such as colors, fonts, spacing, and border radius, ensuring unified visual style throughout the product. In addition, we establish icon system specifications to ensure consistent icon style and easy maintenance. This design system not only improves design efficiency but also provides clear implementation guidelines for the development team.',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop&q=80',
-        caption: '基础原子组件库',
-        captionEn: 'Basic Atomic Component Library'
+        caption: '组件库设计',
+        captionEn: 'Component Library Design'
       },
       {
         url: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=600&fit=crop&q=80',
-        caption: 'Design Tokens 规范',
-        captionEn: 'Design Tokens Specification'
+        caption: '设计规范文档',
+        captionEn: 'Design Specification Documentation'
       },
       {
-        url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&q=80',
+        url: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop&q=80',
         caption: '图标系统规范',
         captionEn: 'Icon System Specification'
       }
@@ -146,25 +146,25 @@ const processSteps = [
     nameEn: 'UI Design Final',
     title: '最终交付：高保真视觉呈现',
     titleEn: 'Final Delivery: High-Fidelity Visual Presentation',
-    subtitle: '输出像素完美的设计稿和开发交付物。',
-    subtitleEn: 'Output pixel-perfect design drafts and development deliverables.',
+    description: '在设计系统建立后，我们开始进行高保真界面设计。我们根据前期的线框图和设计规范，完成每个页面的详细视觉设计，包括精确的颜色使用、字体排版、图标设计、图片选择等。我们注重每一个视觉细节，确保界面美观且符合品牌调性。同时，我们考虑不同设备和屏幕尺寸的适配，确保响应式设计的完美呈现。最终，我们输出完整的设计稿和开发交付文档，包括设计标注、切图资源、交互说明等，为开发团队提供清晰的实现依据，确保最终产品能够完美还原设计效果。',
+    descriptionEn: 'After the design system is established, we begin high-fidelity interface design. Based on the previous wireframes and design specifications, we complete detailed visual design for each page, including precise color usage, typography, icon design, image selection, etc. We pay attention to every visual detail, ensuring the interface is beautiful and consistent with the brand tone. At the same time, we consider adaptation to different devices and screen sizes, ensuring perfect presentation of responsive design. Finally, we output complete design drafts and development handoff documents, including design annotations, image resources, interaction instructions, etc., providing clear implementation basis for the development team and ensuring the final product can perfectly restore the design effect.',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&h=1000&fit=crop&q=80',
-        caption: '高保真首页视觉',
-        captionEn: 'High-Fidelity Homepage Visual',
+        caption: '高保真首页设计',
+        captionEn: 'High-Fidelity Homepage Design',
         height: '500px'
       },
       {
         url: 'https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=600&h=1000&fit=crop&q=80',
-        caption: '高保真详情页',
-        captionEn: 'High-Fidelity Detail Page',
+        caption: '详情页设计',
+        captionEn: 'Detail Page Design',
         height: '500px'
       },
       {
         url: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&h=1000&fit=crop&q=80',
-        caption: '开发交付标注稿',
-        captionEn: 'Development Handoff Specs',
+        caption: '设计交付文档',
+        captionEn: 'Design Handoff Documentation',
         height: '500px'
       }
     ]
@@ -192,7 +192,7 @@ const processSteps = [
 
     <!-- Process Container -->
     <section class="mx-auto w-full max-w-7xl px-4 pb-24 md:px-6">
-      <div class="flex flex-col gap-6 lg:flex-row lg:gap-8">
+      <div class="flex flex-col gap-8 lg:flex-row lg:gap-12">
         <!-- Left Sidebar: Timeline Navigation -->
         <aside class="lg:w-80 lg:shrink-0">
           <div class="sticky top-24 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
@@ -232,17 +232,21 @@ const processSteps = [
           {processSteps.map((step, index) => (
             <section 
               id={`content-${step.id}`}
-              class={`content-section ${index === 0 ? 'active' : ''} hidden`}
+              class={`content-section ${index === 0 ? 'active' : ''} ${index === 0 ? '' : 'hidden'}`}
             >
-              <div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md">
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-md md:p-10">
                 <!-- Content Header -->
                 <div class="mb-8">
-                  <h2 class="mb-3 text-2xl font-bold text-white md:text-3xl" data-step-title={step.id}>
+                  <h2 class="mb-4 text-2xl font-bold text-white md:text-3xl" data-step-title={step.id}>
                     {step.title}
                   </h2>
-                  <p class="text-base text-gray-400" data-step-subtitle={step.id}>
-                    {step.subtitle}
-                  </p>
+                  
+                  <!-- Detailed Description -->
+                  <div class="mb-6 rounded-xl border border-white/5 bg-black/20 p-6">
+                    <p class="leading-relaxed text-gray-300" data-step-description={step.id}>
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
 
                 <!-- Image Grid -->
@@ -335,12 +339,12 @@ const processSteps = [
       }
     });
 
-    // Update step subtitles
-    document.querySelectorAll('[data-step-subtitle]').forEach((el) => {
-      const stepId = el.getAttribute('data-step-subtitle');
+    // Update step descriptions
+    document.querySelectorAll('[data-step-description]').forEach((el) => {
+      const stepId = el.getAttribute('data-step-description');
       const step = processSteps.find(s => s.id === stepId);
       if (step) {
-        el.textContent = lang === 'en' ? step.subtitleEn : step.subtitle;
+        el.textContent = lang === 'en' ? step.descriptionEn : step.description;
       }
     });
 
@@ -482,5 +486,15 @@ const processSteps = [
   .timeline-text {
     transition: all 0.3s ease;
   }
-</style>
 
+  /* Ensure proper alignment */
+  .image-grid {
+    display: grid;
+    align-items: start;
+  }
+
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
